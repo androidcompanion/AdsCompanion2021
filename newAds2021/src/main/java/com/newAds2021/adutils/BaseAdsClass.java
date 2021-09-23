@@ -1161,9 +1161,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void loadInterstitialAds(Context context) {
-        loadInterstitial1(context);
-        loadInterstitial2(context);
-        loadInterstitial3(context);
+        loadInterstitial1();
+        loadInterstitial2();
+        loadInterstitial3();
     }
 
     void loadAppOpenAds(Context context) {
@@ -1470,14 +1470,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         return app_installed;
     }
 
-    public void loadInterstitial1(Context context) {
+    public void loadInterstitial1() {
         if (isConnected(this) && adsPrefernce.showInter1() && mInterstitialAd1 == null) {
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
                 }
             });
-            InterstitialAd.load(context, adsPrefernce.gInter1(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(this, adsPrefernce.gInter1(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                     mInterstitialAd1 = interstitialAd;
@@ -1492,14 +1492,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void loadInterstitial2(Context context) {
+    public void loadInterstitial2() {
         if (isConnected(this) && adsPrefernce.showInter2() && mInterstitialAd2 == null) {
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
                 }
             });
-            InterstitialAd.load(context, adsPrefernce.gInter2(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(this, adsPrefernce.gInter2(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                     mInterstitialAd2 = interstitialAd;
@@ -1515,14 +1515,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void loadInterstitial3(Context context) {
+    public void loadInterstitial3() {
         if (isConnected(this) && adsPrefernce.showInter3() && mInterstitialAd3 == null) {
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
                 }
             });
-            InterstitialAd.load(context, adsPrefernce.gInter3(), adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(this, adsPrefernce.gInter3(), adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                     mInterstitialAd3 = interstitialAd;
@@ -1547,7 +1547,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
-                                    loadInterstitial1(context);
+                                    loadInterstitial1();
                                     try {
                                         params.call();
                                     } catch (Exception e) {
@@ -1578,7 +1578,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
-                            loadInterstitial1(context);
+                            loadInterstitial1();
                             try {
                                 params.call();
                             } catch (Exception e) {
@@ -1643,7 +1643,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
-                                    loadInterstitial2(context);
+                                    loadInterstitial2();
                                     try {
                                         params.call();
                                     } catch (Exception e) {
@@ -1674,7 +1674,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
-                            loadInterstitial2(context);
+                            loadInterstitial2();
                             try {
                                 params.call();
                             } catch (Exception e) {
@@ -1738,7 +1738,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
-                                    loadInterstitial3(context);
+                                    loadInterstitial3();
                                     try {
                                         params.call();
                                     } catch (Exception e) {
@@ -1770,7 +1770,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
-                            loadInterstitial3(context);
+                            loadInterstitial3();
                             try {
                                 params.call();
                             } catch (Exception e) {
