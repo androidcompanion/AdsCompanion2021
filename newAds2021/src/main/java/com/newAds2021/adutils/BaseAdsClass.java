@@ -200,8 +200,36 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         if (ihAdsDetails != null && ihAdsDetails.size() > 0) {
                             moreAppsArrayList.clear();
                             for (int i = 0; i < ihAdsDetails.size(); i++) {
-                                if (ihAdsDetails.get(i).getOpenin().equals("playstore")) {
-                                    if (!isAppInstalled(getAppIdFromAppLink(ihAdsDetails.get(i).getApplink()))) {
+                                if (ihAdsDetails.get(i).getShowad()){
+                                    if (ihAdsDetails.get(i).getOpenin().equals("playstore")) {
+                                        if (!isAppInstalled(getAppIdFromAppLink(ihAdsDetails.get(i).getApplink()))) {
+                                            finalIHAds.add(new IhAdsDetail(ihAdsDetails.get(i).getIhads_id(),
+                                                    ihAdsDetails.get(i).getShowad(),
+                                                    ihAdsDetails.get(i).getOpenin(),
+                                                    ihAdsDetails.get(i).getApplink(),
+                                                    ihAdsDetails.get(i).getShowreview(),
+                                                    ihAdsDetails.get(i).getReviewcount(),
+                                                    ihAdsDetails.get(i).getShowrating(),
+                                                    ihAdsDetails.get(i).getShowdouble(),
+                                                    ihAdsDetails.get(i).getRatingcount(),
+                                                    ihAdsDetails.get(i).getTitle(),
+                                                    ihAdsDetails.get(i).getSubtitle(),
+                                                    ihAdsDetails.get(i).getIcon(),
+                                                    ihAdsDetails.get(i).getExtratext(),
+                                                    ihAdsDetails.get(i).getButtontext(),
+                                                    ihAdsDetails.get(i).getBigimage(),
+                                                    ihAdsDetails.get(i).getDesc_title(),
+                                                    ihAdsDetails.get(i).getDesc_text()));
+                                            moreAppsArrayList.add(new AppsDetails(ihAdsDetails.get(i).getIhads_id(),
+                                                    ihAdsDetails.get(i).getIcon(),
+                                                    ihAdsDetails.get(i).getTitle(),
+                                                    ihAdsDetails.get(i).getApplink(),
+                                                    ihAdsDetails.get(i).getShowad(),
+                                                    "",
+                                                    ihAdsDetails.get(i).getOpenin(),
+                                                    ihAdsDetails.get(i).getButtontext()));
+                                        }
+                                    } else {
                                         finalIHAds.add(new IhAdsDetail(ihAdsDetails.get(i).getIhads_id(),
                                                 ihAdsDetails.get(i).getShowad(),
                                                 ihAdsDetails.get(i).getOpenin(),
@@ -227,34 +255,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                                 "",
                                                 ihAdsDetails.get(i).getOpenin(),
                                                 ihAdsDetails.get(i).getButtontext()));
-                                    }
-                                } else {
-                                    finalIHAds.add(new IhAdsDetail(ihAdsDetails.get(i).getIhads_id(),
-                                            ihAdsDetails.get(i).getShowad(),
-                                            ihAdsDetails.get(i).getOpenin(),
-                                            ihAdsDetails.get(i).getApplink(),
-                                            ihAdsDetails.get(i).getShowreview(),
-                                            ihAdsDetails.get(i).getReviewcount(),
-                                            ihAdsDetails.get(i).getShowrating(),
-                                            ihAdsDetails.get(i).getShowdouble(),
-                                            ihAdsDetails.get(i).getRatingcount(),
-                                            ihAdsDetails.get(i).getTitle(),
-                                            ihAdsDetails.get(i).getSubtitle(),
-                                            ihAdsDetails.get(i).getIcon(),
-                                            ihAdsDetails.get(i).getExtratext(),
-                                            ihAdsDetails.get(i).getButtontext(),
-                                            ihAdsDetails.get(i).getBigimage(),
-                                            ihAdsDetails.get(i).getDesc_title(),
-                                            ihAdsDetails.get(i).getDesc_text()));
-                                    moreAppsArrayList.add(new AppsDetails(ihAdsDetails.get(i).getIhads_id(),
-                                            ihAdsDetails.get(i).getIcon(),
-                                            ihAdsDetails.get(i).getTitle(),
-                                            ihAdsDetails.get(i).getApplink(),
-                                            ihAdsDetails.get(i).getShowad(),
-                                            "",
-                                            ihAdsDetails.get(i).getOpenin(),
-                                            ihAdsDetails.get(i).getButtontext()));
 
+                                    }
                                 }
                             }
                             adsPrefernce.setInHouseAdDetails(finalIHAds);
