@@ -2,6 +2,7 @@ package com.newAds2021.moreapps.CallIt;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,13 +48,15 @@ public class ShowMoreAppsGrid {
         this.theme = theme;
         this.view = view;
         LayoutInflater inflater = LayoutInflater.from(context);
+        //meet
+        this.view.removeAllViews();
         moreView = (LinearLayout) inflater.inflate(R.layout.layout_more_apps, view, false);
-        showMore(view);
         if (theme.equals("light")) {
             ConstantAds.isLightTheme = true;
         } else {
             ConstantAds.isLightTheme = false;
         }
+        showMore(view);
 
     }
 
@@ -116,7 +119,6 @@ public class ShowMoreAppsGrid {
     }
 
     public void showMore(ViewGroup view) {
-        view.addView(moreView);
         tv_seemore = moreView.findViewById(R.id.tv_seemore);
         ll_moreApps = moreView.findViewById(R.id.ll_moreApps);
 
@@ -137,79 +139,29 @@ public class ShowMoreAppsGrid {
 
         AdsPrefernce adsPrefernce = new AdsPrefernce(context);
         if (adsPrefernce.isInHouseAdLoaded()){
-            shimmerGrid.setVisibility(View.GONE);
-            shimmerLinear.setVisibility(View.GONE);
-            rvapps.setVisibility(View.VISIBLE);
             appsDetailsArrayList = adsPrefernce.getMoreApps();
-            MoreappsAdapter adapter = new MoreappsAdapter(context, appsDetailsArrayList, "grid", theme, getAppNameTextColor(), getInstallButtonBackground(), getInstallTextColor(), getAdBackground(), getItemBackground());
-            LinearLayoutManager layoutManager = new GridLayoutManager(context, 3);
-            rvapps.setLayoutManager(layoutManager);
-            rvapps.setItemAnimator(new DefaultItemAnimator());
-            rvapps.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-
-
+            //meet
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shimmerGrid.setVisibility(View.GONE);
+                    shimmerLinear.setVisibility(View.GONE);
+                    rvapps.setVisibility(View.VISIBLE);
+                    MoreappsAdapter adapter = new MoreappsAdapter(context, appsDetailsArrayList, "grid", theme, getAppNameTextColor(), getInstallButtonBackground(), getInstallTextColor(), getAdBackground(), getItemBackground());
+                    LinearLayoutManager layoutManager = new GridLayoutManager(context, 3);
+                    rvapps.setLayoutManager(layoutManager);
+                    rvapps.setItemAnimator(new DefaultItemAnimator());
+                    rvapps.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            },1000);
         }else {
             shimmerGrid.setVisibility(View.VISIBLE);
             shimmerLinear.setVisibility(View.GONE);
             rvapps.setVisibility(View.GONE);
         }
-//        API.moreAppsList().getAppsDetails().enqueue(new retrofit2.Callback<MoreApps>() {
-//            @Override
-//            public void onResponse(@NonNull Call<MoreApps> call, @NonNull Response<MoreApps> response) {
 
+        view.addView(moreView);
 
-//                    ConstantAds.category.clear();
-//                    for (int i = 0; i < moreApps.getAppsDetailsList().size(); i++) {
-//                        if (!checkCategory(ConstantAds.category, moreApps.getAppsDetailsList().get(i).getCategory())) {
-//                            ConstantAds.category.add(moreApps.getAppsDetailsList().get(i).getCategory());
-//                        }
-//                    }
-//                    ArrayList<AppsDetails> arrayList = new ArrayList();
-//                    ConstantAds.arraylist.clear();
-//                    for (int i = 0; i < ConstantAds.category.size(); i++) {
-//                        ConstantAds.arraylist.add(arrayList);
-//                    }
-
-//                    for (int j = 0; j < moreApps.getAppsDetailsList().size(); j++) {
-//
-//                        for (int i = 0; i < ConstantAds.category.size(); i++) {
-//                            if (ConstantAds.category.get(i).equals(moreApps.getAppsDetailsList().get(j).getCategory())) {
-//                                ConstantAds.arraylist.get(i).add(new AppsDetails(moreApps.getAppsDetailsList().get(j).getId(),
-//                                        moreApps.getAppsDetailsList().get(j).getAppIcon(),
-//                                        moreApps.getAppsDetailsList().get(j).getAppName(),
-//                                        moreApps.getAppsDetailsList().get(j).getAppLink(),
-//                                        moreApps.getAppsDetailsList().get(j).getShowAds(),
-//                                        moreApps.getAppsDetailsList().get(j).getCategory(),
-//                                        moreApps.getAppsDetailsList().get(j).getOpenIn(),
-//                                        moreApps.getAppsDetailsList().get(j).getOnOff()));
-//                            }
-//                        }
-//                    }
-//                }
-//
-//
-//            @Override
-//            public void onFailure(Call<MoreApps> call, Throwable t) {
-//
-//            }
-//        });
     }
-
-
-
-
-
-
-    public boolean checkCategory(ArrayList<String> category, String str) {
-        for (int i = 0; i < category.size(); i++) {
-            if (str.equals(category.get(i))) {
-                return true;
-            } else if (i == category.size()) {
-                return false;
-            }
-        }
-        return false;
-    }
-
 }

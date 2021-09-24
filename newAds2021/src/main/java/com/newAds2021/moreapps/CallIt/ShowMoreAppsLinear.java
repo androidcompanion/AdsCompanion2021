@@ -2,6 +2,7 @@ package com.newAds2021.moreapps.CallIt;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +46,7 @@ public class ShowMoreAppsLinear {
         this.context = context;
         this.theme = theme;
         this.view = view;
+        this.view.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
         moreView = (LinearLayout) inflater.inflate(R.layout.layout_more_apps, view, false);
         showMore(view);
@@ -129,70 +132,37 @@ public class ShowMoreAppsLinear {
         shimmerGrid = moreView.findViewById(R.id.shimmerGrid);
         shimmerLinear = moreView.findViewById(R.id.shimmerLinear);
 
-        shimmerGrid.setVisibility(View.VISIBLE);
-        shimmerLinear.setVisibility(View.GONE);
+        shimmerGrid.setVisibility(View.GONE);
+        shimmerLinear.setVisibility(View.VISIBLE);
         rvapps.setVisibility(View.GONE);
-        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
 
+        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
         if (adsPrefernce.isInHouseAdLoaded()){
-            shimmerGrid.setVisibility(View.GONE);
-            shimmerLinear.setVisibility(View.GONE);
-            rvapps.setVisibility(View.VISIBLE);
+
             appsDetailsArrayList = new ArrayList<>();
             appsDetailsArrayList = adsPrefernce.getMoreApps();
-            MoreappsAdapter adapter = new MoreappsAdapter(context, appsDetailsArrayList, "linear", theme, getAppNameTextColor(), getInstallButtonBackground(), getInstallTextColor(), getAdBackground(), getItemBackground());
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-            rvapps.setLayoutManager(layoutManager);
-            rvapps.setItemAnimator(new DefaultItemAnimator());
-            rvapps.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shimmerGrid.setVisibility(View.GONE);
+                    shimmerLinear.setVisibility(View.GONE);
+                    rvapps.setVisibility(View.VISIBLE);
+                    MoreappsAdapter adapter = new MoreappsAdapter(context, appsDetailsArrayList, "linear", theme, getAppNameTextColor(), getInstallButtonBackground(), getInstallTextColor(), getAdBackground(), getItemBackground());
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                    rvapps.setLayoutManager(layoutManager);
+                    rvapps.setItemAnimator(new DefaultItemAnimator());
+                    rvapps.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            },1000);
+
+
 
         }else {
             shimmerGrid.setVisibility(View.VISIBLE);
             shimmerLinear.setVisibility(View.GONE);
             rvapps.setVisibility(View.GONE);
         }
-//        API.moreAppsList().getAppsDetails().enqueue(new retrofit2.Callback<MoreApps>() {
-//            @Override
-//            public void onResponse(@NonNull Call<MoreApps> call, @NonNull Response<MoreApps> response) {
-//
-//
-////                    ConstantAds.category.clear();
-////                    for (int i = 0; i < moreApps.getAppsDetailsList().size(); i++) {
-////                        if (!checkCategory(ConstantAds.category, moreApps.getAppsDetailsList().get(i).getCategory())) {
-////                            ConstantAds.category.add(moreApps.getAppsDetailsList().get(i).getCategory());
-////                        }
-////                    }
-////
-////                    ConstantAds.arraylist.clear();
-////                    for (int i = 0; i < ConstantAds.category.size(); i++) {
-////                        ArrayList<AppsDetails> arrayList = new ArrayList();
-////                        ConstantAds.arraylist.add(arrayList);
-////                    }
-////
-////                    for (int j = 0; j < moreApps.getAppsDetailsList().size(); j++) {
-////
-////                        for (int i = 0; i < ConstantAds.category.size(); i++) {
-////                            if (ConstantAds.category.get(i).equals(moreApps.getAppsDetailsList().get(j).getCategory())) {
-////                                ConstantAds.arraylist.get(i).add(new AppsDetails(moreApps.getAppsDetailsList().get(j).getId(),
-////                                        moreApps.getAppsDetailsList().get(j).getAppIcon(),
-////                                        moreApps.getAppsDetailsList().get(j).getAppName(),
-////                                        moreApps.getAppsDetailsList().get(j).getAppLink(),
-////                                        moreApps.getAppsDetailsList().get(j).getShowAds(),
-////                                        moreApps.getAppsDetailsList().get(j).getCategory(),
-////                                        moreApps.getAppsDetailsList().get(j).getOpenIn(),
-////                                        moreApps.getAppsDetailsList().get(j).getOnOff()));
-////                            }
-////                        }
-////                    }
-//                }
-//
-//
-//            @Override
-//            public void onFailure(Call<MoreApps> call, Throwable t) {
-//
-//            }
-//        });
     }
 
     public boolean checkCategory(ArrayList<String> category, String str) {

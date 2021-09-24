@@ -36,11 +36,11 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
     private List<AppsDetails> appsDetailsList;
     String type = "";
     String theme = "";
-    int appnameTextColor = 0;
-    Drawable installButtonBackground = null;
-    int installButtonTextColor = 0;
-    Drawable adBackground = null;
-    Drawable itemBackground = null;
+     int appnameTextColor = 0;
+     Drawable installButtonBackground = null;
+     int installButtonTextColor = 0;
+     Drawable adBackground = null;
+     Drawable itemBackground = null;
 
 
     public MoreappsAdapter(Context context, List<AppsDetails> appsDetailsList, String type, String theme, int appnameTextColor, Drawable installButtonBackground,
@@ -53,7 +53,7 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
         this.installButtonBackground = installButtonBackground;
         this.installButtonTextColor = installButtonTextColor;
         this.itemBackground = itemBackground;
-        this.adBackground = adIcon;
+        adBackground = adIcon;
     }
 
     @NonNull
@@ -64,8 +64,6 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_moreapps_main, parent, false);
         } else if (type.equals("linear")) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_moreapps_main2, parent, false);
-        } else if (type.equals("category")) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_moreapps, parent, false);
         }
         return new Viewholder(view);
     }
@@ -122,8 +120,8 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
                 }
             }
 
-            holder.tv_install.setText(appsDetailsList.get(position).getButton_text());
 
+            holder.tv_install.setText(appsDetailsList.get(position).getButton_text());
             holder.tvname.setText(appsDetailsList.get(position).getAppName());
             holder.tvname.setSelected(true);
             Glide.with(context).load(appsDetailsList.get(position).getAppIcon()).placeholder(R.drawable.bg_btn_moreapps).into(holder.appimage);
@@ -144,139 +142,20 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
                     }
                 }
             });
-        } else if (type.equals("category")) {
-            if (theme.equals("light")) {
-                if (installButtonTextColor != 0) {
-                    holder.tv_catName.setTextColor(installButtonTextColor);
-                } else {
-                    holder.tv_catName.setTextColor(context.getResources().getColor(R.color.black));
-                }
-                holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_light));
-            } else {
-                if (installButtonTextColor != 0) {
-                    holder.tv_catName.setTextColor(installButtonTextColor);
-                } else {
-                    holder.tv_catName.setTextColor(context.getResources().getColor(R.color.white));
-                }
-                holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_dark));
-            }
-            if (installButtonBackground != null) {
-                holder.tv_catName.setBackground(installButtonBackground);
-            }
-//            holder.tv_catName.setText(ConstantAds.category.get(position));
-//            holder.tv_catName.setSelected(true);
         }
+
     }
 
-    //    @Override
-//    public void onBindViewHolder(@NonNull @NotNull MoreappsAdapter.Viewholder holder, int position) {
-//
-//        if (type.equals("grid") || type.equals("linear")) {
-//
-//            if (theme.equals("light")) {
-//                if (appnameTextColor != 0) {
-//                    holder.tvname.setTextColor(appnameTextColor);
-//                } else {
-//                    holder.tvname.setTextColor(context.getResources().getColor(R.color.black));
-//                }
-//                if (installButtonTextColor != 0) {
-//                    holder.tv_install.setTextColor(installButtonTextColor);
-//                } else {
-//                    holder.tv_install.setTextColor(context.getResources().getColor(R.color.black));
-//                }
-//                if (installButtonBackground != null) {
-//                    holder.tv_install.setBackground(installButtonBackground);
-//                }
-//                if (adBackground != null) {
-//                    holder.tv_ad_moreapps.setBackground(adBackground);
-//                }
-//                if (itemBackground != null) {
-//                    holder.fl_color.setBackground(itemBackground);
-//                } else {
-//                    holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_light));
-//                }
-//            } else {
-//                if (appnameTextColor != 0) {
-//                    holder.tvname.setTextColor(appnameTextColor);
-//                } else {
-//                    holder.tvname.setTextColor(context.getResources().getColor(R.color.white));
-//                }
-//                if (installButtonTextColor != 0) {
-//                    holder.tv_install.setTextColor(installButtonTextColor);
-//                } else {
-//                    holder.tv_install.setTextColor(context.getResources().getColor(R.color.white));
-//                }
-//                if (installButtonBackground != null) {
-//                    holder.tv_install.setBackground(installButtonBackground);
-//                }
-//                if (adBackground != null) {
-//                    holder.tv_ad_moreapps.setBackground(adBackground);
-//                }
-//
-//                if (itemBackground != null) {
-//                    holder.fl_color.setBackground(itemBackground);
-//                } else {
-//                    holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_dark));
-//                }
-//            }
-//
-//            holder.tv_install.setText(appsDetailsList.get(position).getButton_text());
-//
-//            holder.tvname.setText(appsDetailsList.get(position).getAppName());
-//            holder.tvname.setSelected(true);
-//            Glide.with(context).load(appsDetailsList.get(position).getAppIcon()).placeholder(R.drawable.bg_btn_moreapps).into(holder.appimage);
-//
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    try {
-//                        Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
-//                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-//                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-//                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-//                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//                    } catch (ActivityNotFoundException e) {
-//                        context.startActivity(new Intent(Intent.ACTION_VIEW,
-//                                Uri.parse(appsDetailsList.get(position).getAppLink())));
-//                    }
-//                }
-//            });
-//        } else if (type.equals("category")) {
-//            if (theme.equals("light")) {
-//                if (installButtonTextColor != 0) {
-//                    holder.tv_catName.setTextColor(installButtonTextColor);
-//                } else {
-//                    holder.tv_catName.setTextColor(context.getResources().getColor(R.color.black));
-//                }
-//                holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_light));
-//            } else {
-//                if (installButtonTextColor != 0) {
-//                    holder.tv_catName.setTextColor(installButtonTextColor);
-//                } else {
-//                    holder.tv_catName.setTextColor(context.getResources().getColor(R.color.white));
-//                }
-//                holder.fl_color.setBackground(context.getResources().getDrawable(R.drawable.bg_moreapps_dark));
-//            }
-//            if (installButtonBackground != null) {
-//                holder.tv_catName.setBackground(installButtonBackground);
-//            }
-////            holder.tv_catName.setText(ConstantAds.category.get(position));
-////            holder.tv_catName.setSelected(true);
-//        }
-//
-//
-//    }
 
     @Override
     public int getItemCount() {
 
-        if (type.equals("grid")) {
-            return appsDetailsList.size();
-        } else if (type.equals("category")) {
-//            return ConstantAds.category.size();
-            return 1;
-        }
+//        if (type.equals("grid") || type.equals("linear")) {
+//            return appsDetailsList.size();
+//        } else if (type.equals("category")) {
+////            return ConstantAds.category.size();
+//            return 1;
+//        }
         return appsDetailsList.size();
     }
 
