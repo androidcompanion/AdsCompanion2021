@@ -132,15 +132,15 @@ public class MoreappsAdapter extends RecyclerView.Adapter<MoreappsAdapter.Viewho
                 @Override
                 public void onClick(View v) {
 
+                    Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+                    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     try {
-                        Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
-                        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                    } catch (ActivityNotFoundException e) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(appsDetailsList.get(position).getAppLink())));
+                    } catch (ActivityNotFoundException e) {
                     }
                 }
             });

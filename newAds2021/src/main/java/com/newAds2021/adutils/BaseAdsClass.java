@@ -193,7 +193,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             @Override
             public void onResponse(@NonNull Call<IHAdsData> call, @NonNull Response<IHAdsData> response) {
                 IHAdsData ihAdsData = response.body();
-
                 try {
                     if (ihAdsData.getIhAdsDetail() != null) {
                         ihAdsDetails = ihAdsData.getIhAdsDetail();
