@@ -592,45 +592,6 @@ public class AdsPrefernce {
         return output;
     }
 
-
-
-
-
-
-
-
-    // inhouse interstitial ads
-
-//    public void setInterstitialLoaded(boolean isLoaded) {
-//        editor.putBoolean("isInterAdLoaded", isLoaded);
-//        editor.apply();
-//    }
-
-//    public void setInterAdDetails(ArrayList<InterDetail> arrayList) {
-//        Gson gson = new Gson();
-//        String json = gson.toJson(arrayList);
-//        editor.remove("interAdList");
-//        editor.apply();
-//        editor.putString("interAdList", json);
-//        setInterstitialLoaded(true);
-//        editor.apply();
-//    }
-
-//    public ArrayList<InterDetail> getInterAds() {
-//        Gson gson = new Gson();
-//        String json = adsPreference.getString("interAdList", "");
-//        Type type = new TypeToken<ArrayList<InterDetail>>() {
-//        }.getType();
-//        ArrayList<InterDetail> interDetails = gson.fromJson(json, type);
-//        return interDetails;
-//    }
-
-//    public Boolean isInterstitialAdLoaded() {
-//        return adsPreference.getBoolean("isInterAdLoaded", false);
-//    }
-
-    // inhouse banner ads
-
     public void setInHouseLoaded(boolean isLoaded) {
         editor.putBoolean("isInHouseAdLoaded", isLoaded);
         editor.apply();
@@ -655,39 +616,33 @@ public class AdsPrefernce {
         return ihAdsDetails;
     }
 
+    public void setMoreAppsDetails(ArrayList<AppsDetails> arrayList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(arrayList);
+        editor.remove("moreAppList");
+        editor.apply();
+        editor.putString("moreAppList", json);
+        editor.apply();
+    }
+
+    public void clearMoreAppsList(){
+        editor.remove("moreAppList");
+        editor.apply();
+    }
+
+    public ArrayList<AppsDetails> getMoreApps() {
+        Gson gson = new Gson();
+        String json = adsPreference.getString("moreAppList", "");
+        Type type = new TypeToken<ArrayList<AppsDetails>>() {
+        }.getType();
+        ArrayList<AppsDetails> ihAdsDetails = gson.fromJson(json, type);
+        return ihAdsDetails;
+    }
+
     public Boolean isInHouseAdLoaded() {
         return adsPreference.getBoolean("isInHouseAdLoaded", false);
     }
 
-    // inhouse native ads
-
-//    public void setNativeLoaded(boolean isLoaded) {
-//        editor.putBoolean("isNativeAdLoaded", isLoaded);
-//        editor.apply();
-//    }
-//
-//    public void setNativeAdDetails(ArrayList<NativeDetail> arrayList) {
-//        Gson gson = new Gson();
-//        String json = gson.toJson(arrayList);
-//        editor.remove("nativeAdList");
-//        editor.apply();
-//        editor.putString("nativeAdList", json);
-//        setNativeLoaded(true);
-//        editor.apply();
-//    }
-//
-//    public ArrayList<NativeDetail> getNativeAds() {
-//        Gson gson = new Gson();
-//        String json = adsPreference.getString("nativeAdList", "");
-//        Type type = new TypeToken<ArrayList<NativeDetail>>() {
-//        }.getType();
-//        ArrayList<NativeDetail> nativeDetails = gson.fromJson(json, type);
-//        return nativeDetails;
-//    }
-//
-//    public Boolean isNativeAdLoaded() {
-//        return adsPreference.getBoolean("isNativeAdLoaded", false);
-//    }
 }
 
 

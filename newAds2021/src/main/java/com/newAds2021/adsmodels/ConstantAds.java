@@ -5,6 +5,12 @@ import android.content.Context;
 
 public class ConstantAds {
 
+    //moreapps
+//    public static ArrayList<String> category=new ArrayList<>();
+//    public static ArrayList<ArrayList<AppsDetails>> arraylist=new ArrayList<>();
+    public static Boolean isLightTheme = true;
+
+
     public static ProgressDialog pDialog = null;
     public static int adCountDefault = 1;
     public static int AD_DELAY = 1500;

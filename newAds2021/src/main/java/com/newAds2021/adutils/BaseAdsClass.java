@@ -58,6 +58,7 @@ import com.newAds2021.adsmodels.API;
 import com.newAds2021.adsmodels.AdsDetails;
 import com.newAds2021.adsmodels.AdsPrefernce;
 import com.newAds2021.adsmodels.AdsData;
+import com.newAds2021.adsmodels.AppsDetails;
 import com.newAds2021.adsmodels.IHAPI;
 import com.newAds2021.adsmodels.IHAdsData;
 import com.newAds2021.adsmodels.IhAdsDetail;
@@ -86,6 +87,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static boolean isFirstIHNative = true;
     ArrayList<IhAdsDetail> ihAdsDetails;
     static ArrayList<IhAdsDetail> finalIHAds;
+    static ArrayList<AppsDetails> moreAppsArrayList;
 
 
     Dialog serviceDialog;
@@ -184,6 +186,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void getInHouseAds() {
+        moreAppsArrayList = new ArrayList<>();
         finalIHAds = new ArrayList<>();
         ihAdsDetails = new ArrayList<>();
         IHAPI.apiInterface().getIHAds().enqueue(new retrofit2.Callback<IHAdsData>() {
@@ -195,6 +198,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (ihAdsData.getIhAdsDetail() != null) {
                         ihAdsDetails = ihAdsData.getIhAdsDetail();
                         if (ihAdsDetails != null && ihAdsDetails.size() > 0) {
+                            moreAppsArrayList.clear();
                             for (int i = 0; i < ihAdsDetails.size(); i++) {
                                 if (ihAdsDetails.get(i).getOpenin().equals("playstore")) {
                                     if (!isAppInstalled(getAppIdFromAppLink(ihAdsDetails.get(i).getApplink()))) {
@@ -215,6 +219,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                                 ihAdsDetails.get(i).getBigimage(),
                                                 ihAdsDetails.get(i).getDesc_title(),
                                                 ihAdsDetails.get(i).getDesc_text()));
+                                        moreAppsArrayList.add(new AppsDetails(ihAdsDetails.get(i).getIhads_id(),
+                                                ihAdsDetails.get(i).getIcon(),
+                                                ihAdsDetails.get(i).getTitle(),
+                                                ihAdsDetails.get(i).getApplink(),
+                                                ihAdsDetails.get(i).getShowad(),
+                                                "",
+                                                ihAdsDetails.get(i).getOpenin(),
+                                                ihAdsDetails.get(i).getButtontext()));
                                     }
                                 } else {
                                     finalIHAds.add(new IhAdsDetail(ihAdsDetails.get(i).getIhads_id(),
@@ -234,11 +246,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                             ihAdsDetails.get(i).getBigimage(),
                                             ihAdsDetails.get(i).getDesc_title(),
                                             ihAdsDetails.get(i).getDesc_text()));
+                                    moreAppsArrayList.add(new AppsDetails(ihAdsDetails.get(i).getIhads_id(),
+                                            ihAdsDetails.get(i).getIcon(),
+                                            ihAdsDetails.get(i).getTitle(),
+                                            ihAdsDetails.get(i).getApplink(),
+                                            ihAdsDetails.get(i).getShowad(),
+                                            "",
+                                            ihAdsDetails.get(i).getOpenin(),
+                                            ihAdsDetails.get(i).getButtontext()));
 
                                 }
                             }
                             adsPrefernce.setInHouseAdDetails(finalIHAds);
+                            adsPrefernce.setMoreAppsDetails(moreAppsArrayList);
                             isLoaded_IH = true;
+
                         }
                     }
                 } catch (Exception e) {
@@ -1727,7 +1749,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInterstitial3(Context context, Callable<Void> params) {
+    public void showInterstitial3(Context context, Callable<Void> params)   {
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
