@@ -17,6 +17,9 @@ public class AdsData {
     @SerializedName("show_loading")
     @Expose
     private Boolean showLoading;
+    @SerializedName("allow_access")
+    @Expose
+    private Boolean allowAccess;
     @SerializedName("g_app_id")
     @Expose
     private String gAppId;
@@ -733,4 +736,11 @@ public class AdsData {
         this.updateShowCancel = updateShowCancel;
     }
 
+    public Boolean getAllowAccess() {
+        return allowAccess;
+    }
+
+    public void setAllowAccess(Boolean allowAccess) {
+        this.allowAccess = allowAccess;
+    }
 }

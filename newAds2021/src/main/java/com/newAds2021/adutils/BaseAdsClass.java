@@ -66,6 +66,8 @@ import com.newAds2021.adsmodels.ConstantAds;
 import com.newAds2021.nativeadtemplate.TemplateView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -76,6 +78,7 @@ import retrofit2.Response;
 public class BaseAdsClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener{
 
     private NetworkStateReceiver networkStateReceiver;
+    public static boolean isvalidInstall = false;
 
     //inhouse
     public static boolean  isLoaded_ADS, isLoaded_IH, isServiceDialogShown = false;
@@ -107,7 +110,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-
+        isvalidInstall = verifyInstallerId(this);
 
         withDelay(500, new Callable<Void>() {
             @Override
@@ -121,6 +124,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 return null;
             }
         });
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -141,7 +145,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsData ads = adsDetailsArrayList.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
-                            adsPrefernce.setAdsDefaults(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
+                            adsPrefernce.setAdsDefaults(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
                                     ads.getgRewardinter1(), ads.getgRewardinter2(), ads.getgRewardinter3(), ads.getShowGbanner1(), ads.getShowGbanner2(),
@@ -275,6 +279,24 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         });
     }
+    boolean verifyInstallerId(Context context) {
+        List<String> validInstallers = new ArrayList<>(Arrays.asList("com.android.vending", "com.google.android.feedback"));
+        final String installer = context.getPackageManager().getInstallerPackageName(context.getPackageName());
+        return installer != null && validInstallers.contains(installer);
+    }
+
+    public void validateInstall(Callable<Void> callable) {
+        if (!adsPrefernce.allowAccess()) {
+            if (!isvalidInstall) {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     int getCurrentInterAd(int totalAds) {
         Log.e("totalInter", String.valueOf(totalAds));
@@ -1196,7 +1218,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void AppService(String versionName) {
-        serviceDialog(versionName);
+
+        if (adsPrefernce.allowAccess()) {
+            if (isConnected(this) && !isServiceDialogShown) {
+                serviceDialog(versionName);
+            }
+        } else {
+            if (isvalidInstall) {
+                if (isConnected(this) && !isServiceDialogShown) {
+                    serviceDialog(versionName);
+                }
+            }
+        }
     }
 
     public void AppAdDialog() {
@@ -1557,6 +1590,110 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
         }
+    }
+
+    public void showSplashInterstitial1(Context context, Callable<Void> params) {
+        if (adsPrefernce.allowAccess()){
+            if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
+                if (mInterstitialAd1 != null) {
+                    if (adsPrefernce.showloading()) {
+                        withDelay(ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                            @Override
+                            public Void call() throws Exception {
+                                mInterstitialAd1.show((Activity) context);
+                                mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+                                        loadInterstitial1();
+                                        try {
+                                            params.call();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                        mInterstitialAd1 = null;
+                                        try {
+                                            params.call();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                        mInterstitialAd1 = null;
+                                    }
+                                });
+                                return null;
+                            }
+                        });
+                    } else {
+                        mInterstitialAd1.show((Activity) context);
+                        mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                loadInterstitial1();
+                                try {
+                                    params.call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                mInterstitialAd1 = null;
+                                try {
+                                    params.call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                mInterstitialAd1 = null;
+                            }
+                        });
+                    }
+
+                } else {
+                    showInhouseInterAd(new InhouseInterstitialListener() {
+                        @Override
+                        public void onAdShown() {
+
+                        }
+
+                        @Override
+                        public void onAdDismissed() {
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            } else {
+                try {
+                    params.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            try {
+                params.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        currentAD++;
+
+
     }
 
     public void showInterstitial1(Context context, Callable<Void> params) {

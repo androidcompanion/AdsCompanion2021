@@ -24,7 +24,7 @@ public class AdsPrefernce {
 
     }
 
-    public void setAdsDefaults(Boolean show_ads, Integer ads_count, Boolean show_loading,
+    public void setAdsDefaults(Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access,
 
                                String g_banner1, String g_banner2, String g_banner3,
                                String g_inter1, String g_inter2, String g_inter3,
@@ -57,6 +57,7 @@ public class AdsPrefernce {
             editor.putBoolean("show_ads", show_ads);
             editor.putInt("ads_count", ads_count);
             editor.putBoolean("show_loading", show_loading);
+            editor.putBoolean("allow_access", allow_access);
 
             editor.putString("g_banner1", g_banner1);
             editor.putString("g_banner2", g_banner2);
@@ -152,6 +153,13 @@ public class AdsPrefernce {
         boolean output = false;
         if (adsPreference != null) {
             output = adsPreference.getBoolean("show_loading", true);
+        }
+        return output;
+    }
+    public boolean allowAccess() {
+        boolean output = false;
+        if (adsPreference != null) {
+            output = adsPreference.getBoolean("allow_access", true);
         }
         return output;
     }
