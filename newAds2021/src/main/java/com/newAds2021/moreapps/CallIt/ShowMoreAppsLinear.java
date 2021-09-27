@@ -51,10 +51,8 @@ public class ShowMoreAppsLinear {
         this.view.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
         moreView = (LinearLayout) inflater.inflate(R.layout.layout_more_apps, view, false);
-        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
-        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()){
-            showMore(view);
-        }
+             showMore(view);
+
         if (theme.equals("light")) {
             ConstantAds.isLightTheme = true;
         } else {
@@ -137,11 +135,14 @@ public class ShowMoreAppsLinear {
         shimmerGrid = moreView.findViewById(R.id.shimmerGrid);
         shimmerLinear = moreView.findViewById(R.id.shimmerLinear);
 
-        shimmerGrid.setVisibility(View.GONE);
-        shimmerLinear.setVisibility(View.VISIBLE);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
+        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()) {
+
+            shimmerGrid.setVisibility(View.GONE);
+            shimmerLinear.setVisibility(View.VISIBLE);
+        }
         rvapps.setVisibility(View.GONE);
 
-        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
         if (adsPrefernce.isInHouseAdLoaded()){
 
             appsDetailsArrayList = new ArrayList<>();

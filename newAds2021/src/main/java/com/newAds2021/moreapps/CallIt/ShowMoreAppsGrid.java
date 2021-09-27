@@ -58,10 +58,8 @@ public class ShowMoreAppsGrid {
         } else {
             ConstantAds.isLightTheme = false;
         }
-        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
-        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()){
             showMore(view);
-        }
+
 
     }
 
@@ -130,11 +128,13 @@ public class ShowMoreAppsGrid {
         shimmerGrid = moreView.findViewById(R.id.shimmerGrid);
         shimmerLinear = moreView.findViewById(R.id.shimmerLinear);
 
-        shimmerGrid.setVisibility(View.VISIBLE);
-        shimmerLinear.setVisibility(View.GONE);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
+        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()) {
+            shimmerGrid.setVisibility(View.VISIBLE);
+            shimmerLinear.setVisibility(View.GONE);
+          }
         rvapps.setVisibility(View.GONE);
 
-        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
         if (adsPrefernce.isInHouseAdLoaded()){
             appsDetailsArrayList = adsPrefernce.getMoreApps();
             //meet
