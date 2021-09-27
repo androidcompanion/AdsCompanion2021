@@ -165,7 +165,7 @@ public class ShowMoreAppsLinear {
 
 
         }else {
-            shimmerGrid.setVisibility(View.VISIBLE);
+            shimmerGrid.setVisibility(View.GONE);
             shimmerLinear.setVisibility(View.GONE);
             rvapps.setVisibility(View.GONE);
         }

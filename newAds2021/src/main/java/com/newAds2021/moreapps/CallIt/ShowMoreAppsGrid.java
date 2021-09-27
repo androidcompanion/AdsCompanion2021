@@ -153,7 +153,7 @@ public class ShowMoreAppsGrid {
                 }
             },1000);
         }else {
-            shimmerGrid.setVisibility(View.VISIBLE);
+            shimmerGrid.setVisibility(View.GONE);
             shimmerLinear.setVisibility(View.GONE);
             rvapps.setVisibility(View.GONE);
         }
