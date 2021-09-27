@@ -136,7 +136,7 @@ public class AdsPrefernce {
     public boolean showAds() {
         boolean output = false;
         if (adsPreference != null) {
-            output = adsPreference.getBoolean("showAds", true);
+            output = adsPreference.getBoolean("show_ads", true);
         }
         return output;
     }

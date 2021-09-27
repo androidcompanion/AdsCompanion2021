@@ -2278,132 +2278,141 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showNativeAd1() {
-        AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        hideInhouseNative();
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.VISIBLE);
-                        template.setNativeAd(nativeAd);
-                    }
-                }).withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.GONE);
-                        showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                            @Override
-                            public void onAdLoaded() {
-                            }
+        if(isConnected(this) && adsPrefernce.showNative1()){
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
 
-                            @Override
-                            public void onAdShowFailed() {
+                                @Override
+                                public void onAdShowFailed() {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                    }
-                })
-                .build();
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
 
-        adLoader.loadAd(new AdRequest.Builder().build());
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+
     }
 
 
     public void showNativeAd2() {
-        AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        hideInhouseNative();
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.VISIBLE);
-                        template.setNativeAd(nativeAd);
-                    }
-                }).withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.GONE);
-                        showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                            @Override
-                            public void onAdLoaded() {
-                            }
+        if(isConnected(this) && adsPrefernce.showNative2()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
 
-                            @Override
-                            public void onAdShowFailed() {
+                                @Override
+                                public void onAdShowFailed() {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                    }
-                })
-                .build();
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
 
-        adLoader.loadAd(new AdRequest.Builder().build());
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     public void showNativeAd3() {
-        AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        hideInhouseNative();
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.VISIBLE);
-                        template.setNativeAd(nativeAd);
-                    }
-                }).withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setVisibility(View.GONE);
-                        showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                            @Override
-                            public void onAdLoaded() {
-                            }
+        if(isConnected(this) && adsPrefernce.showNative3()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
 
-                            @Override
-                            public void onAdShowFailed() {
+                                @Override
+                                public void onAdShowFailed() {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                    }
-                })
-                .build();
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
 
-        adLoader.loadAd(new AdRequest.Builder().build());
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     public void showNativeAdDialog(Dialog dialog) {
-        AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd nativeAd) {
-                        TemplateView template = dialog.findViewById(R.id.my_template);
-                        template.setVisibility(View.VISIBLE);
-                        template.setNativeAd(nativeAd);
-                    }
-                })
-                .build();
-        adLoader.loadAd(new AdRequest.Builder().build());
+        if(isConnected(this) && adsPrefernce.showNative3()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            TemplateView template = dialog.findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    })
+                    .build();
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     public void loadAppOpen1() {

@@ -20,3 +20,12 @@
 --> Native ad for Dialog
         showNativeAdDialog(Dialog dialog)
 --> Validate Install
+        validateInstall(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                toast("invalid");
+
+                return null;
+            }
+        });
+
