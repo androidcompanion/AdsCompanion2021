@@ -75,13 +75,13 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 //"AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec"
-public class BaseAdsClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener{
+public class BaseAdsClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
 
     //inhouse
-    public static boolean  isLoaded_ADS, isLoaded_IH, isServiceDialogShown = false;
+    public static boolean isLoaded_ADS, isLoaded_IH, isServiceDialogShown = false;
     public static int currentInter = 0;
     public static int currentBanner = 0;
     public static int currentNative = 0;
@@ -203,7 +203,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         if (ihAdsDetails != null && ihAdsDetails.size() > 0) {
                             moreAppsArrayList.clear();
                             for (int i = 0; i < ihAdsDetails.size(); i++) {
-                                if (ihAdsDetails.get(i).getShowad()){
+                                if (ihAdsDetails.get(i).getShowad()) {
                                     if (ihAdsDetails.get(i).getOpenin().equals("playstore")) {
                                         if (!isAppInstalled(getAppIdFromAppLink(ihAdsDetails.get(i).getApplink()))) {
                                             finalIHAds.add(new IhAdsDetail(ihAdsDetails.get(i).getIhads_id(),
@@ -279,6 +279,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         });
     }
+
     boolean verifyInstallerId(Context context) {
         List<String> validInstallers = new ArrayList<>(Arrays.asList("com.android.vending", "com.google.android.feedback"));
         final String installer = context.getPackageManager().getInstallerPackageName(context.getPackageName());
@@ -354,128 +355,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     // get Interstitial Data
                     ArrayList<IhAdsDetail> interAdDetails = adsPrefernce.getInHouseAds();
 
-                    // ad to show from position
-                    int current = getCurrentInterAd(finalIHAds.size());
-
-
-                    final Dialog interDialog = new Dialog(this);
-                    interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    interDialog.setContentView(R.layout.ad_interstitial);
-                    interDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-                    interDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                    Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
-                    interDialog.setCancelable(false);
-
-                    ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
-                    LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
-                    ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
-                    RatingBar iv_inter_star_rating = interDialog.findViewById(R.id.iv_inter_star_rating);
-                    TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
-                    TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
-                    TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
-
-                    ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
-
-                    TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
-                    TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
-
-                    ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
-
-                    TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
-
-                    // set Interstitial Data
-                    IhAdsDetail interAd = interAdDetails.get(current);
-
-                    // icon
-                    Glide.with(this).load(interAd.getIcon()).into(iv_ad_icon);
-                    // banner
-                    Glide.with(this).load(interAd.getBigimage()).into(iv_inter_main_banner);
-                    // title
-                    tv_inter_ad_title.setText(interAd.getTitle());
-                    // subtitle
-                    tv_inter_ad_subtitle.setText(interAd.getSubtitle());
-                    // install button Text
-                    tv_install_btn_inter.setText(interAd.getButtontext());
-
-                    // show rating or not and set rating image
-                    if (interAd.getShowrating()) {
-                        iv_inter_star_rating.setVisibility(View.VISIBLE);
-                        iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
-                    } else {
-                        iv_inter_star_rating.setVisibility(View.GONE);
-                    }
-
-                    // show reviews or not and set review count
-                    if (interAd.getShowreview()) {
-                        tv_inter_review_count.setVisibility(View.VISIBLE);
-                        tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
-                    } else {
-                        tv_inter_review_count.setVisibility(View.GONE);
-                    }
-
-                    // description title
-                    tv_inter_ad_desc.setText(interAd.getDesc_title());
-
-                    // description text
-                    tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
-
-
-                    withDelay(1000, new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            lay_close_ad.setVisibility(View.VISIBLE);
-                            return null;
-                        }
-                    });
-
-                    lay_close_ad.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            interDialog.dismiss();
-                            inhouseInterstitialListener.onAdDismissed();
-                        }
-                    });
-
-                    iv_inter_info.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showAdsPrivacyDialog();
-                        }
-                    });
-
-                    tv_install_btn_inter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // open link
-                            if (interAd.getOpenin().equals("playstore")) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
-                            } else {
-                                Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-
-                    if (interAd.getOpenin().equals("playstore")) {
-                        if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
-                            interDialog.show();
-                            inhouseInterstitialListener.onAdShown();
-                        } else {
-                            inhouseInterstitialListener.onAdDismissed();
-                        }
-                    } else {
-                        interDialog.show();
-                        inhouseInterstitialListener.onAdShown();
-                    }
-
-                } else {
-                    if (adsPrefernce.isInHouseAdLoaded()) {
-                        // get Interstitial Data
-                        ArrayList<IhAdsDetail> savedInterAdDetails = adsPrefernce.getInHouseAds();
-
+                    if (finalIHAds.size() != 0) {
                         // ad to show from position
-                        int current = getCurrentInterAd(savedInterAdDetails.size());
+                        int current = getCurrentInterAd(finalIHAds.size());
 
 
                         final Dialog interDialog = new Dialog(this);
@@ -504,7 +386,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
 
                         // set Interstitial Data
-                        IhAdsDetail interAd = savedInterAdDetails.get(current);
+                        IhAdsDetail interAd = interAdDetails.get(current);
 
                         // icon
                         Glide.with(this).load(interAd.getIcon()).into(iv_ad_icon);
@@ -577,7 +459,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             }
                         });
 
-
                         if (interAd.getOpenin().equals("playstore")) {
                             if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
                                 interDialog.show();
@@ -589,6 +470,137 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             interDialog.show();
                             inhouseInterstitialListener.onAdShown();
                         }
+
+                    } else {
+                        inhouseInterstitialListener.onAdDismissed();
+                    }
+
+                } else {
+                    if (adsPrefernce.isInHouseAdLoaded()) {
+                        // get Interstitial Data
+                        ArrayList<IhAdsDetail> savedInterAdDetails = adsPrefernce.getInHouseAds();
+
+
+                        if (savedInterAdDetails.size() != 0) {
+                            // ad to show from position
+                            int current = getCurrentInterAd(savedInterAdDetails.size());
+
+
+                            final Dialog interDialog = new Dialog(this);
+                            interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            interDialog.setContentView(R.layout.ad_interstitial);
+                            interDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+                            interDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                            Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+                            interDialog.setCancelable(false);
+
+                            ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
+                            LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
+                            ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
+                            RatingBar iv_inter_star_rating = interDialog.findViewById(R.id.iv_inter_star_rating);
+                            TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
+                            TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
+                            TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
+
+                            ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
+
+                            TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
+                            TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
+
+                            ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
+
+                            TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
+
+                            // set Interstitial Data
+                            IhAdsDetail interAd = savedInterAdDetails.get(current);
+
+                            // icon
+                            Glide.with(this).load(interAd.getIcon()).into(iv_ad_icon);
+                            // banner
+                            Glide.with(this).load(interAd.getBigimage()).into(iv_inter_main_banner);
+                            // title
+                            tv_inter_ad_title.setText(interAd.getTitle());
+                            // subtitle
+                            tv_inter_ad_subtitle.setText(interAd.getSubtitle());
+                            // install button Text
+                            tv_install_btn_inter.setText(interAd.getButtontext());
+
+                            // show rating or not and set rating image
+                            if (interAd.getShowrating()) {
+                                iv_inter_star_rating.setVisibility(View.VISIBLE);
+                                iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
+                            } else {
+                                iv_inter_star_rating.setVisibility(View.GONE);
+                            }
+
+                            // show reviews or not and set review count
+                            if (interAd.getShowreview()) {
+                                tv_inter_review_count.setVisibility(View.VISIBLE);
+                                tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
+                            } else {
+                                tv_inter_review_count.setVisibility(View.GONE);
+                            }
+
+                            // description title
+                            tv_inter_ad_desc.setText(interAd.getDesc_title());
+
+                            // description text
+                            tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
+
+
+                            withDelay(1000, new Callable<Void>() {
+                                @Override
+                                public Void call() throws Exception {
+                                    lay_close_ad.setVisibility(View.VISIBLE);
+                                    return null;
+                                }
+                            });
+
+                            lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    interDialog.dismiss();
+                                    inhouseInterstitialListener.onAdDismissed();
+                                }
+                            });
+
+                            iv_inter_info.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showAdsPrivacyDialog();
+                                }
+                            });
+
+                            tv_install_btn_inter.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    // open link
+                                    if (interAd.getOpenin().equals("playstore")) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
+                                    } else {
+                                        Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+
+
+                            if (interAd.getOpenin().equals("playstore")) {
+                                if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
+                                    interDialog.show();
+                                    inhouseInterstitialListener.onAdShown();
+                                } else {
+                                    inhouseInterstitialListener.onAdDismissed();
+                                }
+                            } else {
+                                interDialog.show();
+                                inhouseInterstitialListener.onAdShown();
+                            }
+                        } else {
+                            inhouseInterstitialListener.onAdDismissed();
+                        }
+
                     } else {
                         inhouseInterstitialListener.onAdDismissed();
                     }
@@ -597,121 +609,127 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 // get Interstitial Data
                 ArrayList<IhAdsDetail> savedInterAdDetails = adsPrefernce.getInHouseAds();
 
-                // ad to show from position
-                int current = getCurrentInterAd(savedInterAdDetails.size());
+
+                if (savedInterAdDetails.size() != 0) {
+                    // ad to show from position
+                    int current = getCurrentInterAd(savedInterAdDetails.size());
 
 
-                final Dialog interDialog = new Dialog(this);
-                interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                interDialog.setContentView(R.layout.ad_interstitial);
-                interDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-                interDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
-                interDialog.setCancelable(false);
+                    final Dialog interDialog = new Dialog(this);
+                    interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    interDialog.setContentView(R.layout.ad_interstitial);
+                    interDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+                    interDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                    Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+                    interDialog.setCancelable(false);
 
-                ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
-                LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
-                ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
-                RatingBar iv_inter_star_rating = interDialog.findViewById(R.id.iv_inter_star_rating);
-                TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
-                TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
-                TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
+                    ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
+                    LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
+                    ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
+                    RatingBar iv_inter_star_rating = interDialog.findViewById(R.id.iv_inter_star_rating);
+                    TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
+                    TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
+                    TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
 
-                ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
+                    ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
 
-                TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
-                TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
+                    TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
+                    TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
 
-                ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
+                    ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
 
-                TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
+                    TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
 
-                // set Interstitial Data
-                IhAdsDetail interAd = savedInterAdDetails.get(current);
+                    // set Interstitial Data
+                    IhAdsDetail interAd = savedInterAdDetails.get(current);
 
-                // icon
-                Glide.with(this).load(interAd.getIcon()).into(iv_ad_icon);
-                // banner
-                Glide.with(this).load(interAd.getBigimage()).into(iv_inter_main_banner);
-                // title
-                tv_inter_ad_title.setText(interAd.getTitle());
-                // subtitle
-                tv_inter_ad_subtitle.setText(interAd.getSubtitle());
-                // install button Text
-                tv_install_btn_inter.setText(interAd.getButtontext());
+                    // icon
+                    Glide.with(this).load(interAd.getIcon()).into(iv_ad_icon);
+                    // banner
+                    Glide.with(this).load(interAd.getBigimage()).into(iv_inter_main_banner);
+                    // title
+                    tv_inter_ad_title.setText(interAd.getTitle());
+                    // subtitle
+                    tv_inter_ad_subtitle.setText(interAd.getSubtitle());
+                    // install button Text
+                    tv_install_btn_inter.setText(interAd.getButtontext());
 
-                // show rating or not and set rating image
-                if (interAd.getShowrating()) {
-                    iv_inter_star_rating.setVisibility(View.VISIBLE);
-                    iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
-                } else {
-                    iv_inter_star_rating.setVisibility(View.GONE);
-                }
-
-                // show reviews or not and set review count
-                if (interAd.getShowreview()) {
-                    tv_inter_review_count.setVisibility(View.VISIBLE);
-                    tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
-                } else {
-                    tv_inter_review_count.setVisibility(View.GONE);
-                }
-
-                // description title
-                tv_inter_ad_desc.setText(interAd.getDesc_title());
-
-                // description text
-                tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
-
-
-                withDelay(1000, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        lay_close_ad.setVisibility(View.VISIBLE);
-                        return null;
+                    // show rating or not and set rating image
+                    if (interAd.getShowrating()) {
+                        iv_inter_star_rating.setVisibility(View.VISIBLE);
+                        iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
+                    } else {
+                        iv_inter_star_rating.setVisibility(View.GONE);
                     }
-                });
 
-                lay_close_ad.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        interDialog.dismiss();
-                        inhouseInterstitialListener.onAdDismissed();
+                    // show reviews or not and set review count
+                    if (interAd.getShowreview()) {
+                        tv_inter_review_count.setVisibility(View.VISIBLE);
+                        tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
+                    } else {
+                        tv_inter_review_count.setVisibility(View.GONE);
                     }
-                });
 
-                iv_inter_info.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAdsPrivacyDialog();
-                    }
-                });
+                    // description title
+                    tv_inter_ad_desc.setText(interAd.getDesc_title());
 
-                tv_install_btn_inter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // open link
-                        if (interAd.getOpenin().equals("playstore")) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
-                        } else {
-                            Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
-                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
+                    // description text
+                    tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
+
+
+                    withDelay(1000, new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            lay_close_ad.setVisibility(View.VISIBLE);
+                            return null;
                         }
-                    }
-                });
+                    });
+
+                    lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            interDialog.dismiss();
+                            inhouseInterstitialListener.onAdDismissed();
+                        }
+                    });
+
+                    iv_inter_info.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showAdsPrivacyDialog();
+                        }
+                    });
+
+                    tv_install_btn_inter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // open link
+                            if (interAd.getOpenin().equals("playstore")) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
+                            } else {
+                                Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intent);
+                            }
+                        }
+                    });
 
 
-                if (interAd.getOpenin().equals("playstore")) {
-                    if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
+                    if (interAd.getOpenin().equals("playstore")) {
+                        if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
+                            interDialog.show();
+                            inhouseInterstitialListener.onAdShown();
+                        } else {
+                            inhouseInterstitialListener.onAdDismissed();
+                        }
+                    } else {
                         interDialog.show();
                         inhouseInterstitialListener.onAdShown();
-                    } else {
-                        inhouseInterstitialListener.onAdDismissed();
                     }
                 } else {
-                    interDialog.show();
-                    inhouseInterstitialListener.onAdShown();
+                    inhouseInterstitialListener.onAdDismissed();
                 }
+
             }
 
         } else {
@@ -1074,111 +1092,114 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    private void inflateNativeAdInHouse(Boolean isSmall, RelativeLayout native_ad_view, CardView cardView) {
+    private void inflateNativeAdInHouse(Boolean isSmall, CardView cardView) {
 
         // Add the Ad view into the ad container.
 //        NativeAdLayout nativeAdLayout = new NativeAdLayout(context);
         LayoutInflater inflater = LayoutInflater.from(this);
         RelativeLayout adViews = (RelativeLayout) inflater.inflate(R.layout.ad_native, cardView, false);
         cardView.removeAllViews();
-        cardView.setBackground(getResources().getDrawable(R.drawable.gnt_rounded_corners_shape));
+        if (finalIHAds.size() != 0) {
+            cardView.setBackground(getResources().getDrawable(R.drawable.gnt_rounded_corners_shape));
 
-        cardView.addView(adViews);
+            cardView.addView(adViews);
 
-        // get Interstitial Data
-        ArrayList<IhAdsDetail> nativeDetails = adsPrefernce.getInHouseAds();
+            // get Interstitial Data
+            ArrayList<IhAdsDetail> nativeDetails = adsPrefernce.getInHouseAds();
 
-        // ad to show from position
-        int current = getCurrentNativeAd(finalIHAds.size());
+            // ad to show from position
+            int current = getCurrentNativeAd(finalIHAds.size());
 
-        ImageView iv_native_info = adViews.findViewById(R.id.iv_native_info);
-        ImageView iv_ad_icon_native = adViews.findViewById(R.id.iv_ad_icon_native);
-        ImageView iv_native_main_banner = adViews.findViewById(R.id.iv_native_main_banner);
+            ImageView iv_native_info = adViews.findViewById(R.id.iv_native_info);
+            ImageView iv_ad_icon_native = adViews.findViewById(R.id.iv_ad_icon_native);
+            ImageView iv_native_main_banner = adViews.findViewById(R.id.iv_native_main_banner);
 
-        TextView tv_native_ad_title = adViews.findViewById(R.id.tv_native_ad_title);
-        TextView tv_native_ad_subtitle = adViews.findViewById(R.id.tv_native_ad_subtitle);
+            TextView tv_native_ad_title = adViews.findViewById(R.id.tv_native_ad_title);
+            TextView tv_native_ad_subtitle = adViews.findViewById(R.id.tv_native_ad_subtitle);
 
-        RatingBar native_ad_rating = adViews.findViewById(R.id.native_ad_rating);
-        TextView tv_native_review_count = adViews.findViewById(R.id.tv_native_review_count);
+            RatingBar native_ad_rating = adViews.findViewById(R.id.native_ad_rating);
+            TextView tv_native_review_count = adViews.findViewById(R.id.tv_native_review_count);
 
-        TextView btn_ad_install_native = adViews.findViewById(R.id.btn_ad_install_native);
-        TextView tv_native_extra_text = adViews.findViewById(R.id.tv_native_extra_text);
+            TextView btn_ad_install_native = adViews.findViewById(R.id.btn_ad_install_native);
+            TextView tv_native_extra_text = adViews.findViewById(R.id.tv_native_extra_text);
 
-        RelativeLayout lay_native_ad = adViews.findViewById(R.id.lay_native_ad);
+            RelativeLayout lay_native_ad = adViews.findViewById(R.id.lay_native_ad);
 
-        lay_native_ad.setVisibility(View.VISIBLE);
-
-
-        // set Interstitial Data
-        IhAdsDetail nativeAd = nativeDetails.get(current);
+            lay_native_ad.setVisibility(View.VISIBLE);
 
 
-        if (!this.isFinishing() || !this.isDestroyed()) {
-            // icon
-            Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
-            // banner
-            if (isSmall) {
-                iv_native_main_banner.setVisibility(View.GONE);
-            } else {
-                iv_native_main_banner.setVisibility(View.VISIBLE);
-                Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
-
-            }
-
-        }
-
-        // title
-        tv_native_ad_title.setText(nativeAd.getTitle());
-        // subtitle
-        tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
-        // install button Text
-        btn_ad_install_native.setText(nativeAd.getButtontext());
-
-        // show rating or not and set rating image
-        if (nativeAd.getShowrating()) {
-            native_ad_rating.setVisibility(View.VISIBLE);
-            native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
-        } else {
-            native_ad_rating.setVisibility(View.GONE);
-        }
-
-        // show reviews or not and set review count
-        if (nativeAd.getShowreview().equals("1")) {
-            tv_native_review_count.setVisibility(View.VISIBLE);
-            tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
-        } else {
-            tv_native_review_count.setVisibility(View.GONE);
-        }
-
-        // extra text
-        tv_native_extra_text.setText(nativeAd.getExtratext());
-
-        // set selected
-        tv_native_ad_title.setSelected(true);
-        tv_native_ad_subtitle.setSelected(true);
-        tv_native_extra_text.setSelected(true);
+            // set Interstitial Data
+            IhAdsDetail nativeAd = nativeDetails.get(current);
 
 
-        iv_native_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAdsPrivacyDialog();
-            }
-        });
-
-        btn_ad_install_native.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // open link
-                if (nativeAd.getOpenin().equals("playstore")) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
+            if (!this.isFinishing() || !this.isDestroyed()) {
+                // icon
+                Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
+                // banner
+                if (isSmall) {
+                    iv_native_main_banner.setVisibility(View.GONE);
                 } else {
-                    Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    iv_native_main_banner.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
+
                 }
+
             }
-        });
+
+            // title
+            tv_native_ad_title.setText(nativeAd.getTitle());
+            // subtitle
+            tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
+            // install button Text
+            btn_ad_install_native.setText(nativeAd.getButtontext());
+
+            // show rating or not and set rating image
+            if (nativeAd.getShowrating()) {
+                native_ad_rating.setVisibility(View.VISIBLE);
+                native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
+            } else {
+                native_ad_rating.setVisibility(View.GONE);
+            }
+
+            // show reviews or not and set review count
+            if (nativeAd.getShowreview().equals("1")) {
+                tv_native_review_count.setVisibility(View.VISIBLE);
+                tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
+            } else {
+                tv_native_review_count.setVisibility(View.GONE);
+            }
+
+            // extra text
+            tv_native_extra_text.setText(nativeAd.getExtratext());
+
+            // set selected
+            tv_native_ad_title.setSelected(true);
+            tv_native_ad_subtitle.setSelected(true);
+            tv_native_extra_text.setSelected(true);
+
+
+            iv_native_info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showAdsPrivacyDialog();
+                }
+            });
+
+            btn_ad_install_native.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // open link
+                    if (nativeAd.getOpenin().equals("playstore")) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
+                    } else {
+                        Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                }
+            });
+
+        }
 
     }
 
@@ -1269,40 +1290,106 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
         TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
 
-        if (!isServiceDialogShown){
+        if (!isServiceDialogShown) {
             if (adsPrefernce.isUpdate()) {
-            if (!version_name.equals(adsPrefernce.updateVersionName())) {
-                iv_ad_icon_title.setVisibility(View.GONE);
-                lay_message.setVisibility(View.GONE);
-                lay_ads.setVisibility(View.GONE);
-                lay_updateApp.setVisibility(View.VISIBLE);
-                tv_dialog_title.setText(adsPrefernce.updateDialogTitle());
+                if (!version_name.equals(adsPrefernce.updateVersionName())) {
+                    iv_ad_icon_title.setVisibility(View.GONE);
+                    lay_message.setVisibility(View.GONE);
+                    lay_ads.setVisibility(View.GONE);
+                    lay_updateApp.setVisibility(View.VISIBLE);
+                    tv_dialog_title.setText(adsPrefernce.updateDialogTitle());
 
-                tv_updatetitle.setText(adsPrefernce.updateTitle());
-                tv_versionName.setText(adsPrefernce.updateVersionName());
-                tv_updatemessage.setText(adsPrefernce.updateMessage());
+                    tv_updatetitle.setText(adsPrefernce.updateTitle());
+                    tv_versionName.setText(adsPrefernce.updateVersionName());
+                    tv_updatemessage.setText(adsPrefernce.updateMessage());
 
-                if (adsPrefernce.updateShowCancel()) {
-                    tv_canclebutton.setVisibility(View.VISIBLE);
-                } else {
-                    tv_canclebutton.setVisibility(View.GONE);
+                    if (adsPrefernce.updateShowCancel()) {
+                        tv_canclebutton.setVisibility(View.VISIBLE);
+                    } else {
+                        tv_canclebutton.setVisibility(View.GONE);
+                    }
+
+                    tv_updatebutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.updateAppUrl()));
+                            startActivity(intent);
+                        }
+                    });
+
+                    tv_canclebutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            serviceDialog.dismiss();
+                        }
+                    });
+                    this.serviceDialog.show();
+                } else if (adsPrefernce.isNotification()) {
+                    lay_ads.setVisibility(View.GONE);
+                    lay_updateApp.setVisibility(View.GONE);
+                    lay_message.setVisibility(View.VISIBLE);
+                    tv_dialog_title.setText(adsPrefernce.notDialogTitle());
+                    iv_ad_icon_title.setVisibility(View.GONE);
+                    tv_message.setText(adsPrefernce.notMessage());
+                    if (adsPrefernce.notShowCancel()) {
+                        tv_not_cancel_button.setVisibility(View.VISIBLE);
+                    } else {
+                        tv_not_cancel_button.setVisibility(View.GONE);
+                    }
+                    tv_not_cancel_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            serviceDialog.dismiss();
+                        }
+                    });
+                    this.serviceDialog.show();
+                } else if (adsPrefernce.isAds()) {
+                    iv_ad_icon_title.setVisibility(View.VISIBLE);
+                    lay_updateApp.setVisibility(View.GONE);
+                    lay_message.setVisibility(View.GONE);
+                    lay_ads.setVisibility(View.VISIBLE);
+                    tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+
+                    if (adsPrefernce.adShowCancel()) {
+                        tv_app_cancel.setVisibility(View.VISIBLE);
+                        tv_app_cancel.setText(adsPrefernce.adButtonText());
+                    } else {
+                        tv_app_cancel.setVisibility(View.GONE);
+                    }
+
+                    tv_ad_message.setText(adsPrefernce.adMessage());
+                    Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
+                    Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
+                    tv_app_name.setText(adsPrefernce.adAppName());
+                    tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
+
+                    tv_app_download.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
+                            startActivity(intent);
+                        }
+                    });
+
+                    tv_app_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            serviceDialog.dismiss();
+                        }
+                    });
+
+                    if (adsPrefernce.adAppUrl().contains("play.google.com")) {
+                        String link = adsPrefernce.adAppUrl();
+                        String[] s1 = link.split("id=");
+                        String[] s2 = s1[1].split("&");
+                        String app_id = s2[0].toString();
+                        if (!isAppInstalled(app_id)) {
+                            this.serviceDialog.show();
+                        }
+                    } else {
+                        this.serviceDialog.show();
+                    }
                 }
-
-                tv_updatebutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.updateAppUrl()));
-                        startActivity(intent);
-                    }
-                });
-
-                tv_canclebutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        serviceDialog.dismiss();
-                    }
-                });
-                this.serviceDialog.show();
             } else if (adsPrefernce.isNotification()) {
                 lay_ads.setVisibility(View.GONE);
                 lay_updateApp.setVisibility(View.GONE);
@@ -1328,10 +1415,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 lay_message.setVisibility(View.GONE);
                 lay_ads.setVisibility(View.VISIBLE);
                 tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+                tv_app_download.setText(adsPrefernce.adButtonText());
 
                 if (adsPrefernce.adShowCancel()) {
                     tv_app_cancel.setVisibility(View.VISIBLE);
-                    tv_app_cancel.setText(adsPrefernce.adButtonText());
                 } else {
                     tv_app_cancel.setVisibility(View.GONE);
                 }
@@ -1369,72 +1456,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     this.serviceDialog.show();
                 }
             }
-        } else if (adsPrefernce.isNotification()) {
-            lay_ads.setVisibility(View.GONE);
-            lay_updateApp.setVisibility(View.GONE);
-            lay_message.setVisibility(View.VISIBLE);
-            tv_dialog_title.setText(adsPrefernce.notDialogTitle());
-            iv_ad_icon_title.setVisibility(View.GONE);
-            tv_message.setText(adsPrefernce.notMessage());
-            if (adsPrefernce.notShowCancel()) {
-                tv_not_cancel_button.setVisibility(View.VISIBLE);
-            } else {
-                tv_not_cancel_button.setVisibility(View.GONE);
-            }
-            tv_not_cancel_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    serviceDialog.dismiss();
-                }
-            });
-            this.serviceDialog.show();
-        } else if (adsPrefernce.isAds()) {
-            iv_ad_icon_title.setVisibility(View.VISIBLE);
-            lay_updateApp.setVisibility(View.GONE);
-            lay_message.setVisibility(View.GONE);
-            lay_ads.setVisibility(View.VISIBLE);
-            tv_dialog_title.setText(adsPrefernce.adDialogTitle());
-            tv_app_download.setText(adsPrefernce.adButtonText());
-
-            if (adsPrefernce.adShowCancel()) {
-                tv_app_cancel.setVisibility(View.VISIBLE);
-            } else {
-                tv_app_cancel.setVisibility(View.GONE);
-            }
-
-            tv_ad_message.setText(adsPrefernce.adMessage());
-            Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
-            Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
-            tv_app_name.setText(adsPrefernce.adAppName());
-            tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
-
-            tv_app_download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
-                    startActivity(intent);
-                }
-            });
-
-            tv_app_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    serviceDialog.dismiss();
-                }
-            });
-
-            if (adsPrefernce.adAppUrl().contains("play.google.com")) {
-                String link = adsPrefernce.adAppUrl();
-                String[] s1 = link.split("id=");
-                String[] s2 = s1[1].split("&");
-                String app_id = s2[0].toString();
-                if (!isAppInstalled(app_id)) {
-                    this.serviceDialog.show();
-                }
-            } else {
-                this.serviceDialog.show();
-            }
-        }
         }
 
     }
@@ -1593,7 +1614,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showSplashInterstitial1(Context context, Callable<Void> params) {
-        if (adsPrefernce.allowAccess()){
+        if (adsPrefernce.allowAccess()) {
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
                 if (mInterstitialAd1 != null) {
                     if (adsPrefernce.showloading()) {
@@ -1684,7 +1705,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     e.printStackTrace();
                 }
             }
-        }else {
+        } else {
             try {
                 params.call();
             } catch (Exception e) {
@@ -1887,7 +1908,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInterstitial3(Context context, Callable<Void> params)   {
+    public void showInterstitial3(Context context, Callable<Void> params) {
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
@@ -1999,12 +2020,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (isConnected(this)) {
                 if (finalIHAds.size() != 0) {
                     cardView.setVisibility(View.VISIBLE);
-                    inflateNativeAdInHouse(isSmall, (RelativeLayout) findViewById(R.id.lay_native_ad), cardView);
+                    inflateNativeAdInHouse(isSmall, cardView);
                     inhouseNativeListener.onAdLoaded();
                 } else {
                     if (adsPrefernce.isInHouseAdLoaded()) {
                         cardView.setVisibility(View.VISIBLE);
-                        inflateNativeAdInHouse(isSmall, (RelativeLayout) findViewById(R.id.lay_native_ad), cardView);
+                        inflateNativeAdInHouse(isSmall, cardView);
                         inhouseNativeListener.onAdLoaded();
                     } else {
                         inhouseNativeListener.onAdShowFailed();
@@ -2013,7 +2034,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             } else {
                 cardView.setVisibility(View.VISIBLE);
-                inflateNativeAdInHouse(isSmall, (RelativeLayout) findViewById(R.id.lay_native_ad), cardView);
+                inflateNativeAdInHouse(isSmall, cardView);
                 inhouseNativeListener.onAdLoaded();
             }
 

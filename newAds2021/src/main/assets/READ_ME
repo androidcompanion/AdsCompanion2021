@@ -19,3 +19,4 @@
         AppAdDialog() // only for app dialog
 --> Native ad for Dialog
         showNativeAdDialog(Dialog dialog)
+--> Validate Install
