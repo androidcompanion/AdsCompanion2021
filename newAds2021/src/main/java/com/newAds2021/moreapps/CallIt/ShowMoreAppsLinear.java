@@ -1,5 +1,7 @@
 package com.newAds2021.moreapps.CallIt;
 
+import static com.newAds2021.adutils.BaseAdsClass.isConnected;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -49,7 +51,10 @@ public class ShowMoreAppsLinear {
         this.view.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
         moreView = (LinearLayout) inflater.inflate(R.layout.layout_more_apps, view, false);
-        showMore(view);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
+        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()){
+            showMore(view);
+        }
         if (theme.equals("light")) {
             ConstantAds.isLightTheme = true;
         } else {

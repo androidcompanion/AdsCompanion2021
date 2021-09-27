@@ -1,5 +1,7 @@
 package com.newAds2021.moreapps.CallIt;
 
+import static com.newAds2021.adutils.BaseAdsClass.isConnected;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -56,7 +58,10 @@ public class ShowMoreAppsGrid {
         } else {
             ConstantAds.isLightTheme = false;
         }
-        showMore(view);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(context);
+        if (isConnected(context) && adsPrefernce.isInHouseAdLoaded()){
+            showMore(view);
+        }
 
     }
 
@@ -121,14 +126,6 @@ public class ShowMoreAppsGrid {
     public void showMore(ViewGroup view) {
         tv_seemore = moreView.findViewById(R.id.tv_seemore);
         ll_moreApps = moreView.findViewById(R.id.ll_moreApps);
-
-//        tv_seemore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                context.startActivity(new Intent(context, MoreAppsActivity.class));
-//            }
-//        });
-
         rvapps = moreView.findViewById(R.id.rvapps);
         shimmerGrid = moreView.findViewById(R.id.shimmerGrid);
         shimmerLinear = moreView.findViewById(R.id.shimmerLinear);
