@@ -92,6 +92,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     static ArrayList<IhAdsDetail> finalIHAds;
     static ArrayList<AppsDetails> moreAppsArrayList;
 
+    public static int interNo = 1;
+    public static int bannerNo = 1;
+    public static int nativeNo = 1;
+
+
 
     Dialog serviceDialog;
     public static int currentAD = 1;
@@ -1613,6 +1618,96 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    public void showBannerAd() {
+        if (bannerNo == 1) {
+            showBanner1();
+        } else if (bannerNo == 2) {
+            showBanner2();
+        } else if (bannerNo == 3) {
+            showBanner3();
+        }
+        setBannerNo();
+
+    }
+
+    public void showLargeBannerAd() {
+        if (bannerNo == 1) {
+            showLargeBanner1();
+        } else if (bannerNo == 2) {
+            showLargeBanner2();
+        } else if (bannerNo == 3) {
+            showLargeBanner3();
+        }
+        setBannerNo();
+    }
+
+    public void showNativeAd() {
+        if (nativeNo == 1) {
+            showNativeAd1();
+        } else if (nativeNo == 2) {
+            showNativeAd2();
+        } else if (nativeNo == 3) {
+            showNativeAd3();
+        }
+        setNativeNo();
+
+    }
+
+    void setInterNo() {
+        if (adsPrefernce.adCount() == 3 && adsPrefernce.showInter1() && adsPrefernce.showInter2() && adsPrefernce.showInter3()) {
+            if (currentAD % adsPrefernce.adCount() == 0) {
+                if (interNo == 3) {
+                    interNo = 1;
+                } else {
+                    interNo++;
+                }
+            }
+        } else {
+            if (interNo == 3) {
+                interNo = 1;
+            } else {
+                interNo++;
+            }
+        }
+
+    }
+
+    void setBannerNo() {
+        if (bannerNo == 3) {
+            bannerNo = 1;
+        } else {
+            bannerNo++;
+        }
+    }
+
+    void setNativeNo() {
+        if (nativeNo == 3) {
+            nativeNo = 1;
+        } else {
+            nativeNo++;
+        }
+    }
+
+    public void showInterstitialAd(Context context, Callable<Void> callable) {
+        if (interNo == 1) {
+            showInterstitial1(context, callable);
+        } else if (interNo == 2) {
+            showInterstitial2(context, callable);
+        } else if (interNo == 3) {
+            showInterstitial3(context, callable);
+        } else {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        setInterNo();
+
+    }
+
+
+
     public void showSplashInterstitial1(Context context, Callable<Void> params) {
         if (adsPrefernce.allowAccess()) {
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
@@ -1717,7 +1812,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInterstitial1(Context context, Callable<Void> params) {
+    void showInterstitial1(Context context, Callable<Void> params) {
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
             if (mInterstitialAd1 != null) {
                 if (adsPrefernce.showloading()) {
@@ -1813,7 +1908,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInterstitial2(Context context, Callable<Void> params) {
+    void showInterstitial2(Context context, Callable<Void> params) {
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
             if (mInterstitialAd2 != null) {
                 if (adsPrefernce.showloading()) {
@@ -1908,7 +2003,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInterstitial3(Context context, Callable<Void> params) {
+    void showInterstitial3(Context context, Callable<Void> params) {
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
@@ -2043,7 +2138,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showBanner1() {
+    void showBanner1() {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2081,7 +2176,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showBanner2() {
+    void showBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2120,7 +2215,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showBanner3() {
+    void showBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2159,7 +2254,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showLargeBanner1() {
+    void showLargeBanner1() {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2199,7 +2294,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showLargeBanner2() {
+    void showLargeBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2238,7 +2333,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showLargeBanner3() {
+    void showLargeBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
             AdView mAdView = new AdView(this);
@@ -2277,7 +2372,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showNativeAd1() {
+    void showNativeAd1() {
         if(isConnected(this) && adsPrefernce.showNative1()){
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
@@ -2319,7 +2414,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-    public void showNativeAd2() {
+    void showNativeAd2() {
         if(isConnected(this) && adsPrefernce.showNative2()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
@@ -2359,7 +2454,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showNativeAd3() {
+    void showNativeAd3() {
         if(isConnected(this) && adsPrefernce.showNative3()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {

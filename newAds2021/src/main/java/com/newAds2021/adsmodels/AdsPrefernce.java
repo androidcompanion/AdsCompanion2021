@@ -34,7 +34,7 @@ public class AdsPrefernce {
                                String g_rewardinter1, String g_rewardinter2, String g_rewardinter3,
 
                                Boolean show_gbanner1, Boolean show_gbanner2, Boolean show_gbanner3,
-                               Boolean show_gInter1, Boolean show_gInter2, Boolean show_gInter3,
+                               Boolean show_ginter1, Boolean show_ginter2, Boolean show_ginter3,
                                Boolean show_gappopen1, Boolean show_gappopen2, Boolean show_gappopen3,
                                Boolean show_gnative1, Boolean show_gnative2, Boolean show_gnative3,
                                Boolean show_grewarded1, Boolean show_grewarded2, Boolean show_grewarded3,
@@ -81,9 +81,9 @@ public class AdsPrefernce {
             editor.putBoolean("show_gbanner1", show_gbanner1);
             editor.putBoolean("show_gbanner2", show_gbanner2);
             editor.putBoolean("show_gbanner3", show_gbanner3);
-            editor.putBoolean("show_gInter1", show_gInter1);
-            editor.putBoolean("show_gInter2", show_gInter2);
-            editor.putBoolean("show_gInter3", show_gInter3);
+            editor.putBoolean("show_ginter1", show_ginter1);
+            editor.putBoolean("show_ginter2", show_ginter2);
+            editor.putBoolean("show_ginter3", show_ginter3);
             editor.putBoolean("show_gappopen1", show_gappopen1);
             editor.putBoolean("show_gappopen2", show_gappopen2);
             editor.putBoolean("show_gappopen3", show_gappopen3);
