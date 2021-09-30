@@ -2493,6 +2493,85 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+ public void showNativeAd2Extra() {
+        if(isConnected(this) && adsPrefernce.showNative2()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template2);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    public void showNativeAd3Extra() {
+        if(isConnected(this) && adsPrefernce.showNative3()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template3);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
 
     public void showNativeAdDialog(Dialog dialog) {
         if(isConnected(this) && adsPrefernce.showNative3()) {
