@@ -13,7 +13,7 @@ public class ConstantAds {
 
     public static ProgressDialog pDialog = null;
     public static int adCountDefault = 1;
-    public static int app_ad_dialog_default = 1;
+    public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
     public static boolean PRELOAD_INTERSTITIAL = false;
     public static boolean PRELOAD_APPOPEN = false;
