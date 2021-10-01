@@ -1705,7 +1705,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-
     public void showSplashInterstitial1(Context context, Callable<Void> params) {
         if (adsPrefernce.allowAccess()) {
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
@@ -2392,7 +2391,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNativeAdapter(cardView);
+//                            hideInhouseNativeAdapter(cardView);
 //                            TemplateView template = findViewById(R.id.my_template);
                             view.setVisibility(View.VISIBLE);
                             view.setNativeAd(nativeAd);
@@ -2433,7 +2432,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNativeAdapter(cardView);
+//                            hideInhouseNativeAdapter(cardView);
 //                            TemplateView template = findViewById(R.id.my_template);
                             view.setVisibility(View.VISIBLE);
                             view.setNativeAd(nativeAd);
@@ -2473,7 +2472,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNativeAdapter(cardView);
+//                            hideInhouseNativeAdapter(cardView);
 //                            TemplateView template = findViewById(R.id.my_template);
                             view.setVisibility(View.VISIBLE);
                             view.setNativeAd(nativeAd);
