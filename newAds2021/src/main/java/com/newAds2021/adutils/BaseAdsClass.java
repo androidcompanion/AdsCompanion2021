@@ -97,7 +97,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static int nativeNo = 1;
 
 
-
     Dialog serviceDialog;
     public static int currentAD = 1;
     ArrayList<AdsData> adsDetailsArrayList;
@@ -1707,7 +1706,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-
     public void showSplashInterstitial1(Context context, Callable<Void> params) {
         if (adsPrefernce.allowAccess()) {
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
@@ -2109,6 +2107,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         cardView.setVisibility(View.GONE);
 
     }
+    void hideInhouseNativeAdapter(CardView cardView) {
+//        CardView cardView = findViewById(R.id.native_ad_container);
+        cardView.setVisibility(View.GONE);
+
+    }
 
     public void showInhouseNativeAd(Boolean isSmall, CardView cardView, InhouseNativeListener inhouseNativeListener) {
         if (adsPrefernce.isInHouseAdLoaded()) {
@@ -2372,8 +2375,141 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    public void showNativeAdAdapter(TemplateView view, CardView cardView){
+        if (nativeNo == 1) {
+            showNativeAd1Adapter(view, cardView);
+        } else if (nativeNo == 2) {
+            showNativeAd2Adapter(view, cardView);
+        } else if (nativeNo == 3) {
+            showNativeAd3Adapter(view, cardView);
+        }
+        setNativeNo();
+    }
+
+    void showNativeAd1Adapter(TemplateView view, CardView cardView) {
+        if (isConnected(this) && adsPrefernce.showNative1()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNativeAdapter(cardView);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.VISIBLE);
+                            view.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.GONE);
+                            showInhouseNativeAd(view.getTemplateTypeName().equals("small_template"), cardView, new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+
+    }
+
+    void showNativeAd2Adapter(TemplateView view, CardView cardView) {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNativeAdapter(cardView);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.VISIBLE);
+                            view.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.GONE);
+                            showInhouseNativeAd(view.getTemplateTypeName().equals("small_template"), cardView, new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    void showNativeAd3Adapter(TemplateView view, CardView cardView) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNativeAdapter(cardView);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.VISIBLE);
+                            view.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+//                            TemplateView template = findViewById(R.id.my_template);
+                            view.setVisibility(View.GONE);
+                            showInhouseNativeAd(view.getTemplateTypeName().equals("small_template"),cardView, new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+
     void showNativeAd1() {
-        if(isConnected(this) && adsPrefernce.showNative1()){
+        if (isConnected(this) && adsPrefernce.showNative1()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -2413,9 +2549,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-
     void showNativeAd2() {
-        if(isConnected(this) && adsPrefernce.showNative2()) {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -2455,7 +2590,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void showNativeAd3() {
-        if(isConnected(this) && adsPrefernce.showNative3()) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -2493,8 +2628,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
- public void showNativeAd2Extra() {
-        if(isConnected(this) && adsPrefernce.showNative2()) {
+
+    public void showNativeAd2Extra() {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -2534,7 +2670,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showNativeAd3Extra() {
-        if(isConnected(this) && adsPrefernce.showNative3()) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -2574,7 +2710,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showNativeAdDialog(Dialog dialog) {
-        if(isConnected(this) && adsPrefernce.showNative3()) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
