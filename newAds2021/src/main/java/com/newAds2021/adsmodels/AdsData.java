@@ -20,6 +20,9 @@ public class AdsData {
     @SerializedName("allow_access")
     @Expose
     private Boolean allowAccess;
+    @SerializedName("app_ad_dialog")
+    @Expose
+    private Integer appAdDialogCount;
     @SerializedName("g_app_id")
     @Expose
     private String gAppId;
@@ -742,5 +745,13 @@ public class AdsData {
 
     public void setAllowAccess(Boolean allowAccess) {
         this.allowAccess = allowAccess;
+    }
+
+    public Integer getAppAdDialogCount() {
+        return appAdDialogCount;
+    }
+
+    public void setAppAdDialogCount(Integer appAdDialogCount) {
+        this.appAdDialogCount = appAdDialogCount;
     }
 }

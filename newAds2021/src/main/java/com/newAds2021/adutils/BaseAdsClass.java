@@ -113,8 +113,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         adsPrefernce = new AdsPrefernce(this);
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
+        this.serviceDialog = new Dialog(this);
+
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         isvalidInstall = verifyInstallerId(this);
+
 
         withDelay(500, new Callable<Void>() {
             @Override
@@ -128,6 +131,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 return null;
             }
         });
+        AppAdDialog();
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -149,7 +153,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsData ads = adsDetailsArrayList.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
-                            adsPrefernce.setAdsDefaults(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
+                            adsPrefernce.setAdsDefaults(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+                                    ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
                                     ads.getgRewardinter1(), ads.getgRewardinter2(), ads.getgRewardinter3(), ads.getShowGbanner1(), ads.getShowGbanner2(),
@@ -1263,7 +1268,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void serviceDialog(String version_name) {
 
-        this.serviceDialog = new Dialog(this);
         this.serviceDialog.setCancelable(false);
         this.serviceDialog.setContentView(R.layout.dialog_service);
         Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
@@ -1466,63 +1470,61 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void serviceDialog() {
 
-        this.serviceDialog = new Dialog(this);
-        this.serviceDialog.setCancelable(false);
-        this.serviceDialog.setContentView(R.layout.dialog_service);
-        Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-        LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
-        LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
-        LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
+        if (String.valueOf(adsPrefernce.appAdDialogCount()).contains(String.valueOf(currentAD)) && !serviceDialog.isShowing()) {
+            this.serviceDialog.setCancelable(false);
+            this.serviceDialog.setContentView(R.layout.dialog_service);
+            Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+            LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
+            LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
+            LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
 
-        ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
-        TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
+            ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
+            TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
 
-        //ads
-        TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
-        ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
-        ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
-        TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
-        TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
-        TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
-        TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
+            //ads
+            TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
+            ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
+            ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
+            TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
+            TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
+            TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
+            TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
 
 
-        iv_ad_icon_title.setVisibility(View.VISIBLE);
-        lay_updateApp.setVisibility(View.GONE);
-        lay_message.setVisibility(View.GONE);
-        lay_ads.setVisibility(View.VISIBLE);
-        tv_dialog_title.setText(adsPrefernce.adDialogTitle());
-        tv_app_download.setText(adsPrefernce.adButtonText());
+            iv_ad_icon_title.setVisibility(View.VISIBLE);
+            lay_updateApp.setVisibility(View.GONE);
+            lay_message.setVisibility(View.GONE);
+            lay_ads.setVisibility(View.VISIBLE);
+            tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+            tv_app_download.setText(adsPrefernce.adButtonText());
 
-        if (adsPrefernce.adShowCancel()) {
-            tv_app_cancel.setVisibility(View.VISIBLE);
-        } else {
-            tv_app_cancel.setVisibility(View.GONE);
-        }
-
-        tv_ad_message.setText(adsPrefernce.adMessage());
-        Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
-        Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
-        tv_app_name.setText(adsPrefernce.adAppName());
-        tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
-
-        tv_app_download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
-                startActivity(intent);
+            if (adsPrefernce.adShowCancel()) {
+                tv_app_cancel.setVisibility(View.VISIBLE);
+            } else {
+                tv_app_cancel.setVisibility(View.GONE);
             }
-        });
 
-        tv_app_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                serviceDialog.dismiss();
-            }
-        });
+            tv_ad_message.setText(adsPrefernce.adMessage());
+            Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
+            Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
+            tv_app_name.setText(adsPrefernce.adAppName());
+            tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
 
+            tv_app_download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
+                    startActivity(intent);
+                }
+            });
 
-        if (adsPrefernce.isAds()) {
+            tv_app_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    serviceDialog.dismiss();
+                }
+            });
+
             if (adsPrefernce.adAppUrl().contains("play.google.com")) {
                 String link = adsPrefernce.adAppUrl();
                 String[] s1 = link.split("id=");
@@ -1901,8 +1903,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         }
         currentAD++;
-
-
     }
 
     void showInterstitial2(Context context, Callable<Void> params) {
@@ -2106,6 +2106,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         cardView.setVisibility(View.GONE);
 
     }
+
     void hideInhouseNativeAdapter(CardView cardView) {
 //        CardView cardView = findViewById(R.id.native_ad_container);
         cardView.setVisibility(View.GONE);
@@ -2374,7 +2375,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showNativeAdAdapter(TemplateView view, CardView cardView){
+    public void showNativeAdAdapter(TemplateView view, CardView cardView) {
         if (nativeNo == 1) {
             showNativeAd1Adapter(view, cardView);
         } else if (nativeNo == 2) {
@@ -2483,7 +2484,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             super.onAdFailedToLoad(loadAdError);
 //                            TemplateView template = findViewById(R.id.my_template);
                             view.setVisibility(View.GONE);
-                            showInhouseNativeAd(view.getTemplateTypeName().equals("small_template"),cardView, new InhouseNativeListener() {
+                            showInhouseNativeAd(view.getTemplateTypeName().equals("small_template"), cardView, new InhouseNativeListener() {
                                 @Override
                                 public void onAdLoaded() {
                                 }
@@ -2505,7 +2506,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
-
 
     void showNativeAd1() {
         if (isConnected(this) && adsPrefernce.showNative1()) {
