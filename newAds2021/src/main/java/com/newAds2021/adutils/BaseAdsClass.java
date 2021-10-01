@@ -1268,70 +1268,137 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void serviceDialog(String version_name) {
 
-        this.serviceDialog.setCancelable(false);
-        this.serviceDialog.setContentView(R.layout.dialog_service);
-        Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-        LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
-        LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
-        LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
+        if (!serviceDialog.isShowing()){
+            this.serviceDialog.setCancelable(false);
+            this.serviceDialog.setContentView(R.layout.dialog_service);
+            Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+            LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
+            LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
+            LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
 
-        ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
-        TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
+            ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
+            TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
 
-        //update
-        TextView tv_updatetitle = this.serviceDialog.findViewById(R.id.tv_updatetitle);
-        TextView tv_versionName = this.serviceDialog.findViewById(R.id.tv_versionName);
-        TextView tv_updatemessage = this.serviceDialog.findViewById(R.id.tv_updatemessage);
-        TextView tv_updatebutton = this.serviceDialog.findViewById(R.id.tv_updatebutton);
-        TextView tv_canclebutton = this.serviceDialog.findViewById(R.id.tv_canclebutton);
+            //update
+            TextView tv_updatetitle = this.serviceDialog.findViewById(R.id.tv_updatetitle);
+            TextView tv_versionName = this.serviceDialog.findViewById(R.id.tv_versionName);
+            TextView tv_updatemessage = this.serviceDialog.findViewById(R.id.tv_updatemessage);
+            TextView tv_updatebutton = this.serviceDialog.findViewById(R.id.tv_updatebutton);
+            TextView tv_canclebutton = this.serviceDialog.findViewById(R.id.tv_canclebutton);
 
-        //message
-        TextView tv_message = this.serviceDialog.findViewById(R.id.tv_message);
-        TextView tv_not_cancel_button = this.serviceDialog.findViewById(R.id.tv_not_cancel_button);
+            //message
+            TextView tv_message = this.serviceDialog.findViewById(R.id.tv_message);
+            TextView tv_not_cancel_button = this.serviceDialog.findViewById(R.id.tv_not_cancel_button);
 
-        //ads
-        TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
-        ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
-        ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
-        TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
-        TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
-        TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
-        TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
+            //ads
+            TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
+            ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
+            ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
+            TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
+            TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
+            TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
+            TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
 
-        if (!isServiceDialogShown) {
-            if (adsPrefernce.isUpdate()) {
-                if (!version_name.equals(adsPrefernce.updateVersionName())) {
-                    iv_ad_icon_title.setVisibility(View.GONE);
-                    lay_message.setVisibility(View.GONE);
-                    lay_ads.setVisibility(View.GONE);
-                    lay_updateApp.setVisibility(View.VISIBLE);
-                    tv_dialog_title.setText(adsPrefernce.updateDialogTitle());
+            if (!isServiceDialogShown) {
+                if (adsPrefernce.isUpdate()) {
+                    if (!version_name.equals(adsPrefernce.updateVersionName())) {
+                        iv_ad_icon_title.setVisibility(View.GONE);
+                        lay_message.setVisibility(View.GONE);
+                        lay_ads.setVisibility(View.GONE);
+                        lay_updateApp.setVisibility(View.VISIBLE);
+                        tv_dialog_title.setText(adsPrefernce.updateDialogTitle());
 
-                    tv_updatetitle.setText(adsPrefernce.updateTitle());
-                    tv_versionName.setText(adsPrefernce.updateVersionName());
-                    tv_updatemessage.setText(adsPrefernce.updateMessage());
+                        tv_updatetitle.setText(adsPrefernce.updateTitle());
+                        tv_versionName.setText(adsPrefernce.updateVersionName());
+                        tv_updatemessage.setText(adsPrefernce.updateMessage());
 
-                    if (adsPrefernce.updateShowCancel()) {
-                        tv_canclebutton.setVisibility(View.VISIBLE);
-                    } else {
-                        tv_canclebutton.setVisibility(View.GONE);
+                        if (adsPrefernce.updateShowCancel()) {
+                            tv_canclebutton.setVisibility(View.VISIBLE);
+                        } else {
+                            tv_canclebutton.setVisibility(View.GONE);
+                        }
+
+                        tv_updatebutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.updateAppUrl()));
+                                startActivity(intent);
+                            }
+                        });
+
+                        tv_canclebutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                serviceDialog.dismiss();
+                            }
+                        });
+                        this.serviceDialog.show();
+                    } else if (adsPrefernce.isNotification()) {
+                        lay_ads.setVisibility(View.GONE);
+                        lay_updateApp.setVisibility(View.GONE);
+                        lay_message.setVisibility(View.VISIBLE);
+                        tv_dialog_title.setText(adsPrefernce.notDialogTitle());
+                        iv_ad_icon_title.setVisibility(View.GONE);
+                        tv_message.setText(adsPrefernce.notMessage());
+                        if (adsPrefernce.notShowCancel()) {
+                            tv_not_cancel_button.setVisibility(View.VISIBLE);
+                        } else {
+                            tv_not_cancel_button.setVisibility(View.GONE);
+                        }
+                        tv_not_cancel_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                serviceDialog.dismiss();
+                            }
+                        });
+                        this.serviceDialog.show();
+                    } else if (adsPrefernce.isAds()) {
+                        iv_ad_icon_title.setVisibility(View.VISIBLE);
+                        lay_updateApp.setVisibility(View.GONE);
+                        lay_message.setVisibility(View.GONE);
+                        lay_ads.setVisibility(View.VISIBLE);
+                        tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+
+                        if (adsPrefernce.adShowCancel()) {
+                            tv_app_cancel.setVisibility(View.VISIBLE);
+                            tv_app_cancel.setText(adsPrefernce.adButtonText());
+                        } else {
+                            tv_app_cancel.setVisibility(View.GONE);
+                        }
+
+                        tv_ad_message.setText(adsPrefernce.adMessage());
+                        Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
+                        Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
+                        tv_app_name.setText(adsPrefernce.adAppName());
+                        tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
+
+                        tv_app_download.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
+                                startActivity(intent);
+                            }
+                        });
+
+                        tv_app_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                serviceDialog.dismiss();
+                            }
+                        });
+
+                        if (adsPrefernce.adAppUrl().contains("play.google.com")) {
+                            String link = adsPrefernce.adAppUrl();
+                            String[] s1 = link.split("id=");
+                            String[] s2 = s1[1].split("&");
+                            String app_id = s2[0].toString();
+                            if (!isAppInstalled(app_id)) {
+                                this.serviceDialog.show();
+                            }
+                        } else {
+                            this.serviceDialog.show();
+                        }
                     }
-
-                    tv_updatebutton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.updateAppUrl()));
-                            startActivity(intent);
-                        }
-                    });
-
-                    tv_canclebutton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            serviceDialog.dismiss();
-                        }
-                    });
-                    this.serviceDialog.show();
                 } else if (adsPrefernce.isNotification()) {
                     lay_ads.setVisibility(View.GONE);
                     lay_updateApp.setVisibility(View.GONE);
@@ -1357,10 +1424,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     lay_message.setVisibility(View.GONE);
                     lay_ads.setVisibility(View.VISIBLE);
                     tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+                    tv_app_download.setText(adsPrefernce.adButtonText());
 
                     if (adsPrefernce.adShowCancel()) {
                         tv_app_cancel.setVisibility(View.VISIBLE);
-                        tv_app_cancel.setText(adsPrefernce.adButtonText());
                     } else {
                         tv_app_cancel.setVisibility(View.GONE);
                     }
@@ -1398,73 +1465,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         this.serviceDialog.show();
                     }
                 }
-            } else if (adsPrefernce.isNotification()) {
-                lay_ads.setVisibility(View.GONE);
-                lay_updateApp.setVisibility(View.GONE);
-                lay_message.setVisibility(View.VISIBLE);
-                tv_dialog_title.setText(adsPrefernce.notDialogTitle());
-                iv_ad_icon_title.setVisibility(View.GONE);
-                tv_message.setText(adsPrefernce.notMessage());
-                if (adsPrefernce.notShowCancel()) {
-                    tv_not_cancel_button.setVisibility(View.VISIBLE);
-                } else {
-                    tv_not_cancel_button.setVisibility(View.GONE);
-                }
-                tv_not_cancel_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        serviceDialog.dismiss();
-                    }
-                });
-                this.serviceDialog.show();
-            } else if (adsPrefernce.isAds()) {
-                iv_ad_icon_title.setVisibility(View.VISIBLE);
-                lay_updateApp.setVisibility(View.GONE);
-                lay_message.setVisibility(View.GONE);
-                lay_ads.setVisibility(View.VISIBLE);
-                tv_dialog_title.setText(adsPrefernce.adDialogTitle());
-                tv_app_download.setText(adsPrefernce.adButtonText());
-
-                if (adsPrefernce.adShowCancel()) {
-                    tv_app_cancel.setVisibility(View.VISIBLE);
-                } else {
-                    tv_app_cancel.setVisibility(View.GONE);
-                }
-
-                tv_ad_message.setText(adsPrefernce.adMessage());
-                Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
-                Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
-                tv_app_name.setText(adsPrefernce.adAppName());
-                tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
-
-                tv_app_download.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
-                        startActivity(intent);
-                    }
-                });
-
-                tv_app_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        serviceDialog.dismiss();
-                    }
-                });
-
-                if (adsPrefernce.adAppUrl().contains("play.google.com")) {
-                    String link = adsPrefernce.adAppUrl();
-                    String[] s1 = link.split("id=");
-                    String[] s2 = s1[1].split("&");
-                    String app_id = s2[0].toString();
-                    if (!isAppInstalled(app_id)) {
-                        this.serviceDialog.show();
-                    }
-                } else {
-                    this.serviceDialog.show();
-                }
             }
         }
+
 
     }
 
