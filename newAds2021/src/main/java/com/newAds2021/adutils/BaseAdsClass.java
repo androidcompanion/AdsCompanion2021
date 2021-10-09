@@ -1735,7 +1735,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void loadRewardAd1() {
-        if (isConnected(this) && adsPrefernce.showRewarded1() && gRewardedAd1 != null) {
+        if (isConnected(this) && adsPrefernce.showRewarded1() && gRewardedAd1 == null) {
             AdRequest adRequest = new AdRequest.Builder().build();
             RewardedAd.load(this, adsPrefernce.gRewarded1(),
                     adRequest, new RewardedAdLoadCallback() {
@@ -1754,7 +1754,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
     public void loadRewardAd2() {
-        if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 != null) {
+        if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 == null) {
             AdRequest adRequest = new AdRequest.Builder().build();
             RewardedAd.load(this, adsPrefernce.gRewarded2(),
                     adRequest, new RewardedAdLoadCallback() {
@@ -1773,7 +1773,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
     public void loadRewardAd3() {
-        if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 != null) {
+        if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 == null) {
             AdRequest adRequest = new AdRequest.Builder().build();
             RewardedAd.load(this, adsPrefernce.gRewarded3(),
                     adRequest, new RewardedAdLoadCallback() {
