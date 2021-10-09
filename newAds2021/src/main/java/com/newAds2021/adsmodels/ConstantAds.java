@@ -16,6 +16,7 @@ public class ConstantAds {
     public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
     public static boolean PRELOAD_INTERSTITIAL = false;
+    public static boolean PRELOAD_REWARD = false;
     public static boolean PRELOAD_APPOPEN = false;
     public static String AD_MESSAGE = "Showing Ad...";
 //    public static String adUrlId = "AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec";
@@ -37,6 +38,9 @@ public class ConstantAds {
     }
     public static Boolean preloadInterstitial(Boolean preload){
         return PRELOAD_INTERSTITIAL = preload;
+    }
+    public static Boolean preloadRewarded(Boolean preload){
+        return PRELOAD_REWARD = preload;
     }
     public static Boolean preloadAppopen(Boolean preload){
         return PRELOAD_APPOPEN = preload;

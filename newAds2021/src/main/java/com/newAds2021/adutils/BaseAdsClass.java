@@ -43,15 +43,20 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.newAds2021.Interfaces.InhouseBannerListener;
 import com.newAds2021.Interfaces.InhouseInterstitialListener;
 import com.newAds2021.Interfaces.InhouseNativeListener;
+import com.newAds2021.Interfaces.OnRewardAdClosedListener;
 import com.newAds2021.NetworkListner.NetworkStateReceiver;
 import com.newAds2021.R;
 import com.newAds2021.adsmodels.API;
@@ -69,6 +74,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import retrofit2.Call;
@@ -95,6 +101,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static int interNo = 1;
     public static int bannerNo = 1;
     public static int nativeNo = 1;
+    public static int rewardNo = 1;
 
 
     Dialog serviceDialog;
@@ -178,6 +185,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             currentAD = adsPrefernce.adCount();
                             if (ConstantAds.PRELOAD_INTERSTITIAL) {
                                 loadInterstitialAds(BaseAdsClass.this);
+                            }
+                            if (ConstantAds.PRELOAD_REWARD) {
+                                loadRewardedAds();
                             }
                             if (ConstantAds.PRELOAD_APPOPEN) {
                                 loadAppOpenAds(BaseAdsClass.this);
@@ -1240,6 +1250,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         loadInterstitial2();
         loadInterstitial3();
     }
+    void loadRewardedAds() {
+        loadRewardAd1();
+        loadRewardAd2();
+        loadRewardAd3();
+    }
 
     void loadAppOpenAds(Context context) {
         loadAppOpen1();
@@ -1268,7 +1283,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void serviceDialog(String version_name) {
 
-        if (!serviceDialog.isShowing()){
+        if (!serviceDialog.isShowing()) {
             this.serviceDialog.setCancelable(false);
             this.serviceDialog.setContentView(R.layout.dialog_service);
             Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
@@ -1691,6 +1706,213 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeNo++;
         }
     }
+    void setRewardNo() {
+        if (rewardNo == 3) {
+            rewardNo = 1;
+        } else {
+            rewardNo++;
+        }
+    }
+
+    public static RewardedAd gRewardedAd1 = null;
+    public static RewardedAd gRewardedAd2 = null;
+    public static RewardedAd gRewardedAd3 = null;
+    public static boolean isUserRewarded1 = false;
+    public static boolean isUserRewarded2 = false;
+    public static boolean isUserRewarded3 = false;
+
+    public void showRewardedAd(OnRewardAdClosedListener onRewardAdClosedListener){
+        if (rewardNo == 1) {
+            showRewardAd1(onRewardAdClosedListener);
+        } else if (rewardNo == 2) {
+            showRewardAd2(onRewardAdClosedListener);
+        } else if (rewardNo == 3) {
+            showRewardAd3(onRewardAdClosedListener);
+        } else {
+            onRewardAdClosedListener.onRewardAdNotShown();
+        }
+        setRewardNo();
+    }
+
+    public void loadRewardAd1() {
+        if (isConnected(this) && adsPrefernce.showRewarded1() && gRewardedAd1 != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            RewardedAd.load(this, adsPrefernce.gRewarded1(),
+                    adRequest, new RewardedAdLoadCallback() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            gRewardedAd1 = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                            gRewardedAd1 = rewardedAd;
+                        }
+                    });
+
+        }
+
+    }
+    public void loadRewardAd2() {
+        if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            RewardedAd.load(this, adsPrefernce.gRewarded2(),
+                    adRequest, new RewardedAdLoadCallback() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            gRewardedAd2 = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                            gRewardedAd2 = rewardedAd;
+                        }
+                    });
+
+        }
+
+    }
+    public void loadRewardAd3() {
+        if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            RewardedAd.load(this, adsPrefernce.gRewarded3(),
+                    adRequest, new RewardedAdLoadCallback() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            gRewardedAd3 = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                            gRewardedAd3 = rewardedAd;
+                        }
+                    });
+
+        }
+
+    }
+
+    public void showRewardAd1(OnRewardAdClosedListener onRewardAdClosedListener) {
+        if (isConnected(this) && adsPrefernce.showRewarded1() && gRewardedAd1 != null) {
+            gRewardedAd1.show(this, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    isUserRewarded1 = true;
+                }
+            });
+            gRewardedAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    // Called when ad fails to show.
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    gRewardedAd1 = null;
+                    isUserRewarded1 = false;
+                    loadRewardAd1();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    if (isUserRewarded1) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    gRewardedAd1 = null;
+                    isUserRewarded1 = false;
+                    loadRewardAd1();
+                }
+            });
+
+        } else {
+            onRewardAdClosedListener.onRewardAdNotShown();
+        }
+    }
+    public void showRewardAd2(OnRewardAdClosedListener onRewardAdClosedListener) {
+        if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 != null) {
+            gRewardedAd2.show(this, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    isUserRewarded2 = true;
+                }
+            });
+            gRewardedAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    // Called when ad fails to show.
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    gRewardedAd2 = null;
+                    isUserRewarded2 = false;
+                    loadRewardAd2();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    if (isUserRewarded2) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    gRewardedAd2 = null;
+                    isUserRewarded2 = false;
+                    loadRewardAd2();
+                }
+            });
+
+        } else {
+            onRewardAdClosedListener.onRewardAdNotShown();
+        }
+    }
+    public void showRewardAd3(OnRewardAdClosedListener onRewardAdClosedListener) {
+        if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 != null) {
+            gRewardedAd3.show(this, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    isUserRewarded3 = true;
+                }
+            });
+            gRewardedAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    // Called when ad fails to show.
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    gRewardedAd3 = null;
+                    isUserRewarded3 = false;
+                    loadRewardAd3();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    if (isUserRewarded3) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    gRewardedAd3 = null;
+                    isUserRewarded3 = false;
+                    loadRewardAd3();
+                }
+            });
+
+        } else {
+            onRewardAdClosedListener.onRewardAdNotShown();
+        }
+    }
+
 
     public void showInterstitialAd(Context context, Callable<Void> callable) {
         if (interNo == 1) {
@@ -2116,7 +2338,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showInhouseNativeAd(Boolean isSmall, CardView cardView, InhouseNativeListener inhouseNativeListener) {
+    public void showInhouseNativeAd(Boolean isSmall, CardView cardView, InhouseNativeListener
+            inhouseNativeListener) {
         if (adsPrefernce.isInHouseAdLoaded()) {
             if (isConnected(this)) {
                 if (finalIHAds.size() != 0) {
