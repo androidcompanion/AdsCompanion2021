@@ -37,7 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //newAdsCompanion2021
-    implementation 'com.google.android.gms:play-services-ads:20.3.0'
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
 //    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
 
@@ -46,8 +46,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
 
-    implementation 'com.facebook.android:audience-network-sdk:6.6.0'
-    implementation 'com.google.ads.mediation:facebook:6.6.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.7.0'
+    implementation 'com.google.ads.mediation:facebook:6.7.0.0'
 
     implementation 'com.android.support:multidex:1.0.3'
 
