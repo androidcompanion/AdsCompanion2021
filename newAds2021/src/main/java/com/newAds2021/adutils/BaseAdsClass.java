@@ -1250,6 +1250,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         loadInterstitial2();
         loadInterstitial3();
     }
+
     void loadRewardedAds() {
         loadRewardAd1();
         loadRewardAd2();
@@ -1706,6 +1707,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeNo++;
         }
     }
+
     void setRewardNo() {
         if (rewardNo == 3) {
             rewardNo = 1;
@@ -1721,7 +1723,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static boolean isUserRewarded2 = false;
     public static boolean isUserRewarded3 = false;
 
-    public void showRewardedAd(OnRewardAdClosedListener onRewardAdClosedListener){
+    public void showRewardedAd(OnRewardAdClosedListener onRewardAdClosedListener) {
         if (rewardNo == 1) {
             showRewardAd1(onRewardAdClosedListener);
         } else if (rewardNo == 2) {
@@ -1753,6 +1755,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     public void loadRewardAd2() {
         if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 == null) {
             AdRequest adRequest = new AdRequest.Builder().build();
@@ -1772,6 +1775,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     public void loadRewardAd3() {
         if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 == null) {
             AdRequest adRequest = new AdRequest.Builder().build();
@@ -1832,6 +1836,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
+
     public void showRewardAd2(OnRewardAdClosedListener onRewardAdClosedListener) {
         if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 != null) {
             gRewardedAd2.show(this, new OnUserEarnedRewardListener() {
@@ -1872,6 +1877,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
+
     public void showRewardAd3(OnRewardAdClosedListener onRewardAdClosedListener) {
         if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 != null) {
             gRewardedAd3.show(this, new OnUserEarnedRewardListener() {
@@ -1936,70 +1942,33 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (adsPrefernce.allowAccess()) {
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
                 if (mInterstitialAd1 != null) {
-                    if (adsPrefernce.showloading()) {
-                        withDelay(ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
-                            @Override
-                            public Void call() throws Exception {
-                                mInterstitialAd1.show((Activity) context);
-                                mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                                    @Override
-                                    public void onAdDismissedFullScreenContent() {
-                                        loadInterstitial1();
-                                        try {
-                                            params.call();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                        mInterstitialAd1 = null;
-                                        try {
-                                            params.call();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onAdShowedFullScreenContent() {
-                                        mInterstitialAd1 = null;
-                                    }
-                                });
-                                return null;
+                    mInterstitialAd1.show((Activity) context);
+                    mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            loadInterstitial1();
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
-                    } else {
-                        mInterstitialAd1.show((Activity) context);
-                        mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                loadInterstitial1();
-                                try {
-                                    params.call();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                        }
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                mInterstitialAd1 = null;
-                                try {
-                                    params.call();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            mInterstitialAd1 = null;
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                        }
 
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                mInterstitialAd1 = null;
-                            }
-                        });
-                    }
-
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            mInterstitialAd1 = null;
+                        }
+                    });
                 } else {
                     showInhouseInterAd(new InhouseInterstitialListener() {
                         @Override
