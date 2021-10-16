@@ -2001,8 +2001,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         }
         currentAD++;
-
-
     }
 
     void showInterstitial1(Context context, Callable<Void> params) {
