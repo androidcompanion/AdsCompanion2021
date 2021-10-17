@@ -133,6 +133,7 @@ public class TemplateView extends FrameLayout {
     int tertiaryTypefaceColor = styles.getTertiaryTextTypefaceColor();
     if (tertiaryTypefaceColor > 0 && tertiaryView != null) {
       tertiaryView.setTextColor(tertiaryTypefaceColor);
+//      tertiaryView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
     }
 
     int ctaTypefaceColor = styles.getCallToActionTypefaceColor();
@@ -242,6 +243,7 @@ public class TemplateView extends FrameLayout {
 
     if (tertiaryView != null) {
       tertiaryView.setText(body);
+      tertiaryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
       nativeAdView.setBodyView(tertiaryView);
     }
 

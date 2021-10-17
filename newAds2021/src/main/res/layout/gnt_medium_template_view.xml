@@ -180,7 +180,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:textColor="@color/gnt_black"
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,6 +190,7 @@
                 android:layout_marginBottom="@dimen/gnt_no_size"
                 android:paddingLeft="@dimen/gnt_default_margin"
                 android:paddingBottom="@dimen/gnt_default_margin"
+                android:textColor="@color/gnt_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
