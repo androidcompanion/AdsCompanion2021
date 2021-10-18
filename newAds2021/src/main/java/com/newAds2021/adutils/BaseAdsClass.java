@@ -126,7 +126,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         isvalidInstall = verifyInstallerId(this);
 
 
-        withDelay(1000, new Callable<Void>() {
+        withDelay(500, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 if (!isLoaded_ADS) {

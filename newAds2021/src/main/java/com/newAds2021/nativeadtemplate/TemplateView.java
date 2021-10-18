@@ -243,7 +243,7 @@ public class TemplateView extends FrameLayout {
 
     if (tertiaryView != null) {
       tertiaryView.setText(body);
-      tertiaryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+//      tertiaryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
       nativeAdView.setBodyView(tertiaryView);
     }
 
