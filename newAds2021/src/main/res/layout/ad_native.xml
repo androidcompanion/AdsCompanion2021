@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:padding="2dp"
+    android:padding="0dp"
     android:visibility="visible">
 
     <RelativeLayout
@@ -110,6 +110,7 @@
         android:padding="3dp">
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/btn_ad_install_native"
@@ -170,7 +171,7 @@
 
         <Button
             android:id="@+id/btn_ad_install_native"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_vertical"
