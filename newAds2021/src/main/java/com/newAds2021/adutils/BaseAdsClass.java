@@ -2847,7 +2847,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             super.onAdFailedToLoad(loadAdError);
-                            TemplateView template = findViewById(R.id.my_template);
+                            TemplateView template = findViewById(R.id.my_template2);
                             template.setVisibility(View.GONE);
                             showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                                 @Override
@@ -2887,7 +2887,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             super.onAdFailedToLoad(loadAdError);
-                            TemplateView template = findViewById(R.id.my_template);
+                            TemplateView template = findViewById(R.id.my_template3);
                             template.setVisibility(View.GONE);
                             showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                                 @Override
