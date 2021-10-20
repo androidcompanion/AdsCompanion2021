@@ -10,12 +10,15 @@
     android:visibility="visible">
 
     <RelativeLayout
+        android:paddingBottom="1dp"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
         android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:paddingTop="5dp">
+        android:paddingTop="1dp">
 
         <ImageView
             android:id="@+id/iv_ad_icon_native"
@@ -169,17 +172,18 @@
 
         </RelativeLayout>
 
-        <Button
+        <TextView
             android:id="@+id/btn_ad_install_native"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_vertical"
             android:background="@drawable/gnt_button_bg"
-            android:padding="5dp"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="Install"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:visibility="visible" />
 
     </RelativeLayout>

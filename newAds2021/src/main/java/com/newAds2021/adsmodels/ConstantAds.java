@@ -2,6 +2,7 @@ package com.newAds2021.adsmodels;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 public class ConstantAds {
 
@@ -11,6 +12,8 @@ public class ConstantAds {
     public static Boolean isLightTheme = true;
 
 
+    public static int ad_bg_drawable = 0;
+    public static int native_ad_bg = 0;
     public static ProgressDialog pDialog = null;
     public static int adCountDefault = 1;
     public static int app_ad_dialog_default = 0;
@@ -38,6 +41,12 @@ public class ConstantAds {
     }
     public static Boolean preloadInterstitial(Boolean preload){
         return PRELOAD_INTERSTITIAL = preload;
+    }
+    public static int setNativeButtonBg(int drawable){
+        return ad_bg_drawable = drawable;
+    }
+    public static int setIhNativeBg(int drawable){
+        return native_ad_bg = drawable;
     }
     public static Boolean preloadRewarded(Boolean preload){
         return PRELOAD_REWARD = preload;

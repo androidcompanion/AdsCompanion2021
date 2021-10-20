@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -1171,6 +1172,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
             // install button Text
             btn_ad_install_native.setText(nativeAd.getButtontext());
+            if (ConstantAds.ad_bg_drawable != 0){
+                btn_ad_install_native.setBackgroundResource(ConstantAds.ad_bg_drawable);
+
+            }
 
             // show rating or not and set rating image
             if (nativeAd.getShowrating()) {
@@ -1196,7 +1201,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             tv_native_ad_subtitle.setSelected(true);
             tv_native_extra_text.setSelected(true);
 
-
             iv_native_info.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1217,6 +1221,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     }
                 }
             });
+
+            if (ConstantAds.native_ad_bg != 0){
+                lay_native_ad.setBackgroundResource(ConstantAds.native_ad_bg);
+            }
+
+
 
         }
 
@@ -2296,7 +2306,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     void hideInhouseNative() {
         CardView cardView = findViewById(R.id.native_ad_container);
         cardView.setVisibility(View.GONE);
-
     }
 
     void hideInhouseNativeAdapter(CardView cardView) {
@@ -2332,6 +2341,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         } else {
             inhouseNativeListener.onAdShowFailed();
         }
+        cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
+        cardView.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     void showBanner1() {
