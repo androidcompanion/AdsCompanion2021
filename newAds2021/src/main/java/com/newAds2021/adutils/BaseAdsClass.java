@@ -2307,6 +2307,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         CardView cardView = findViewById(R.id.native_ad_container);
         cardView.setVisibility(View.GONE);
     }
+    void hideInhouseNative2() {
+        CardView cardView = findViewById(R.id.native_ad_container2);
+        cardView.setVisibility(View.GONE);
+    }
+    void hideInhouseNative3() {
+        CardView cardView = findViewById(R.id.native_ad_container3);
+        cardView.setVisibility(View.GONE);
+    }
 
     void hideInhouseNativeAdapter(CardView cardView) {
 //        CardView cardView = findViewById(R.id.native_ad_container);
@@ -2838,7 +2846,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNative();
+                            hideInhouseNative2();
                             TemplateView template = findViewById(R.id.my_template2);
                             template.setVisibility(View.VISIBLE);
                             template.setNativeAd(nativeAd);
@@ -2849,7 +2857,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             super.onAdFailedToLoad(loadAdError);
                             TemplateView template = findViewById(R.id.my_template2);
                             template.setVisibility(View.GONE);
-                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container2), new InhouseNativeListener() {
                                 @Override
                                 public void onAdLoaded() {
                                 }
@@ -2878,7 +2886,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNative();
+                            hideInhouseNative3();
                             TemplateView template = findViewById(R.id.my_template3);
                             template.setVisibility(View.VISIBLE);
                             template.setNativeAd(nativeAd);
@@ -2889,7 +2897,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             super.onAdFailedToLoad(loadAdError);
                             TemplateView template = findViewById(R.id.my_template3);
                             template.setVisibility(View.GONE);
-                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container3), new InhouseNativeListener() {
                                 @Override
                                 public void onAdLoaded() {
                                 }

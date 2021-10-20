@@ -14,7 +14,7 @@
     <androidx.cardview.widget.CardView
         android:layout_gravity="center"
         android:visibility="gone"
-        android:id="@+id/native_ad_container"
+        android:id="@+id/native_ad_container2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
