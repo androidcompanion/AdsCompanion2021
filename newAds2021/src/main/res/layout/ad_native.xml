@@ -101,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_view"
+        android:layout_above="@id/bottom_view"
         android:adjustViewBounds="true"
         android:gravity="center" />
 
@@ -108,7 +109,7 @@
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="50.0dip"
-        android:layout_below="@+id/iv_native_main_banner"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:padding="3dp">
 

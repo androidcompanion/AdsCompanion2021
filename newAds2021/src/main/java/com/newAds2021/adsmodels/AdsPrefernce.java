@@ -1,7 +1,7 @@
 package com.newAds2021.adsmodels;
 
 import
-android.content.Context;
+        android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
@@ -126,12 +126,9 @@ public class AdsPrefernce {
             editor.putString("update_message", update_message);
             editor.putString("update_version_name", update_version_name);
             editor.putBoolean("update_show_cancel", update_show_cancel);
-
-
             editor.apply();
         }
     }
-
 
 
     public boolean showAds() {
@@ -140,6 +137,14 @@ public class AdsPrefernce {
             output = adsPreference.getBoolean("show_ads", true);
         }
         return output;
+    }
+
+    public void setShowAds(Boolean showAds) {
+        if (adsPreference != null) {
+            editor = adsPreference.edit();
+            editor.putBoolean("show_ads", showAds);
+            editor.apply();
+        }
     }
 
     public Integer adCount() {
@@ -157,6 +162,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean allowAccess() {
         boolean output = false;
         if (adsPreference != null) {
@@ -174,7 +180,6 @@ public class AdsPrefernce {
     }
 
 
-
     public String gBanner1() {
         String var = "";
         if (adsPreference != null) {
@@ -182,6 +187,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gBanner2() {
         String var = "";
         if (adsPreference != null) {
@@ -189,6 +195,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gBanner3() {
         String var = "";
         if (adsPreference != null) {
@@ -196,6 +203,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gInter1() {
         String var = "";
         if (adsPreference != null) {
@@ -203,6 +211,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gInter2() {
         String var = "";
         if (adsPreference != null) {
@@ -210,6 +219,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gInter3() {
         String var = "";
         if (adsPreference != null) {
@@ -217,6 +227,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gAppopen1() {
         String var = "";
         if (adsPreference != null) {
@@ -224,6 +235,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gAppopen2() {
         String var = "";
         if (adsPreference != null) {
@@ -231,6 +243,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gAppopen3() {
         String var = "";
         if (adsPreference != null) {
@@ -238,6 +251,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gNative1() {
         String var = "";
         if (adsPreference != null) {
@@ -245,6 +259,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gNative2() {
         String var = "";
         if (adsPreference != null) {
@@ -252,6 +267,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gNative3() {
         String var = "";
         if (adsPreference != null) {
@@ -259,6 +275,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewarded1() {
         String var = "";
         if (adsPreference != null) {
@@ -266,6 +283,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewarded2() {
         String var = "";
         if (adsPreference != null) {
@@ -273,6 +291,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewarded3() {
         String var = "";
         if (adsPreference != null) {
@@ -280,6 +299,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewardedInter1() {
         String var = "";
         if (adsPreference != null) {
@@ -287,6 +307,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewardedInter2() {
         String var = "";
         if (adsPreference != null) {
@@ -294,6 +315,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String gRewardedInter3() {
         String var = "";
         if (adsPreference != null) {
@@ -309,6 +331,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showBanner2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -316,6 +339,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showBanner3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -323,6 +347,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showInter1() {
         boolean output = false;
         if (adsPreference != null) {
@@ -330,6 +355,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showInter2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -337,6 +363,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showInter3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -344,6 +371,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showAppopen1() {
         boolean output = false;
         if (adsPreference != null) {
@@ -351,6 +379,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showAppopen2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -358,6 +387,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showAppopen3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -365,6 +395,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showNative1() {
         boolean output = false;
         if (adsPreference != null) {
@@ -372,6 +403,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showNative2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -379,6 +411,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showNative3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -386,6 +419,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewarded1() {
         boolean output = false;
         if (adsPreference != null) {
@@ -393,6 +427,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewarded2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -400,6 +435,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewarded3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -407,6 +443,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewardInter1() {
         boolean output = false;
         if (adsPreference != null) {
@@ -414,6 +451,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewardInter2() {
         boolean output = false;
         if (adsPreference != null) {
@@ -421,6 +459,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean showRewardInter3() {
         boolean output = false;
         if (adsPreference != null) {
@@ -436,6 +475,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String extrapara2() {
         String var = "";
         if (adsPreference != null) {
@@ -443,6 +483,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String extrapara3() {
         String var = "";
         if (adsPreference != null) {
@@ -450,6 +491,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String extrapara4() {
         String var = "";
         if (adsPreference != null) {
@@ -465,6 +507,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean isAds() {
         boolean output = false;
         if (adsPreference != null) {
@@ -472,6 +515,7 @@ public class AdsPrefernce {
         }
         return output;
     }
+
     public boolean isNotification() {
         boolean output = false;
         if (adsPreference != null) {
@@ -487,6 +531,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adAppName() {
         String var = "";
         if (adsPreference != null) {
@@ -494,6 +539,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adShortDesc() {
         String var = "";
         if (adsPreference != null) {
@@ -501,6 +547,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adMessage() {
         String var = "";
         if (adsPreference != null) {
@@ -508,6 +555,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adAppUrl() {
         String var = "";
         if (adsPreference != null) {
@@ -515,6 +563,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adIconUrl() {
         String var = "";
         if (adsPreference != null) {
@@ -522,6 +571,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adBannerUrl() {
         String var = "";
         if (adsPreference != null) {
@@ -529,6 +579,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String adButtonText() {
         String var = "";
         if (adsPreference != null) {
@@ -536,6 +587,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public boolean adShowCancel() {
         boolean output = false;
         if (adsPreference != null) {
@@ -552,6 +604,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String notMessage() {
         String var = "";
         if (adsPreference != null) {
@@ -559,6 +612,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public boolean notShowCancel() {
         boolean output = false;
         if (adsPreference != null) {
@@ -574,6 +628,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String updateTitle() {
         String var = "";
         if (adsPreference != null) {
@@ -581,6 +636,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String updateAppUrl() {
         String var = "";
         if (adsPreference != null) {
@@ -588,6 +644,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String updateMessage() {
         String var = "";
         if (adsPreference != null) {
@@ -595,6 +652,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public String updateVersionName() {
         String var = "";
         if (adsPreference != null) {
@@ -602,6 +660,7 @@ public class AdsPrefernce {
         }
         return var;
     }
+
     public boolean updateShowCancel() {
         boolean output = false;
         if (adsPreference != null) {
@@ -643,7 +702,7 @@ public class AdsPrefernce {
         editor.apply();
     }
 
-    public void clearMoreAppsList(){
+    public void clearMoreAppsList() {
         editor.remove("moreAppList");
         editor.apply();
     }

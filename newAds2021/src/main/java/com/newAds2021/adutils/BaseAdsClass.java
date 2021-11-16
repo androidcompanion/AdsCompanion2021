@@ -1120,8 +1120,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         RelativeLayout adViews = (RelativeLayout) inflater.inflate(R.layout.ad_native, cardView, false);
         cardView.removeAllViews();
         if (finalIHAds.size() != 0) {
-            cardView.setBackground(getResources().getDrawable(R.drawable.gnt_rounded_corners_shape));
-
+//            cardView.setBackground(getResources().getDrawable(R.drawable.gnt_rounded_corners_shape));
             cardView.addView(adViews);
 
             // get Interstitial Data
