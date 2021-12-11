@@ -383,7 +383,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     interDialog.setContentView(R.layout.ad_interstitial);
                     interDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-                    interDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                    interDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                     Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
                     interDialog.setCancelable(false);
 

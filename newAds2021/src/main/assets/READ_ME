@@ -54,6 +54,9 @@ Update Pending 27-11-2021
 if(!this.isFinishing() && !this.isDestroyed()){
                     condition added where glide is called
 
-11-12-2021
+11-12-2021- 2c32b18b74
 Inhouse ad side activity context passed and array size validation added and try catch added
+
+11-12-2021-
+LayoutParam bug fix in showIhInter
 
