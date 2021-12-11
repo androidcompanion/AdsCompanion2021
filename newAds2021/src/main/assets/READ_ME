@@ -46,3 +46,14 @@
         showRewardAd2( onRewardAdClosedListener )
         showRewardAd3( onRewardAdClosedListener )
 
+
+Release Notes
+
+Update Pending 27-11-2021
+27-11-2021
+if(!this.isFinishing() && !this.isDestroyed()){
+                    condition added where glide is called
+
+11-12-2021
+Inhouse ad side activity context passed and array size validation added and try catch added
+
