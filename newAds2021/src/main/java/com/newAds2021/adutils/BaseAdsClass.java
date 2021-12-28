@@ -322,7 +322,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
 
     int getCurrentInterAd(int totalAds) {
-        Log.e("totalInter", String.valueOf(totalAds));
         if (!isFirstIHInter) {
             if (currentInter + 1 >= totalAds) {
                 currentInter = 0;
@@ -368,6 +367,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         return currentNative;
 
     }
+
 
     public void showInhouseInterAd(Activity context, InhouseInterstitialListener inhouseInterstitialListener) {
         try {
@@ -1182,6 +1182,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+    public void showBannerAd(View bannerView) {
+        if (bannerNo == 1) {
+            showBanner1(bannerView);
+        } else if (bannerNo == 2) {
+            showBanner2(bannerView);
+        } else if (bannerNo == 3) {
+            showBanner3(bannerView);
+        }
+        setBannerNo();
+    }
+
     public void showLargeBannerAd() {
         if (bannerNo == 1) {
             showLargeBanner1();
@@ -1193,6 +1204,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         setBannerNo();
     }
 
+    public void showLargeBannerAd(View largeBannerView) {
+        if (bannerNo == 1) {
+            showLargeBanner1(largeBannerView);
+        } else if (bannerNo == 2) {
+            showLargeBanner2(largeBannerView);
+        } else if (bannerNo == 3) {
+            showLargeBanner3(largeBannerView);
+        }
+        setBannerNo();
+    }
+
     public void showNativeAd() {
         if (nativeNo == 1) {
             showNativeAd1();
@@ -1200,6 +1222,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             showNativeAd2();
         } else if (nativeNo == 3) {
             showNativeAd3();
+        }
+        setNativeNo();
+
+    }
+
+    public void showNativeAd(View nativeView) {
+        if (nativeNo == 1) {
+            showNativeAd1(nativeView);
+        } else if (nativeNo == 2) {
+            showNativeAd2(nativeView);
+        } else if (nativeNo == 3) {
+            showNativeAd3(nativeView);
         }
         setNativeNo();
 
@@ -1850,13 +1884,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             inhouseNativeListener) {
         try {
             if (adsPrefernce.isInHouseAdLoaded()) {
-                if (adsPrefernce.getInHouseAds().size() !=0) {
+                if (adsPrefernce.getInHouseAds().size() != 0) {
                     cardView.setVisibility(View.VISIBLE);
                     inflateNativeAdInHouse(isSmall, cardView);
                     inhouseNativeListener.onAdLoaded();
                     cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
                     cardView.setBackgroundColor(getResources().getColor(R.color.white));
-                }else{
+                } else {
                     cardView.setVisibility(View.GONE);
                     inhouseNativeListener.onAdShowFailed();
                 }
@@ -1910,6 +1944,49 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    void showBanner1(View bannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner1()) {
+            bannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner1());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            bannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            bannerView.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    bannerView.setVisibility(View.VISIBLE);
+                }
+            });
+        } else {
+            bannerView.setVisibility(View.GONE);
+        }
+    }
+
     void showBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -1946,6 +2023,51 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
 
+        }
+    }
+
+    void showBanner2(View bannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner2()) {
+            bannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner2());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            bannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            bannerView.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    bannerView.setVisibility(View.VISIBLE);
+                }
+            });
+
+        } else {
+            bannerView.setVisibility(View.GONE);
         }
     }
 
@@ -1988,6 +2110,50 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    void showBanner3(View bannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner3()) {
+            bannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner3());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            bannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            bannerView.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    bannerView.setVisibility(View.VISIBLE);
+                }
+            });
+
+        } else {
+            bannerView.setVisibility(View.GONE);
+        }
+    }
+
     void showLargeBanner1() {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2024,6 +2190,51 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
 
+        }
+    }
+
+    void showLargeBanner1(View largeBannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner1()) {
+            largeBannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner1());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            largeBannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            largeBannerView.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    largeBannerView.setVisibility(View.VISIBLE);
+                }
+            });
+
+        } else {
+            largeBannerView.setVisibility(View.GONE);
         }
 
     }
@@ -2067,6 +2278,52 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    void showLargeBanner2(View largeBannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner2()) {
+            largeBannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner2());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            largeBannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            largeBannerView.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    largeBannerView.setVisibility(View.VISIBLE);
+                }
+            });
+
+        } else {
+            largeBannerView.setVisibility(View.GONE);
+
+        }
+    }
+
     void showLargeBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2106,6 +2363,52 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    void showLargeBanner3(View largeBannerView) {
+        if (isConnected(this) && adsPrefernce.showBanner3()) {
+            largeBannerView.setVisibility(View.VISIBLE);
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            AdView mAdView = new AdView(this);
+            mAdView.setAdUnitId(adsPrefernce.gBanner3());
+            hideInhouseBanner();
+            adContainer.removeAllViews();
+            adContainer.addView(mAdView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            mAdView.setAdSize(adSize);
+            mAdView.loadAd(adRequest);
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    mAdView.destroy();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            largeBannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            largeBannerView.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    hideInhouseBanner();
+                    largeBannerView.setVisibility(View.VISIBLE);
+                }
+            });
+
+        } else {
+            largeBannerView.setVisibility(View.GONE);
+
+        }
+    }
+
     public void showNativeAdAdapter(TemplateView view, CardView cardView) {
         if (nativeNo == 1) {
             showNativeAd1Adapter(view, cardView);
@@ -2116,7 +2419,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         setNativeNo();
     }
-
     void showNativeAd1Adapter(TemplateView view, CardView cardView) {
         if (isConnected(this) && adsPrefernce.showNative1()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
@@ -2279,6 +2581,54 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+    void showNativeAd1(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative1()) {
+            nativeView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            nativeView.setVisibility(View.VISIBLE);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    nativeView.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+                                    nativeView.setVisibility(View.GONE);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        } else {
+            nativeView.setVisibility(View.GONE);
+        }
+
+    }
+
     void showNativeAd2() {
         if (isConnected(this) && adsPrefernce.showNative2()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
@@ -2316,6 +2666,54 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    void showNativeAd2(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
+            nativeView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            nativeView.setVisibility(View.VISIBLE);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    nativeView.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+                                    nativeView.setVisibility(View.GONE);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        } else {
+            nativeView.setVisibility(View.GONE);
+
         }
     }
 
@@ -2359,6 +2757,54 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    void showNativeAd3(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
+            nativeView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            nativeView.setVisibility(View.VISIBLE);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    nativeView.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+                                    nativeView.setVisibility(View.GONE);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        } else {
+            nativeView.setVisibility(View.GONE);
+
+        }
+    }
+
     public void showNativeAd2Extra() {
         if (isConnected(this) && adsPrefernce.showNative2()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
@@ -2396,6 +2842,53 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+    public void showNativeAd2Extra(View nativeExtraView) {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
+            nativeExtraView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative2();
+                            nativeExtraView.setVisibility(View.VISIBLE);
+                            TemplateView template = findViewById(R.id.my_template2);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template2);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container2), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    nativeExtraView.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+                                    nativeExtraView.setVisibility(View.GONE);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeExtraView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }else {
+            nativeExtraView.setVisibility(View.GONE);
+
         }
     }
 
@@ -2438,6 +2931,53 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+    public void showNativeAd3Extra(View nativeExtraView) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
+            nativeExtraView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative3();
+                            nativeExtraView.setVisibility(View.VISIBLE);
+                            TemplateView template = findViewById(R.id.my_template3);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template3);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container3), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                    nativeExtraView.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+                                    nativeExtraView.setVisibility(View.VISIBLE);
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeExtraView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }else {
+            nativeExtraView.setVisibility(View.GONE);
+
+        }
+    }
 
     public void showNativeAdDialog(Dialog dialog) {
         if (isConnected(this) && adsPrefernce.showNative3()) {
@@ -2452,6 +2992,37 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+    public void showNativeAdDialog(Dialog dialog, View nativeDialogView) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
+            nativeDialogView.setVisibility(View.VISIBLE);
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            nativeDialogView.setVisibility(View.VISIBLE);
+                            TemplateView template = dialog.findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            nativeDialogView.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            nativeDialogView.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build();
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }else {
+            nativeDialogView.setVisibility(View.GONE);
         }
     }
 

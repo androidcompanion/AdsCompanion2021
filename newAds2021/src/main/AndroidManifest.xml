@@ -14,6 +14,7 @@
         </intent>
     </queries>
     <application
+        android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <meta-data
