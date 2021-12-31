@@ -60,6 +60,9 @@ Inhouse ad side activity context passed and array size validation added and try 
 11-12-2021- a0c18e0122
 LayoutParam bug fix in showIhInter
 
-28-12-2021 -
+28-12-2021 - c2515ba30a
 Native and Banner Ad Space Removed When Not Loaded
+e.g.showBannerAd(findViewById(R.id.lay_banner_test));
 
+31-12-2021 -
+showrewardinter3() == true > NormalNative else PreloadedNative

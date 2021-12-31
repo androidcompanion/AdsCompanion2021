@@ -89,6 +89,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
 
+    public NativeAd nativeAd1Beta = null;
+    public NativeAd nativeAd2Beta = null;
+    public NativeAd nativeAd3Beta = null;
+
     //inhouse
     public static boolean isLoaded_ADS, isLoaded_IH, isServiceDialogShown = false;
     public static int currentInter = 0;
@@ -186,8 +190,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             isLoaded_ADS = true;
 
                             currentAD = adsPrefernce.adCount();
+
                             if (ConstantAds.PRELOAD_INTERSTITIAL) {
                                 loadInterstitialAds(BaseAdsClass.this);
+                            }
+                            if (ConstantAds.PRELOAD_NATIVE && !adsPrefernce.showRewardInter3()) {
+                                loadNativeAdBeta();
                             }
                             if (ConstantAds.PRELOAD_REWARD) {
                                 loadRewardedAds();
@@ -1215,25 +1223,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         setBannerNo();
     }
 
-    public void showNativeAd() {
-        if (nativeNo == 1) {
-            showNativeAd1();
-        } else if (nativeNo == 2) {
-            showNativeAd2();
-        } else if (nativeNo == 3) {
-            showNativeAd3();
-        }
-        setNativeNo();
-
-    }
 
     public void showNativeAd(View nativeView) {
-        if (nativeNo == 1) {
-            showNativeAd1(nativeView);
-        } else if (nativeNo == 2) {
-            showNativeAd2(nativeView);
-        } else if (nativeNo == 3) {
-            showNativeAd3(nativeView);
+        if (adsPrefernce.showRewardInter3()) {
+            if (nativeNo == 1) {
+                showNativeAd1(nativeView);
+            } else if (nativeNo == 2) {
+                showNativeAd2(nativeView);
+            } else if (nativeNo == 3) {
+                showNativeAd3(nativeView);
+            }
+        } else {
+            showNativeAdBeta(nativeView);
         }
         setNativeNo();
 
@@ -2419,6 +2420,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         setNativeNo();
     }
+
     void showNativeAd1Adapter(TemplateView view, CardView cardView) {
         if (isConnected(this) && adsPrefernce.showNative1()) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
@@ -2540,33 +2542,80 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    void showNativeAd1() {
-        if (isConnected(this) && adsPrefernce.showNative1()) {
+//    public void loadNativeAD1TEST(){
+//        if (isConnected(this) && adsPrefernce.showNative1()) {
+//            AdLoader adLoader1 = new AdLoader.Builder(this, adsPrefernce.gNative1())
+//                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+//                        @Override
+//                        public void onNativeAdLoaded(NativeAd nativeAd) {
+//                            nativeAdTEST1 = nativeAd;
+////                            hideInhouseNative();
+////                            TemplateView template = findViewById(R.id.my_template);
+////                            template.setVisibility(View.VISIBLE);
+////                            template.setNativeAd(nativeAd);
+//                        }
+//                    }).withAdListener(new AdListener() {
+//                        @Override
+//                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+//                            super.onAdFailedToLoad(loadAdError);
+//                            TemplateView template = findViewById(R.id.my_template);
+//                            template.setVisibility(View.GONE);
+//                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+//                                @Override
+//                                public void onAdLoaded() {
+//                                }
+//
+//                                @Override
+//                                public void onAdShowFailed() {
+//
+//                                }
+//                            });
+//                        }
+//
+//                        @Override
+//                        public void onAdLoaded() {
+//                            super.onAdLoaded();
+//                        }
+//                    })
+//                    .build();
+//
+//            adLoader1.loadAd(new AdRequest.Builder().build());
+//
+//        }
+//
+//    }
+//    public void showNative1TEST(){
+//        if (nativeAdTEST1 != null){
+//            hideInhouseNative();
+//            TemplateView template = findViewById(R.id.my_template);
+//            template.setVisibility(View.VISIBLE);
+//            template.setNativeAd(nativeAdTEST1);
+//        }
+//
+//    }
+
+
+
+    public void loadNativeAdBeta() {
+        loadNativeAd1Beta();
+        loadNativeAd2Beta();
+        loadNativeAd3Beta();
+    }
+
+    void loadNativeAd1Beta() {
+        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd1Beta == null) {
             AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
                     .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
                         public void onNativeAdLoaded(NativeAd nativeAd) {
-                            hideInhouseNative();
-                            TemplateView template = findViewById(R.id.my_template);
-                            template.setVisibility(View.VISIBLE);
-                            template.setNativeAd(nativeAd);
+                            nativeAd1Beta = nativeAd;
+
                         }
                     }).withAdListener(new AdListener() {
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             super.onAdFailedToLoad(loadAdError);
-                            TemplateView template = findViewById(R.id.my_template);
-                            template.setVisibility(View.GONE);
-                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                                @Override
-                                public void onAdLoaded() {
-                                }
-
-                                @Override
-                                public void onAdShowFailed() {
-
-                                }
-                            });
+                            nativeAd1Beta = null;
                         }
 
                         @Override
@@ -2578,7 +2627,174 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
             adLoader.loadAd(new AdRequest.Builder().build());
         }
+    }
 
+    void loadNativeAd2Beta() {
+        if (isConnected(this) && adsPrefernce.showNative2() && nativeAd2Beta == null) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative2())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            nativeAd2Beta = nativeAd;
+
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            nativeAd2Beta = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    void loadNativeAd3Beta() {
+        if (isConnected(this) && adsPrefernce.showNative3() && nativeAd3Beta == null) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative3())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            nativeAd3Beta = nativeAd;
+
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            nativeAd3Beta = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+    }
+
+    void showNativeAd1Beta() {
+        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd1Beta != null) {
+            hideInhouseNative();
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.VISIBLE);
+            template.setNativeAd(nativeAd1Beta);
+        } else {
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.GONE);
+            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                @Override
+                public void onAdLoaded() {
+                }
+
+                @Override
+                public void onAdShowFailed() {
+
+                }
+            });
+        }
+        nativeAd1Beta = null;
+    }
+
+    void showNativeAd1Beta(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative1()) {
+            nativeView.setVisibility(View.VISIBLE);
+            if (nativeAd1Beta != null) {
+                hideInhouseNative();
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.VISIBLE);
+                template.setNativeAd(nativeAd1Beta);
+            } else {
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.GONE);
+                showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        nativeView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdShowFailed() {
+                        nativeView.setVisibility(View.GONE);
+
+                    }
+                });
+            }
+        } else {
+            nativeView.setVisibility(View.GONE);
+
+        }
+        nativeAd1Beta = null;
+    }
+    void showNativeAd2Beta(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative2()) {
+            nativeView.setVisibility(View.VISIBLE);
+            if (nativeAd2Beta != null) {
+                hideInhouseNative();
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.VISIBLE);
+                template.setNativeAd(nativeAd2Beta);
+            } else {
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.GONE);
+                showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        nativeView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdShowFailed() {
+                        nativeView.setVisibility(View.GONE);
+
+                    }
+                });
+            }
+        } else {
+            nativeView.setVisibility(View.GONE);
+
+        }
+        nativeAd2Beta = null;
+    }
+    void showNativeAd3Beta(View nativeView) {
+        if (isConnected(this) && adsPrefernce.showNative3()) {
+            nativeView.setVisibility(View.VISIBLE);
+            if (nativeAd3Beta != null) {
+                hideInhouseNative();
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.VISIBLE);
+                template.setNativeAd(nativeAd3Beta);
+            } else {
+                TemplateView template = findViewById(R.id.my_template);
+                template.setVisibility(View.GONE);
+                showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        nativeView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdShowFailed() {
+                        nativeView.setVisibility(View.GONE);
+
+                    }
+                });
+            }
+        } else {
+            nativeView.setVisibility(View.GONE);
+
+        }
+        nativeAd3Beta = null;
     }
 
     void showNativeAd1(View nativeView) {
@@ -2628,6 +2844,132 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
+
+    void showNativeAd2Beta() {
+        if (isConnected(this) && adsPrefernce.showNative1() &&  nativeAd2Beta != null) {
+            hideInhouseNative();
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.VISIBLE);
+            template.setNativeAd(nativeAd2Beta);
+        } else {
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.GONE);
+            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                @Override
+                public void onAdLoaded() {
+                }
+
+                @Override
+                public void onAdShowFailed() {
+
+                }
+            });
+        }
+        nativeAd2Beta = null;
+    }
+
+    void showNativeAd3Beta() {
+        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd3Beta != null) {
+            hideInhouseNative();
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.VISIBLE);
+            template.setNativeAd(nativeAd3Beta);
+        } else {
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.GONE);
+            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                @Override
+                public void onAdLoaded() {
+                }
+
+                @Override
+                public void onAdShowFailed() {
+
+                }
+            });
+        }
+        nativeAd3Beta = null;
+    }
+
+    public void showNativeAdBeta() {
+        if (nativeNo == 1) {
+            showNativeAd1Beta();
+        } else if (nativeNo == 2) {
+            showNativeAd2Beta();
+        } else if (nativeNo == 3) {
+            showNativeAd3Beta();
+        }
+    }
+
+    public void showNativeAdBeta(View nativeView) {
+        if (nativeNo == 1) {
+            showNativeAd1Beta(nativeView);
+        } else if (nativeNo == 2) {
+            showNativeAd2Beta(nativeView);
+        } else if (nativeNo == 3) {
+            showNativeAd3Beta(nativeView);
+        }
+    }
+
+
+    public void showNativeAd() {
+        if (adsPrefernce.showRewardInter3()) {
+            if (nativeNo == 1) {
+                showNativeAd1();
+            } else if (nativeNo == 2) {
+                showNativeAd2();
+            } else if (nativeNo == 3) {
+                showNativeAd3();
+            }
+        } else {
+            showNativeAdBeta();
+        }
+        setNativeNo();
+
+    }
+
+    void showNativeAd1() {
+        if (isConnected(this) && adsPrefernce.showNative1()) {
+            AdLoader adLoader = new AdLoader.Builder(this, adsPrefernce.gNative1())
+                    .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                        @Override
+                        public void onNativeAdLoaded(NativeAd nativeAd) {
+                            hideInhouseNative();
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.VISIBLE);
+                            template.setNativeAd(nativeAd);
+                        }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            TemplateView template = findViewById(R.id.my_template);
+                            template.setVisibility(View.GONE);
+                            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                                @Override
+                                public void onAdLoaded() {
+                                }
+
+                                @Override
+                                public void onAdShowFailed() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                        }
+                    })
+                    .build();
+
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+
+    }
+
 
     void showNativeAd2() {
         if (isConnected(this) && adsPrefernce.showNative2()) {
@@ -2844,6 +3186,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+
     public void showNativeAd2Extra(View nativeExtraView) {
         if (isConnected(this) && adsPrefernce.showNative2()) {
             nativeExtraView.setVisibility(View.VISIBLE);
@@ -2886,7 +3229,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
-        }else {
+        } else {
             nativeExtraView.setVisibility(View.GONE);
 
         }
@@ -2931,6 +3274,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+
     public void showNativeAd3Extra(View nativeExtraView) {
         if (isConnected(this) && adsPrefernce.showNative3()) {
             nativeExtraView.setVisibility(View.VISIBLE);
@@ -2973,7 +3317,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     .build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
-        }else {
+        } else {
             nativeExtraView.setVisibility(View.GONE);
 
         }
@@ -2994,6 +3338,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+
     public void showNativeAdDialog(Dialog dialog, View nativeDialogView) {
         if (isConnected(this) && adsPrefernce.showNative3()) {
             nativeDialogView.setVisibility(View.VISIBLE);
@@ -3021,7 +3366,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
-        }else {
+        } else {
             nativeDialogView.setVisibility(View.GONE);
         }
     }

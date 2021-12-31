@@ -18,6 +18,7 @@ public class ConstantAds {
     public static int adCountDefault = 1;
     public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
+    public static boolean PRELOAD_NATIVE = false;
     public static boolean PRELOAD_INTERSTITIAL = false;
     public static boolean PRELOAD_REWARD = false;
     public static boolean PRELOAD_APPOPEN = false;
@@ -41,6 +42,9 @@ public class ConstantAds {
     }
     public static Boolean preloadInterstitial(Boolean preload){
         return PRELOAD_INTERSTITIAL = preload;
+    }
+    public static Boolean preloadNative(Boolean preload){
+        return PRELOAD_NATIVE = preload;
     }
     public static int setNativeButtonBg(int drawable){
         return ad_bg_drawable = drawable;
