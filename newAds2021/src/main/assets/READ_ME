@@ -66,3 +66,11 @@ e.g.showBannerAd(findViewById(R.id.lay_banner_test));
 
 31-12-2021 -
 showrewardinter3() == true > NormalNative else PreloadedNative
+InBaseActivity
+AdsPrefernce adsPrefernce = new AdsPrefernce(this);
+        if (!adsPrefernce.showRewardInter3()){
+            loadNativeAdBeta();
+        }
+
+
+        ConstantAds.preloadNative(true);

@@ -89,9 +89,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
 
-    public NativeAd nativeAd1Beta = null;
-    public NativeAd nativeAd2Beta = null;
-    public NativeAd nativeAd3Beta = null;
+    public static NativeAd nativeAd1Beta = null;
+    public static NativeAd nativeAd2Beta = null;
+    public static NativeAd nativeAd3Beta = null;
 
     //inhouse
     public static boolean isLoaded_ADS, isLoaded_IH, isServiceDialogShown = false;
