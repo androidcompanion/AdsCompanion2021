@@ -649,7 +649,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         try {
             if (nativeDetails.size() != 0) {
                 // ad to show from position
-                int current = getCurrentNativeAd(finalIHAds.size());
+                int current = getCurrentNativeAd(nativeDetails.size());
 
                 ImageView iv_native_info = adViews.findViewById(R.id.iv_native_info);
                 ImageView iv_ad_icon_native = adViews.findViewById(R.id.iv_ad_icon_native);
@@ -2732,7 +2732,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         } else {
             nativeView.setVisibility(View.GONE);
-
         }
         nativeAd1Beta = null;
     }
@@ -2842,7 +2841,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         } else {
             nativeView.setVisibility(View.GONE);
         }
-
     }
 
 
