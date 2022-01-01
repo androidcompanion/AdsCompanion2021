@@ -14,6 +14,7 @@
         </intent>
     </queries>
     <application
+        android:name=".adutils.NewAds2021"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
