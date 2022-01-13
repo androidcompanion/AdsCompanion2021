@@ -21,6 +21,13 @@
         ConstantAds.preloadAppopen(true);
         ConstantAds.preloadInterstitial(true);
         ConstantAds.preloadRewarded(true);
+        --> Preload Native
+        ConstantAds.preloadNative(true);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(this);
+                if (!adsPrefernce.showRewardInter3()){
+                    loadNativeAdBeta();
+                }
+
 --> AppService
         --> In Activity After Splash
         AppService(String versionName) //for update, notification & ads
@@ -64,7 +71,7 @@ LayoutParam bug fix in showIhInter
 Native and Banner Ad Space Removed When Not Loaded
 e.g.showBannerAd(findViewById(R.id.lay_banner_test));
 
-31-12-2021 -
+31-12-2021 - 5c6e185274
 showrewardinter3() == true > NormalNative else PreloadedNative
 
 >> In BaseActivity
@@ -74,4 +81,16 @@ AdsPrefernce adsPrefernce = new AdsPrefernce(this);
         if (!adsPrefernce.showRewardInter3()){
             loadNativeAdBeta();
         }
+
+31-12-2021 - 22910fc7c0
+Native Bug Fixed (FinalIHAds)
+
+
+1-1-20222 - 95dbf1e72b
+AppOpen Ad Added-checked Ok
+AppOpen2 -> AutoAd
+
+
+
+
 

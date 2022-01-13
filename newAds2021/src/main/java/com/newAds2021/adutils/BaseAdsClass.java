@@ -490,15 +490,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
 
                     if (interAd.getOpenin().equals("playstore")) {
-                        if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink()))) {
+                        if (!isAppInstalled(getAppIdFromAppLink(interAd.getApplink())) && !context.isFinishing() && !context.isDestroyed()) {
                             interDialog.show();
                             inhouseInterstitialListener.onAdShown();
                         } else {
                             inhouseInterstitialListener.onAdDismissed();
                         }
                     } else {
-                        interDialog.show();
-                        inhouseInterstitialListener.onAdShown();
+                        if (!context.isFinishing() && !context.isDestroyed()) {
+                            interDialog.show();
+                            inhouseInterstitialListener.onAdShown();
+                        }else{
+                            inhouseInterstitialListener.onAdDismissed();
+                        }
+
                     }
                 } else {
                     inhouseInterstitialListener.onAdDismissed();
@@ -2683,28 +2688,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    void showNativeAd1Beta() {
-        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd1Beta != null) {
-            hideInhouseNative();
-            TemplateView template = findViewById(R.id.my_template);
-            template.setVisibility(View.VISIBLE);
-            template.setNativeAd(nativeAd1Beta);
-        } else {
-            TemplateView template = findViewById(R.id.my_template);
-            template.setVisibility(View.GONE);
-            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                @Override
-                public void onAdLoaded() {
-                }
-
-                @Override
-                public void onAdShowFailed() {
-
-                }
-            });
-        }
-        nativeAd1Beta = null;
-    }
 
     void showNativeAd1Beta(View nativeView) {
         if (isConnected(this) && adsPrefernce.showNative1()) {
@@ -2841,6 +2824,30 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         } else {
             nativeView.setVisibility(View.GONE);
         }
+    }
+
+
+    void showNativeAd1Beta() {
+        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd1Beta != null) {
+            hideInhouseNative();
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.VISIBLE);
+            template.setNativeAd(nativeAd1Beta);
+        } else {
+            TemplateView template = findViewById(R.id.my_template);
+            template.setVisibility(View.GONE);
+            showInhouseNativeAd(template.getTemplateTypeName().equals("small_template"), findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                @Override
+                public void onAdLoaded() {
+                }
+
+                @Override
+                public void onAdShowFailed() {
+
+                }
+            });
+        }
+        nativeAd1Beta = null;
     }
 
 
