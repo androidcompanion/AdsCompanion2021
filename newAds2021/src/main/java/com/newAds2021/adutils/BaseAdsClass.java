@@ -500,7 +500,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         if (!context.isFinishing() && !context.isDestroyed()) {
                             interDialog.show();
                             inhouseInterstitialListener.onAdShown();
-                        }else{
+                        } else {
                             inhouseInterstitialListener.onAdDismissed();
                         }
 
@@ -1491,6 +1491,31 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+
+    public void showInterstitialAd(Activity context, Callable<Void> callable, Boolean isBackpressAd) {
+        if (adsPrefernce.showRewardInter2()) {
+            if (interNo == 1) {
+                showInterstitial1(context, callable);
+            } else if (interNo == 2) {
+                showInterstitial2(context, callable);
+            } else if (interNo == 3) {
+                showInterstitial3(context, callable);
+            } else {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            setInterNo();
+        } else {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void showInterstitialAd(Activity context, Callable<Void> callable) {
         if (interNo == 1) {
@@ -2600,7 +2625,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 //    }
 
 
-
     public void loadNativeAdBeta() {
         loadNativeAd1Beta();
         loadNativeAd2Beta();
@@ -2718,6 +2742,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         nativeAd1Beta = null;
     }
+
     void showNativeAd2Beta(View nativeView) {
         if (isConnected(this) && adsPrefernce.showNative2()) {
             nativeView.setVisibility(View.VISIBLE);
@@ -2748,6 +2773,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         nativeAd2Beta = null;
     }
+
     void showNativeAd3Beta(View nativeView) {
         if (isConnected(this) && adsPrefernce.showNative3()) {
             nativeView.setVisibility(View.VISIBLE);
@@ -2852,7 +2878,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
 
     void showNativeAd2Beta() {
-        if (isConnected(this) && adsPrefernce.showNative1() &&  nativeAd2Beta != null) {
+        if (isConnected(this) && adsPrefernce.showNative1() && nativeAd2Beta != null) {
             hideInhouseNative();
             TemplateView template = findViewById(R.id.my_template);
             template.setVisibility(View.VISIBLE);
