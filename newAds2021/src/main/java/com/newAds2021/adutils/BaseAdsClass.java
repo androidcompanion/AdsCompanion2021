@@ -1492,7 +1492,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-    public void showInterstitialAd(Activity context, Callable<Void> callable, Boolean isBackpressAd) {
+    public void showInterstitialAd(Boolean isBackpressAd, Activity context, Callable<Void> callable) {
         if (adsPrefernce.showRewardInter2()) {
             if (interNo == 1) {
                 showInterstitial1(context, callable);
