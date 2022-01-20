@@ -701,7 +701,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 btn_ad_install_native.setText(nativeAd.getButtontext());
                 if (ConstantAds.ad_bg_drawable != 0) {
                     btn_ad_install_native.setBackgroundResource(ConstantAds.ad_bg_drawable);
-
                 }
 
                 // show rating or not and set rating image
@@ -1490,6 +1489,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
+
 
 
     public void showInterstitialAd(Boolean isBackpressAd, Activity context, Callable<Void> callable) {

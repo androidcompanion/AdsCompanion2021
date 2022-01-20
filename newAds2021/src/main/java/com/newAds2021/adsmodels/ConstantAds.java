@@ -11,7 +11,6 @@ public class ConstantAds {
 //    public static ArrayList<ArrayList<AppsDetails>> arraylist=new ArrayList<>();
     public static Boolean isLightTheme = true;
 
-
     public static int ad_bg_drawable = 0;
     public static int native_ad_bg = 0;
     public static ProgressDialog pDialog = null;
@@ -23,7 +22,6 @@ public class ConstantAds {
     public static boolean PRELOAD_REWARD = false;
     public static boolean PRELOAD_APPOPEN = false;
     public static String AD_MESSAGE = "Showing Ad...";
-//    public static String adUrlId = "AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec";
     public static String adUrlId = "";
     public static String ihAdsID = "";
     public static String ihInterID = "";

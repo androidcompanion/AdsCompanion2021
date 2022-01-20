@@ -14,9 +14,12 @@
 
 package com.newAds2021.nativeadtemplate;
 
+import static com.newAds2021.adsmodels.ConstantAds.ad_bg_drawable;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -29,10 +32,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.newAds2021.R;
+import com.newAds2021.adsmodels.ConstantAds;
 
 /**
  * Base class for a template view. *
@@ -118,6 +124,14 @@ public class TemplateView extends FrameLayout {
     Typeface ctaTypeface = styles.getCallToActionTextTypeface();
     if (ctaTypeface != null && callToActionView != null) {
       callToActionView.setTypeface(ctaTypeface);
+//      try {
+//        if (ConstantAds.ad_bg_drawable != 0) {
+////          callToActionView.setBackgroundResource(ConstantAds.ad_bg_drawable);
+//          callToActionView.setBackgroundColor(getResources().getColor(R.color.black));
+//        }
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
     }
 
     int primaryTypefaceColor = styles.getPrimaryTextTypefaceColor();
@@ -291,6 +305,13 @@ public class TemplateView extends FrameLayout {
     ratingBar.setEnabled(false);
 
     callToActionView = (Button) findViewById(R.id.cta);
+    try {
+      if (ad_bg_drawable != 0) {
+        callToActionView.setBackgroundResource(ad_bg_drawable);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     iconView = (ImageView) findViewById(R.id.icon);
     mediaView = (MediaView) findViewById(R.id.media_view);
     background = (RelativeLayout) findViewById(R.id.background);
