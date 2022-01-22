@@ -189,6 +189,7 @@
                 android:layout_marginBottom="@dimen/gnt_no_size"
                 android:paddingStart="@dimen/gnt_default_margin"
                 android:paddingEnd="@dimen/gnt_default_margin"
+                android:paddingBottom="2dp"
                 android:textColor="@color/gnt_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

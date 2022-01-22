@@ -38,6 +38,7 @@ import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.newAds2021.R;
+import com.newAds2021.adsmodels.AdsPrefernce;
 import com.newAds2021.adsmodels.ConstantAds;
 
 /**
@@ -306,7 +307,8 @@ public class TemplateView extends FrameLayout {
 
     callToActionView = (Button) findViewById(R.id.cta);
     try {
-      if (ad_bg_drawable != 0) {
+
+      if (ad_bg_drawable != 0 && new AdsPrefernce(getContext()).showRewardInter1()) {
         callToActionView.setBackgroundResource(ad_bg_drawable);
       }
     } catch (Exception e) {
