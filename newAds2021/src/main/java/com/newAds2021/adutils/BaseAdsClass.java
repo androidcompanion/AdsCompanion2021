@@ -56,6 +56,7 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.newAds2021.BuildConfig;
 import com.newAds2021.Interfaces.InhouseBannerListener;
 import com.newAds2021.Interfaces.InhouseInterstitialListener;
 import com.newAds2021.Interfaces.InhouseNativeListener;
@@ -1491,15 +1492,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-
     public void showInterstitialAd(Boolean isBackpressAd, Activity context, Callable<Void> callable) {
         if (adsPrefernce.showRewardInter2()) {
             if (interNo == 1) {
-                showInterstitial1(context, callable);
+                showInterstitial1Back(context, callable);
             } else if (interNo == 2) {
-                showInterstitial2(context, callable);
+                showInterstitial2Back(context, callable);
             } else if (interNo == 3) {
-                showInterstitial3(context, callable);
+                showInterstitial3Back(context, callable);
             } else {
                 try {
                     callable.call();
@@ -1516,6 +1516,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         }
     }
+
 
     public void showInterstitialAd(Activity context, Callable<Void> callable) {
         if (interNo == 1) {
@@ -1883,6 +1884,177 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         currentAD++;
 
+    }
+
+    void showInterstitial1Back(Activity context, Callable<Void> params) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
+            if (mInterstitialAd1 != null) {
+                mInterstitialAd1.show((Activity) context);
+                mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        loadInterstitial1();
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        mInterstitialAd1 = null;
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        mInterstitialAd1 = null;
+                    }
+                });
+            } else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
+                    @Override
+                    public void onAdShown() {
+
+                    }
+
+                    @Override
+                    public void onAdDismissed() {
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        } else {
+            try {
+                params.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        currentAD++;
+    }
+
+    void showInterstitial2Back(Activity context, Callable<Void> params) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
+            if (mInterstitialAd2 != null) {
+                mInterstitialAd2.show((Activity) context);
+                mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        loadInterstitial2();
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        mInterstitialAd1 = null;
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        mInterstitialAd2 = null;
+                    }
+                });
+            } else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
+                    @Override
+                    public void onAdShown() {
+
+                    }
+
+                    @Override
+                    public void onAdDismissed() {
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        } else {
+            try {
+                params.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        currentAD++;
+    }
+
+    void showInterstitial3Back(Activity context, Callable<Void> params) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
+            if (mInterstitialAd3 != null) {
+                mInterstitialAd3.show((Activity) context);
+                mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        loadInterstitial3();
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        mInterstitialAd1 = null;
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        mInterstitialAd3 = null;
+                    }
+                });
+            } else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
+                    @Override
+                    public void onAdShown() {
+
+                    }
+
+                    @Override
+                    public void onAdDismissed() {
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        } else {
+            try {
+                params.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        currentAD++;
     }
 
     void hideInhouseBanner() {
