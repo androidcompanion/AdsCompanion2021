@@ -2274,6 +2274,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         CardView cardView = findViewById(R.id.native_ad_container);
         cardView.setVisibility(View.GONE);
     }
+    void hideInhouseNativeDialog(Dialog dialog) {
+        CardView cardView = dialog.findViewById(R.id.native_ad_container);
+        cardView.setVisibility(View.GONE);
+    }
 
     void hideInhouseNative2() {
         CardView cardView = findViewById(R.id.native_ad_container2);
@@ -3975,7 +3979,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    hideInhouseNativeDialog(dialog);
                     // Inflate Native Ad into Container
                     inflateNativeAdFacebook(nativeAd, dialog.findViewById(R.id._lay_native));
                 }
@@ -4378,7 +4382,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeBannerAd == null || nativeBannerAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    hideInhouseNativeDialog(dialog);
                     inflateNativeBannerAd(nativeBannerAd, dialog.findViewById(R.id._lay_native));
                 }
 
@@ -4756,7 +4760,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    toast(adError.getErrorMessage());
                     showInhouseNativeAd(false, dialog.findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
@@ -4775,7 +4778,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+
+                    hideInhouseNativeDialog(dialog);
                     nativeView.setVisibility(View.VISIBLE);
                     // Inflate Native Ad into Container
                     inflateNativeAdFacebook(nativeAd, dialog.findViewById(R.id._lay_native));
@@ -5117,7 +5121,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeBannerAd == null || nativeBannerAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    hideInhouseNativeDialog(dialog);
                     nativeBannerView.setVisibility(View.VISIBLE);
                     inflateNativeBannerAd(nativeBannerAd, dialog.findViewById(R.id._lay_native));
                 }
