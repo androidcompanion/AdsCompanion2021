@@ -3947,6 +3947,51 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         }
     }
+    void showNativeAd3FBDialog(Dialog dialog) {
+        if (adsPrefernce.showNative3_fb()) {
+            final com.facebook.ads.NativeAd nativeAd;
+            nativeAd = new com.facebook.ads.NativeAd(this, adsPrefernce.gNative3_fb());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    showInhouseNativeAd(false, dialog.findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (nativeAd != ad) {
+                        return;
+                    }
+                    hideInhouseNative();
+                    // Inflate Native Ad into Container
+                    inflateNativeAdFacebook(nativeAd, dialog.findViewById(R.id._lay_native));
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        }
+    }
 
     void showNativeAd2FBExtra() {
         if (adsPrefernce.showNative2_fb()) {
@@ -4284,6 +4329,57 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     }
                     hideInhouseNative();
                     inflateNativeBannerAd(nativeBannerAd, findViewById(R.id._lay_native));
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+                    // Native ad clicked
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+                    // Native ad impression
+                }
+            };
+            // load the ad
+            nativeBannerAd.loadAd(
+                    nativeBannerAd.buildLoadAdConfig()
+                            .withAdListener(nativeAdListener)
+                            .build());
+        }
+    }
+    void showNativeBannerAd3FBDialog(Dialog dialog) {
+        if (adsPrefernce.showAppopen3_fb()) {
+            NativeBannerAd nativeBannerAd;
+            nativeBannerAd = new NativeBannerAd(this, adsPrefernce.gAppopen3_fb());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+                    // Native ad finished downloading all assets
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    showInhouseNativeAd(true, dialog.findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (nativeBannerAd == null || nativeBannerAd != ad) {
+                        return;
+                    }
+                    hideInhouseNative();
+                    inflateNativeBannerAd(nativeBannerAd, dialog.findViewById(R.id._lay_native));
                 }
 
                 @Override
@@ -4648,6 +4744,57 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeView.setVisibility(View.GONE);
         }
     }
+    void showNativeAd3FBDialog(Dialog dialog,View nativeView) {
+        if (adsPrefernce.showNative3_fb()) {
+            nativeView.setVisibility(View.VISIBLE);
+            final com.facebook.ads.NativeAd nativeAd;
+            nativeAd = new com.facebook.ads.NativeAd(this, adsPrefernce.gNative3_fb());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    toast(adError.getErrorMessage());
+                    showInhouseNativeAd(false, dialog.findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            nativeView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            nativeView.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (nativeAd != ad) {
+                        return;
+                    }
+                    hideInhouseNative();
+                    nativeView.setVisibility(View.VISIBLE);
+                    // Inflate Native Ad into Container
+                    inflateNativeAdFacebook(nativeAd, dialog.findViewById(R.id._lay_native));
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+        } else {
+            nativeView.setVisibility(View.GONE);
+        }
+    }
 
     void showNativeBannerAd1FB(View nativeBannerView) {
         if (adsPrefernce.showAppopen1_fb()) {
@@ -4916,6 +5063,63 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     hideInhouseNative();
                     nativeBannerView.setVisibility(View.VISIBLE);
                     inflateNativeBannerAd(nativeBannerAd, findViewById(R.id._lay_native));
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+                    // Native ad clicked
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+                    // Native ad impression
+                }
+            };
+            // load the ad
+            nativeBannerAd.loadAd(
+                    nativeBannerAd.buildLoadAdConfig()
+                            .withAdListener(nativeAdListener)
+                            .build());
+        } else {
+            nativeBannerView.setVisibility(View.GONE);
+        }
+
+    }
+    void showNativeBannerAd3FBDialog(Dialog dialog,View nativeBannerView) {
+        if (adsPrefernce.showAppopen3_fb()) {
+            nativeBannerView.setVisibility(View.VISIBLE);
+            NativeBannerAd nativeBannerAd;
+            nativeBannerAd = new NativeBannerAd(this, adsPrefernce.gAppopen3_fb());
+            NativeAdListener nativeAdListener = new NativeAdListener() {
+
+                @Override
+                public void onMediaDownloaded(Ad ad) {
+                    // Native ad finished downloading all assets
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    showInhouseNativeAd(true, dialog.findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            nativeBannerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            nativeBannerView.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    if (nativeBannerAd == null || nativeBannerAd != ad) {
+                        return;
+                    }
+                    hideInhouseNative();
+                    nativeBannerView.setVisibility(View.VISIBLE);
+                    inflateNativeBannerAd(nativeBannerAd, dialog.findViewById(R.id._lay_native));
                 }
 
                 @Override
@@ -5249,9 +5453,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             if (adsPrefernce.showNative3_fb()) {
                                 TemplateView template = dialog.findViewById(R.id.my_template);
                                 if (template.getTemplateTypeName().equals("small_template")) {
-                                    showNativeBannerAd3FBExtra();
+                                    showNativeBannerAd3FBDialog(dialog);
                                 } else {
-                                    showNativeAd3FBExtra();
+                                    showNativeAd3FBDialog(dialog);
                                 }
                             }
                         }
@@ -5262,9 +5466,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (adsPrefernce.showNative3_fb()) {
                 TemplateView template = dialog.findViewById(R.id.my_template);
                 if (template.getTemplateTypeName().equals("small_template")) {
-                    showNativeBannerAd3FBExtra();
+                    showNativeBannerAd3FBDialog(dialog);
                 } else {
-                    showNativeAd3FBExtra();
+                    showNativeAd3FBDialog(dialog);
                 }
             }
         }
@@ -5289,9 +5493,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             if (adsPrefernce.showNative3_fb()) {
                                 TemplateView template = dialog.findViewById(R.id.my_template);
                                 if (template.getTemplateTypeName().equals("small_template")) {
-                                    showNativeBannerAd3FBExtra(nativeDialogView);
+                                    showNativeBannerAd3FBDialog(dialog,nativeDialogView);
                                 } else {
-                                    showNativeAd3FBExtra(nativeDialogView);
+                                    showNativeAd3FBDialog(dialog,nativeDialogView);
                                 }
                             } else {
                                 nativeDialogView.setVisibility(View.GONE);
@@ -5309,9 +5513,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         } else if (adsPrefernce.showNative3_fb()) {
             TemplateView template = dialog.findViewById(R.id.my_template);
             if (template.getTemplateTypeName().equals("small_template")) {
-                showNativeBannerAd3FBExtra(nativeDialogView);
+                showNativeBannerAd3FBDialog(dialog,nativeDialogView);
             } else {
-                showNativeAd3FBExtra(nativeDialogView);
+                showNativeAd3FBDialog(dialog,nativeDialogView);
             }
         } else {
             nativeDialogView.setVisibility(View.GONE);
@@ -5378,7 +5582,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 appOpenAd1.show(BaseAdsClass.this);
                 appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                     public void onAdDismissedFullScreenContent() {
-                        loadAppOpen1();
                         try {
                             callable.call();
                         } catch (Exception e) {
