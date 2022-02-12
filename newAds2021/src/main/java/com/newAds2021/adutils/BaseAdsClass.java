@@ -2149,8 +2149,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void showInterstitial1Back(Activity context, Callable<Void> params) {
-        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
-            if (mInterstitialAd1 != null) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) ) {
+            if (mInterstitialAd1 != null && adsPrefernce.showInter1()) {
                 mInterstitialAd1.show((Activity) context);
                 mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
@@ -2188,8 +2188,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void showInterstitial2Back(Activity context, Callable<Void> params) {
-        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
-            if (mInterstitialAd2 != null) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this)) {
+            if (mInterstitialAd2 != null && adsPrefernce.showInter2()) {
                 mInterstitialAd2.show((Activity) context);
                 mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
@@ -2227,8 +2227,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void showInterstitial3Back(Activity context, Callable<Void> params) {
-        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
-            if (mInterstitialAd3 != null) {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this)) {
+            if (mInterstitialAd3 != null && adsPrefernce.showInter3()) {
                 mInterstitialAd3.show((Activity) context);
                 mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
@@ -3901,6 +3901,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         }
     }
+
     void showNativeAd3FB() {
         if (adsPrefernce.showNative3_fb()) {
             final com.facebook.ads.NativeAd nativeAd;
@@ -3992,6 +3993,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         }
     }
+
     void showNativeAd3FBExtra() {
         if (adsPrefernce.showNative3_fb()) {
             final com.facebook.ads.NativeAd nativeAd;
@@ -4090,6 +4092,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     void showNativeBannerAd2FB() {
         if (adsPrefernce.showAppopen2_fb()) {
             NativeBannerAd nativeBannerAd;
@@ -4142,6 +4145,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     void showNativeBannerAd2FBExtra() {
         if (adsPrefernce.showAppopen2_fb()) {
             NativeBannerAd nativeBannerAd;
@@ -4194,6 +4198,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     void showNativeBannerAd3FBExtra() {
         if (adsPrefernce.showAppopen3_fb()) {
             NativeBannerAd nativeBannerAd;
@@ -4490,6 +4495,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeView.setVisibility(View.GONE);
         }
     }
+
     void showNativeAd2FBExtra(View nativeView) {
         if (adsPrefernce.showNative2_fb()) {
             nativeView.setVisibility(View.VISIBLE);
@@ -4540,6 +4546,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeView.setVisibility(View.GONE);
         }
     }
+
     void showNativeAd3FBExtra(View nativeView) {
         if (adsPrefernce.showNative3_fb()) {
             nativeView.setVisibility(View.VISIBLE);
@@ -4757,6 +4764,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     void showNativeBannerAd2FBExtra(View nativeBannerView) {
         if (adsPrefernce.showAppopen2_fb()) {
             nativeBannerView.setVisibility(View.VISIBLE);
@@ -4814,6 +4822,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
+
     void showNativeBannerAd3FBExtra(View nativeBannerView) {
         if (adsPrefernce.showAppopen3_fb()) {
             nativeBannerView.setVisibility(View.VISIBLE);
@@ -5105,6 +5114,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+
     public void showNativeAd2Extra(View nativeExtraView) {
         if (isConnected(this) && adsPrefernce.showNative2()) {
             nativeExtraView.setVisibility(View.VISIBLE);
@@ -5128,7 +5138,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                 showNativeBannerAd2FBExtra();
                             } else {
                                 showNativeAd2FBExtra();
-                            }                           }
+                            }
+                        }
 
                         @Override
                         public void onAdLoaded() {
@@ -5166,7 +5177,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                 showNativeBannerAd3FBExtra();
                             } else {
                                 showNativeAd3FBExtra();
-                            }                           }
+                            }
+                        }
 
                         @Override
                         public void onAdLoaded() {
@@ -5178,6 +5190,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adLoader.loadAd(new AdRequest.Builder().build());
         }
     }
+
     public void showNativeAd3Extra(View nativeExtraView) {
         if (isConnected(this) && adsPrefernce.showNative3()) {
             nativeExtraView.setVisibility(View.VISIBLE);
@@ -5229,11 +5242,24 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             template.setVisibility(View.VISIBLE);
                             template.setNativeAd(nativeAd);
                         }
+                    }).withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            if (adsPrefernce.showNative3_fb()) {
+                                TemplateView template = dialog.findViewById(R.id.my_template);
+                                if (template.getTemplateTypeName().equals("small_template")) {
+                                    showNativeBannerAd3FBExtra();
+                                } else {
+                                    showNativeAd3FBExtra();
+                                }
+                            }
+                        }
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
-        }else {
-            if (adsPrefernce.showNative3_fb()){
+        } else {
+            if (adsPrefernce.showNative3_fb()) {
                 TemplateView template = dialog.findViewById(R.id.my_template);
                 if (template.getTemplateTypeName().equals("small_template")) {
                     showNativeBannerAd3FBExtra();
@@ -5260,7 +5286,16 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             super.onAdFailedToLoad(loadAdError);
-                            nativeDialogView.setVisibility(View.GONE);
+                            if (adsPrefernce.showNative3_fb()) {
+                                TemplateView template = dialog.findViewById(R.id.my_template);
+                                if (template.getTemplateTypeName().equals("small_template")) {
+                                    showNativeBannerAd3FBExtra(nativeDialogView);
+                                } else {
+                                    showNativeAd3FBExtra(nativeDialogView);
+                                }
+                            } else {
+                                nativeDialogView.setVisibility(View.GONE);
+                            }
                         }
 
                         @Override
@@ -5271,14 +5306,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
-        }  else if (adsPrefernce.showNative3_fb()){
+        } else if (adsPrefernce.showNative3_fb()) {
             TemplateView template = dialog.findViewById(R.id.my_template);
             if (template.getTemplateTypeName().equals("small_template")) {
                 showNativeBannerAd3FBExtra(nativeDialogView);
             } else {
                 showNativeAd3FBExtra(nativeDialogView);
             }
-        }else {
+        } else {
             nativeDialogView.setVisibility(View.GONE);
         }
     }
@@ -5364,7 +5399,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else {
                 showInterstitial1FB(context, callable);
             }
-
         } else {
             try {
                 callable.call();

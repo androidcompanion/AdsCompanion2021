@@ -19,10 +19,7 @@ public class NewAds2021 extends Application {
                     @Override
                     public void onInitializationComplete(InitializationStatus initializationStatus) {}
                 });
-
-
         AudienceNetworkAds.initialize(this);
-
         appOpenManager = new AppOpenManager(this);
 
 
