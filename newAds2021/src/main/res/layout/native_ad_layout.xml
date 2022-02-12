@@ -20,5 +20,4 @@
         android:background="@android:color/white"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp" />
-
 </RelativeLayout>

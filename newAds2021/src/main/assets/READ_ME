@@ -85,7 +85,6 @@ AdsPrefernce adsPrefernce = new AdsPrefernce(this);
 31-12-2021 - 22910fc7c0
 Native Bug Fixed (FinalIHAds)
 
-
 1-1-20222 - 95dbf1e72b
 AppOpen Ad Added-checked Ok
 AppOpen2 -> AutoAd
@@ -96,7 +95,7 @@ InterDilog Validation added
 22-1-2022 - 9642149c05
 Native AD Bg  validation set
 
-24-1-2022 -
+24-1-2022 - 962dfd5072
 Loading Removed from BackPressInter
 
 

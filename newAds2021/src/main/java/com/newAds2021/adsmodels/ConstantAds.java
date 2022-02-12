@@ -17,17 +17,20 @@ public class ConstantAds {
     public static int adCountDefault = 1;
     public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
-    public static boolean PRELOAD_NATIVE = false;
     public static boolean PRELOAD_INTERSTITIAL = false;
     public static boolean PRELOAD_REWARD = false;
     public static boolean PRELOAD_APPOPEN = false;
     public static String AD_MESSAGE = "Showing Ad...";
     public static String adUrlId = "";
     public static String ihAdsID = "";
+    public static String fbAdsID = "";
     public static String ihInterID = "";
     public static String ihNativeID = "";
     public static String setIHAdsID(String url){
         return ihAdsID = url;
+    }
+    public static String setFBAdsID(String url){
+        return fbAdsID = url;
     }
     public static String setIHInterID(String url){
         return ihInterID = url;
@@ -40,9 +43,6 @@ public class ConstantAds {
     }
     public static Boolean preloadInterstitial(Boolean preload){
         return PRELOAD_INTERSTITIAL = preload;
-    }
-    public static Boolean preloadNative(Boolean preload){
-        return PRELOAD_NATIVE = preload;
     }
     public static int setNativeButtonBg(int drawable){
         return ad_bg_drawable = drawable;

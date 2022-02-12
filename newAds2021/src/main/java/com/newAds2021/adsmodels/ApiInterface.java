@@ -7,6 +7,8 @@ public interface ApiInterface {
 
     @GET("exec")
     Call<AdsDetails> getAds();
+    @GET("exec")
+    Call<AdsDetailsFB> getAdsFB();
 
     @GET("exec")
     Call<IHAdsData> getIHAds();
