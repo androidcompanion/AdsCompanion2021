@@ -3461,14 +3461,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    Log.e("showNativeBanner1","onError");
                     showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
+                            Log.e("showNativeBanner1","OnAdLoaded");
                             nativeContainer.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAdShowFailed() {
+                            Log.e("showNativeBanner1","onAdShowFailed");
                             nativeContainer.setVisibility(View.GONE);
                         }
                     });
@@ -3519,14 +3522,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    Log.e("showNativeBanner2","onError");
                     showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
+                            Log.e("showNativeBanner2","onAdLoaded");
                             nativeContainer.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAdShowFailed() {
+                            Log.e("showNativeBanner2","onAdShowFailed");
                             nativeContainer.setVisibility(View.GONE);
                         }
                     });
@@ -3577,14 +3583,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    Log.e("showNativeBanner3","onError");
                     showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
+                            Log.e("showNativeBanner3","onAdLoaded");
                             nativeContainer.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAdShowFailed() {
+                            Log.e("showNativeBanner3","onAdShowFailed");
                             nativeContainer.setVisibility(View.GONE);
                         }
                     });
