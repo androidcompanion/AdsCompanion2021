@@ -104,13 +104,21 @@ FB Ads Added
 16-2-2022 - e327a7f545
 Native Ad Addpter set with fb and layout hode
 
-18-2-2022
+18-2-2022 - d7704eade8
 Splash Bug FIxed
 
+//inSplash OnCreate
 if(firsttime){
 ....
 }else{
 loadSplashAd()
+}
+
+//inDelayHandler
+if(firsttime){
+showSplashAdFirst();
+}else{
+showSplashAdSecond();
 }
 
 

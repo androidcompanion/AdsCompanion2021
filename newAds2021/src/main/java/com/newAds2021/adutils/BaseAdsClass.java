@@ -1110,74 +1110,77 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void serviceDialog() {
 
-        if (String.valueOf(adsPrefernce.appAdDialogCount()).contains(String.valueOf(currentAD)) && !serviceDialog.isShowing()) {
-            this.serviceDialog.setCancelable(false);
-            this.serviceDialog.setContentView(R.layout.dialog_service);
-            Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-            LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
-            LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
-            LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
+        if (adsPrefernce.appAdDialogCount() != 0) {
+            if (String.valueOf(adsPrefernce.appAdDialogCount()).contains(String.valueOf(currentAD)) && !serviceDialog.isShowing()) {
+                this.serviceDialog.setCancelable(false);
+                this.serviceDialog.setContentView(R.layout.dialog_service);
+                Objects.requireNonNull(this.serviceDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+                LinearLayout lay_updateApp = this.serviceDialog.findViewById(R.id.lay_updateApp);
+                LinearLayout lay_message = this.serviceDialog.findViewById(R.id.lay_message);
+                LinearLayout lay_ads = this.serviceDialog.findViewById(R.id.lay_ads);
 
-            ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
-            TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
+                ImageView iv_ad_icon_title = this.serviceDialog.findViewById(R.id.iv_ad_icon_title);
+                TextView tv_dialog_title = this.serviceDialog.findViewById(R.id.tv_dialog_title);
 
-            //ads
-            TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
-            ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
-            ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
-            TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
-            TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
-            TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
-            TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
+                //ads
+                TextView tv_ad_message = this.serviceDialog.findViewById(R.id.tv_ad_message);
+                ImageView iv_ad_banner = this.serviceDialog.findViewById(R.id.iv_ad_banner);
+                ImageView iv_app_icon = this.serviceDialog.findViewById(R.id.iv_app_icon);
+                TextView tv_app_name = this.serviceDialog.findViewById(R.id.tv_app_name);
+                TextView tv_app_shortdesc = this.serviceDialog.findViewById(R.id.tv_app_shortdesc);
+                TextView tv_app_download = this.serviceDialog.findViewById(R.id.tv_app_download);
+                TextView tv_app_cancel = this.serviceDialog.findViewById(R.id.tv_app_cancel);
 
 
-            iv_ad_icon_title.setVisibility(View.VISIBLE);
-            lay_updateApp.setVisibility(View.GONE);
-            lay_message.setVisibility(View.GONE);
-            lay_ads.setVisibility(View.VISIBLE);
-            tv_dialog_title.setText(adsPrefernce.adDialogTitle());
-            tv_app_download.setText(adsPrefernce.adButtonText());
+                iv_ad_icon_title.setVisibility(View.VISIBLE);
+                lay_updateApp.setVisibility(View.GONE);
+                lay_message.setVisibility(View.GONE);
+                lay_ads.setVisibility(View.VISIBLE);
+                tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+                tv_app_download.setText(adsPrefernce.adButtonText());
 
-            if (adsPrefernce.adShowCancel()) {
-                tv_app_cancel.setVisibility(View.VISIBLE);
-            } else {
-                tv_app_cancel.setVisibility(View.GONE);
-            }
-
-            tv_ad_message.setText(adsPrefernce.adMessage());
-            if (!this.isFinishing() && !this.isDestroyed()) {
-                Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
-                Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
-            }
-            tv_app_name.setText(adsPrefernce.adAppName());
-            tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
-
-            tv_app_download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
-                    startActivity(intent);
+                if (adsPrefernce.adShowCancel()) {
+                    tv_app_cancel.setVisibility(View.VISIBLE);
+                } else {
+                    tv_app_cancel.setVisibility(View.GONE);
                 }
-            });
 
-            tv_app_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    serviceDialog.dismiss();
+                tv_ad_message.setText(adsPrefernce.adMessage());
+                if (!this.isFinishing() && !this.isDestroyed()) {
+                    Glide.with(this).load(adsPrefernce.adBannerUrl()).into(iv_ad_banner);
+                    Glide.with(this).load(adsPrefernce.adIconUrl()).into(iv_app_icon);
                 }
-            });
+                tv_app_name.setText(adsPrefernce.adAppName());
+                tv_app_shortdesc.setText(adsPrefernce.adShortDesc());
 
-            if (adsPrefernce.adAppUrl().contains("play.google.com")) {
-                String link = adsPrefernce.adAppUrl();
-                String[] s1 = link.split("id=");
-                String[] s2 = s1[1].split("&");
-                String app_id = s2[0].toString();
-                if (!isAppInstalled(app_id)) {
+                tv_app_download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPrefernce.adAppUrl()));
+                        startActivity(intent);
+                    }
+                });
+
+                tv_app_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        serviceDialog.dismiss();
+                    }
+                });
+
+                if (adsPrefernce.adAppUrl().contains("play.google.com")) {
+                    String link = adsPrefernce.adAppUrl();
+                    String[] s1 = link.split("id=");
+                    String[] s2 = s1[1].split("&");
+                    String app_id = s2[0].toString();
+                    if (!isAppInstalled(app_id)) {
+                        this.serviceDialog.show();
+                    }
+                } else {
                     this.serviceDialog.show();
                 }
-            } else {
-                this.serviceDialog.show();
             }
+
         }
 
 
@@ -1262,42 +1265,44 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void loadInterstitial1FB() {
-        if (isConnected(this) && adsPrefernce.showInter1_fb() && interstitialAd1 == null) {
-            interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
-            InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-                @Override
-                public void onInterstitialDisplayed(Ad ad) {
+        if (isConnected(this) && adsPrefernce.showInter1_fb()) {
+            if (interstitialAd1 == null) {
+                interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
+                InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+                    @Override
+                    public void onInterstitialDisplayed(Ad ad) {
 
-                }
+                    }
 
-                @Override
-                public void onInterstitialDismissed(Ad ad) {
-                    loadInterstitial1FB();
-                }
+                    @Override
+                    public void onInterstitialDismissed(Ad ad) {
+                        loadInterstitial1FB();
+                    }
 
-                @Override
-                public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    interstitialAd1 = null;
-                }
+                    @Override
+                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                        interstitialAd1 = null;
+                    }
 
-                @Override
-                public void onAdLoaded(Ad ad) {
-                }
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+                    }
 
-                @Override
-                public void onAdClicked(Ad ad) {
+                    @Override
+                    public void onAdClicked(Ad ad) {
 
-                }
+                    }
 
-                @Override
-                public void onLoggingImpression(Ad ad) {
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
 
-                }
-            };
-            interstitialAd1.loadAd(
-                    interstitialAd1.buildLoadAdConfig()
-                            .withAdListener(interstitialAdListener)
-                            .build());
+                    }
+                };
+                interstitialAd1.loadAd(
+                        interstitialAd1.buildLoadAdConfig()
+                                .withAdListener(interstitialAdListener)
+                                .build());
+            }
         }
     }
 
@@ -1908,7 +1913,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 @Override
                 public void onAdFailedToShowFullScreenContent(AdError adError) {
                     mInterstitialAd1 = null;
-                    showInterstitial1FB(context, params);
+                    try {
+                        params.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -2097,111 +2106,145 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 });
             }
         } else {
-            try {
-                params.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            showInhouseInterAd(BaseAdsClass.this, new InhouseInterstitialListener() {
+                @Override
+                public void onAdShown() {
+
+                }
+
+                @Override
+                public void onAdDismissed() {
+                    try {
+                        params.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         }
     }
 
     void showInterstitial1FBSplash(Activity context, Callable<Void> params) {
         if (isConnected(this)) {
-            if (adsPrefernce.showInter1_fb() && interstitialAd1 == null) {
-                interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
-                InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+            if (adsPrefernce.showInter1_fb()) {
+                if (interstitialAd1 == null){
+                    interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
+                    InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+                        @Override
+                        public void onInterstitialDisplayed(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onInterstitialDismissed(Ad ad) {
+                            loadInterstitial1FB();
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                            interstitialAd1 = null;
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onAdLoaded(Ad ad) {
+                            if (interstitialAd1 != null && interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
+                                try {
+                                    params.call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                interstitialAd1.show();
+                                interstitialAd1 = null;
+                            } else {
+                                showInhouseInterAd(context, new InhouseInterstitialListener() {
+                                    @Override
+                                    public void onAdShown() {
+
+                                    }
+
+                                    @Override
+                                    public void onAdDismissed() {
+                                        try {
+                                            params.call();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onAdClicked(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onLoggingImpression(Ad ad) {
+
+                        }
+                    };
+                    interstitialAd1.loadAd(
+                            interstitialAd1.buildLoadAdConfig()
+                                    .withAdListener(interstitialAdListener)
+                                    .build());
+                }else {
+                    if (interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
+                        try {
+                            params.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        interstitialAd1.show();
+                        interstitialAd1 = null;
+                    } else {
+                        showInhouseInterAd(context, new InhouseInterstitialListener() {
+                            @Override
+                            public void onAdShown() {
+
+                            }
+
+                            @Override
+                            public void onAdDismissed() {
+                                try {
+                                    params.call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
-                    public void onInterstitialDisplayed(Ad ad) {
+                    public void onAdShown() {
 
                     }
 
                     @Override
-                    public void onInterstitialDismissed(Ad ad) {
-                        loadInterstitial1FB();
+                    public void onAdDismissed() {
                         try {
                             params.call();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-
-                    @Override
-                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                        interstitialAd1 = null;
-                    }
-
-                    @Override
-                    public void onAdLoaded(Ad ad) {
-                        if (interstitialAd1 != null && interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
-                            try {
-                                params.call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            interstitialAd1.show();
-                            interstitialAd1 = null;
-                        } else {
-                            showInhouseInterAd(context, new InhouseInterstitialListener() {
-                                @Override
-                                public void onAdShown() {
-
-                                }
-
-                                @Override
-                                public void onAdDismissed() {
-                                    try {
-                                        params.call();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-
-                    }
-
-                    @Override
-                    public void onLoggingImpression(Ad ad) {
-
-                    }
-                };
-                interstitialAd1.loadAd(
-                        interstitialAd1.buildLoadAdConfig()
-                                .withAdListener(interstitialAdListener)
-                                .build());
-            } else {
-                if (interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
-                    try {
-                        params.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    interstitialAd1.show();
-                    interstitialAd1 = null;
-                } else {
-                    showInhouseInterAd(context, new InhouseInterstitialListener() {
-                        @Override
-                        public void onAdShown() {
-
-                        }
-
-                        @Override
-                        public void onAdDismissed() {
-                            try {
-                                params.call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
+                });
             }
-
-
         } else {
             try {
                 params.call();
@@ -6228,7 +6271,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                                 public void onAdFailedToShowFullScreenContent(AdError adError) {
                                     appOpenAd1 = null;
-                                    showInterstitial1FBSplash(context, callable);
+                                    showInhouseInterAd(context, new InhouseInterstitialListener() {
+                                        @Override
+                                        public void onAdShown() {
+
+                                        }
+
+                                        @Override
+                                        public void onAdDismissed() {
+                                            try {
+                                                callable.call();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                 }
 
                                 public void onAdShowedFullScreenContent() {
@@ -6349,11 +6406,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else if (adsPrefernce.showInter1_fb()) {
                 showInterstitial1FB(context, callable);
             } else {
-                try {
-                    callable.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                showInhouseInterAd(BaseAdsClass.this, new InhouseInterstitialListener() {
+                    @Override
+                    public void onAdShown() {
+
+                    }
+
+                    @Override
+                    public void onAdDismissed() {
+                        try {
+                            callable.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } else {
             try {
@@ -6369,30 +6436,44 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showAppOpen1Splash(Activity context, Callable<Void> callable) {
-            if (appOpenAd1 != null) {
-                appOpenAd1.show(BaseAdsClass.this);
-                appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    public void onAdDismissedFullScreenContent() {
-                        try {
-                            callable.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        if (appOpenAd1 != null) {
+            appOpenAd1.show(BaseAdsClass.this);
+            appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
+                public void onAdDismissedFullScreenContent() {
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    appOpenAd1 = null;
+                    showInhouseInterAd(BaseAdsClass.this, new InhouseInterstitialListener() {
+                        @Override
+                        public void onAdShown() {
+
                         }
 
-                    }
+                        @Override
+                        public void onAdDismissed() {
+                            try {
+                                callable.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
 
-                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                        appOpenAd1 = null;
-                        showInterstitial1FB(context, callable);
-                    }
-
-                    public void onAdShowedFullScreenContent() {
-                        appOpenAd1 = null;
-                    }
-                });
-            } else {
-                showInterstitial1FB(context, callable);
-            }
+                public void onAdShowedFullScreenContent() {
+                    appOpenAd1 = null;
+                }
+            });
+        } else {
+            showInterstitial1FB(context, callable);
+        }
 
     }
 
