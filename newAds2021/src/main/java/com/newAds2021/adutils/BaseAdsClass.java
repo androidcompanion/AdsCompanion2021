@@ -46,6 +46,7 @@ import com.facebook.ads.NativeAdLayout;
 import com.facebook.ads.NativeAdListener;
 import com.facebook.ads.NativeBannerAd;
 import com.facebook.ads.NativeBannerAdView;
+import com.facebook.ads.internal.api.InitApi;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -5160,10 +5161,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             nativeView.setVisibility(View.VISIBLE);
             final com.facebook.ads.NativeAd nativeAd;
             nativeAd = new com.facebook.ads.NativeAd(this, adsPrefernce.gNative1_fb());
+
             NativeAdListener nativeAdListener = new NativeAdListener() {
                 @Override
                 public void onMediaDownloaded(Ad ad) {
                 }
+
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
