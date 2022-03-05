@@ -20,8 +20,6 @@ public class NewAds2021 extends Application {
                     public void onInitializationComplete(InitializationStatus initializationStatus) {}
                 });
         AudienceNetworkAds.initialize(this);
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(getApplication());
         appOpenManager = new AppOpenManager(this);
 
 
