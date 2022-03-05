@@ -5162,48 +5162,49 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             final com.facebook.ads.NativeAd nativeAd;
             nativeAd = new com.facebook.ads.NativeAd(this, adsPrefernce.gNative1_fb());
 
-            NativeAdListener nativeAdListener = new NativeAdListener() {
-                @Override
-                public void onMediaDownloaded(Ad ad) {
-                }
-
-
-                @Override
-                public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeView.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeView.setVisibility(View.GONE);
-                        }
-                    });
-                }
-
-                @Override
-                public void onAdLoaded(Ad ad) {
-                    if (nativeAd != ad) {
-                        return;
-                    }
-                    hideInhouseNative();
-                    nativeView.setVisibility(View.VISIBLE);
-                    // Inflate Native Ad into Container
-                    inflateNativeAdFacebook(nativeAd, findViewById(R.id._lay_native));
-                }
-
-                @Override
-                public void onAdClicked(Ad ad) {
-                }
-
-                @Override
-                public void onLoggingImpression(Ad ad) {
-
-                }
-            };
-            nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+//            NativeAdListener nativeAdListener = new NativeAdListener() {
+//                @Override
+//                public void onMediaDownloaded(Ad ad) {
+//                }
+//
+//
+//                @Override
+//                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+//                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+//                        @Override
+//                        public void onAdLoaded() {
+//                            nativeView.setVisibility(View.VISIBLE);
+//                        }
+//
+//                        @Override
+//                        public void onAdShowFailed() {
+//                            nativeView.setVisibility(View.GONE);
+//                        }
+//                    });
+//                }
+//
+//                @Override
+//                public void onAdLoaded(Ad ad) {
+//                    if (nativeAd != ad) {
+//                        return;
+//                    }
+//                    hideInhouseNative();
+//                    nativeView.setVisibility(View.VISIBLE);
+//                    // Inflate Native Ad into Container
+//                    inflateNativeAdFacebook(nativeAd, findViewById(R.id._lay_native));
+//                }
+//
+//                @Override
+//                public void onAdClicked(Ad ad) {
+//                }
+//
+//                @Override
+//                public void onLoggingImpression(Ad ad) {
+//
+//                }
+//            };
+//            nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
+            nativeAd.loadAd(nativeAd.buildLoadAdConfig().build());
         } else {
             nativeView.setVisibility(View.GONE);
         }
