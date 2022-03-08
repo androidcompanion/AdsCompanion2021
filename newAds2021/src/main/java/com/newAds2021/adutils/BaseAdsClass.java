@@ -3497,7 +3497,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeView.setVisibility(View.VISIBLE);
                     // Inflate Native Ad into Container
@@ -3550,7 +3550,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeView.setVisibility(View.VISIBLE);
                     // Inflate Native Ad into Container
@@ -3603,7 +3603,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeView.setVisibility(View.VISIBLE);
                     // Inflate Native Ad into Container
@@ -3662,7 +3662,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeBannerAd == null || nativeBannerAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeBannerView.setVisibility(View.VISIBLE);
                     inflateNativeBannerAd(nativeBannerAd, nativeBannerView);
@@ -3724,7 +3724,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeBannerAd == null || nativeBannerAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeBannerView.setVisibility(View.VISIBLE);
                     inflateNativeBannerAd(nativeBannerAd, nativeBannerView);
@@ -3786,7 +3786,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (nativeBannerAd == null || nativeBannerAd != ad) {
                         return;
                     }
-                    hideInhouseNative();
+                    cardView.setVisibility(View.GONE);
                     nativeContainer.setVisibility(View.VISIBLE);
                     nativeBannerView.setVisibility(View.VISIBLE);
                     inflateNativeBannerAd(nativeBannerAd, nativeBannerView);

@@ -20,6 +20,7 @@ public class NewAds2021 extends Application {
                     public void onInitializationComplete(InitializationStatus initializationStatus) {}
                 });
         AudienceNetworkAds.initialize(this);
+//        AudienceNetworkAds.initialize(getApplicationContext());
         appOpenManager = new AppOpenManager(this);
 
 
