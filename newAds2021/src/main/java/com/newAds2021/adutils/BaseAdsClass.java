@@ -1746,9 +1746,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (interNo == 1) {
             showInterstitial1FB(context, callable);
         } else if (interNo == 2) {
-            showInterstitial2(context, callable);
+            showInterstitial2FB(context, callable);
         } else if (interNo == 3) {
-            showInterstitial3(context, callable);
+            showInterstitial3FB(context, callable);
         } else {
             try {
                 callable.call();
@@ -1829,7 +1829,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
             if (mInterstitialAd1 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd1.show((Activity) context);
@@ -1936,7 +1936,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
             if (mInterstitialAd2 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd2.show((Activity) context);
@@ -2009,7 +2009,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd3.show((Activity) context);
@@ -2444,6 +2444,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         currentAD++;
     }
 
+
     void hideInhouseBanner() {
         RelativeLayout lay_banner_ad = findViewById(R.id.lay_banner_ad);
         lay_banner_ad.setVisibility(View.GONE);
@@ -2501,6 +2502,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+
     void showBanner1() {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2529,7 +2531,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             });
         }
     }
-
     void showBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2559,7 +2560,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
         }
     }
-
     void showBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2724,7 +2724,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adContainer.addView(adView);
         }
     }
-
 
     void showBanner1(View bannerView) {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
@@ -2980,7 +2979,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             bannerView.setVisibility(View.GONE);
         }
     }
-
 
     void showLargeBanner1() {
         if (isConnected(this) && adsPrefernce.showBanner1()) {
@@ -3465,6 +3463,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             bannerView.setVisibility(View.GONE);
         }
     }
+
 
     void showNativeAd1FBAdapter(View nativeContainer, RelativeLayout nativeView, CardView cardView) {
         if (adsPrefernce.showNative1_fb()) {
@@ -4311,6 +4310,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         nativeAd3Beta = null;
     }
+
 
     public void showNativeAdBeta() {
         if (nativeNo == 1) {
@@ -6194,6 +6194,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+
     public void loadSplashAd() {
         if (isConnected(this)) {
             loadInterstitial1FB();
@@ -6595,12 +6596,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }, delay);
     }
 
-    public void withDelay(int delay, String message, Callable<Void> callable) {
-        showProgress(this, message);
+    public void withDelay(Activity context, int delay, String message, Callable<Void> callable) {
+        showProgress(context, message);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismisProgress();
+                dismisProgress(context);
                 try {
                     callable.call();
                 } catch (Exception e) {

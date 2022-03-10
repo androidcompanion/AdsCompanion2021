@@ -1,5 +1,6 @@
 package com.newAds2021.adsmodels;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,7 +14,7 @@ public class ConstantAds {
 
     public static int ad_bg_drawable = 0;
     public static int native_ad_bg = 0;
-    public static ProgressDialog pDialog = null;
+    public static ProgressDialog pDialogDelay = null;
     public static int adCountDefault = 1;
     public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
@@ -57,18 +58,19 @@ public class ConstantAds {
         return PRELOAD_APPOPEN = preload;
     }
 
-    public static void showProgress(Context context){
-        pDialog = new ProgressDialog(context);
-        pDialog.show();
+    public static void showProgress(Activity context){
+        pDialogDelay = new ProgressDialog(context);
+        pDialogDelay.show();
     }
-    public static void showProgress(Context context, String text){
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage(text);
-        pDialog.show();
+    public static void showProgress(Activity context, String text){
+        pDialogDelay = new ProgressDialog(context);
+        pDialogDelay.setMessage(text);
+        pDialogDelay.show();
     }
-    public static void dismisProgress(){
-        if (pDialog != null){
-            pDialog.dismiss();
+
+    public static void dismisProgress(Activity context){
+        if (pDialogDelay != null && !context.isFinishing() && !context.isDestroyed()){
+            pDialogDelay.dismiss();
         }
     }
 }
