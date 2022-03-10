@@ -6568,7 +6568,14 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         return com.google.android.gms.ads.AdSize.getPortraitAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 
+    public void hideStatusBar(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
     public void exitApp() {
+
+        ConstantAds.IS_APP_KILLED = true;
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -23,6 +23,7 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.newAds2021.adsmodels.AdsPrefernce;
+import com.newAds2021.adsmodels.ConstantAds;
 
 import java.util.Date;
 
@@ -168,7 +169,10 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
               };
 
       appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
-      appOpenAd.show(currentActivity);
+        if (!ConstantAds.IS_APP_KILLED){
+            appOpenAd.show(currentActivity);
+        }
+        ConstantAds.IS_APP_KILLED = false;
 
     } else {
       Log.d(LOG_TAG, "Can not show ad.");

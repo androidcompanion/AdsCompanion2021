@@ -12,6 +12,7 @@ public class ConstantAds {
 //    public static ArrayList<ArrayList<AppsDetails>> arraylist=new ArrayList<>();
     public static Boolean isLightTheme = true;
 
+    public static boolean IS_APP_KILLED = false;
     public static int ad_bg_drawable = 0;
     public static int native_ad_bg = 0;
     public static ProgressDialog pDialogDelay = null;
