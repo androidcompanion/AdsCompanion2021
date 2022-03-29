@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,11 +21,15 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -100,6 +106,11 @@ import retrofit2.Response;
 //"AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec"
 public class BaseAdsClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
+
+    public Dialog popDialog;
+    public static int linkCount = 1;
+    public static int popDialogCount = 0;
+
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
 
@@ -136,6 +147,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     AdRequest adRequest = new AdRequest.Builder().build();
     AdsPrefernce adsPrefernce;
 
+    public static Boolean isCountChecked  = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +157,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
         this.serviceDialog = new Dialog(this);
+        popDialog = new Dialog(this, R.style.full_screen_dialog);
+        if (isCountChecked){
+            discoDialog(this);
+        }
+
 
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         isvalidInstall = verifyInstallerId(this);
@@ -171,6 +189,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         });
 
         loadNativeAdBeta();
+        if(!isCountChecked){
+            isCountChecked = true;
+            adsPrefernce.setAppRunCount();
+        }
 
     }
 
@@ -1494,6 +1516,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+
     public static RewardedAd gRewardedAd1 = null;
     public static RewardedAd gRewardedAd2 = null;
     public static RewardedAd gRewardedAd3 = null;
@@ -1829,7 +1852,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
             if (mInterstitialAd1 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd1.show((Activity) context);
@@ -1936,7 +1959,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
             if (mInterstitialAd2 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd2.show((Activity) context);
@@ -2009,7 +2032,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd3.show((Activity) context);
@@ -2129,7 +2152,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     void showInterstitial1FBSplash(Activity context, Callable<Void> params) {
         if (isConnected(this)) {
             if (adsPrefernce.showInter1_fb()) {
-                if (interstitialAd1 == null){
+                if (interstitialAd1 == null) {
                     interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
                     InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
                         @Override
@@ -2201,7 +2224,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             interstitialAd1.buildLoadAdConfig()
                                     .withAdListener(interstitialAdListener)
                                     .build());
-                }else {
+                } else {
                     if (interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
                         try {
                             params.call();
@@ -2228,8 +2251,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         });
                     }
                 }
-            }
-            else {
+            } else {
                 showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
@@ -2531,6 +2553,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             });
         }
     }
+
     void showBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2560,6 +2583,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
         }
     }
+
     void showBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -6254,7 +6278,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void showSplashAdFirst(Activity context, Callable<Void> callable) {
+    void showSplashAdFirst(Activity context, Callable<Void> callable) {
         if (isConnected(this)) {
             if (adsPrefernce.showAppopen1()) {
                 AppOpenAd.load((Context) this, adsPrefernce.gAppopen1(), new AdRequest.Builder().build(), 1, new AppOpenAd.AppOpenAdLoadCallback() {
@@ -6401,7 +6425,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showSplashAdSecond(Activity context, Callable<Void> callable) {
+    void showSplashAdSecond(Activity context, Callable<Void> callable) {
         if (isConnected(this)) {
             if (adsPrefernce.showAppopen1()) {
                 showAppOpen1Splash(context, callable);
@@ -6568,7 +6592,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         return com.google.android.gms.ads.AdSize.getPortraitAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 
-    public void hideStatusBar(){
+    public void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
@@ -6644,5 +6668,104 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     @Override
     public void networkUnavailable() {
 
+    }
+
+    public void discoDialog(Activity context) {
+        popDialog.setContentView(R.layout.dialog_disco);
+        popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popDialog.setCancelable(true);
+        popDialog.setCanceledOnTouchOutside(true);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(popDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.BOTTOM;
+        lp.windowAnimations = R.style.DialogAnimation;
+        popDialog.getWindow().setAttributes(lp);
+        ImageView ivClose = popDialog.findViewById(R.id.ivClose);
+        ImageView ivBanner = popDialog.findViewById(R.id.ivBanner);
+        AdsPrefernce adsPrefernce = new AdsPrefernce(this);
+
+
+        if(adsPrefernce.allowAccess_fb()){
+            Animation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(800); //You can manage the blinking time with this parameter
+            anim.setStartOffset(20);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(Animation.INFINITE);
+            ivBanner.startAnimation(anim);
+        }
+
+        if (adsPrefernce.showloading_fb()) {
+            if (linkCount == 1) {
+                Glide.with(this).load(adsPrefernce.extrapara1_fb()).placeholder(R.drawable.large_banner).into(ivBanner);
+                linkCount = 2;
+            } else if (linkCount == 2) {
+                Glide.with(this).load(adsPrefernce.extrapara2_fb()).placeholder(R.drawable.large_banner).into(ivBanner);
+                linkCount = 3;
+            } else {
+                Glide.with(this).load(adsPrefernce.extrapara3_fb()).placeholder(R.drawable.large_banner).into(ivBanner);
+                linkCount = 1;
+            }
+        }
+
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!context.isFinishing() && !context.isDestroyed() && popDialog != null) {
+                    popDialog.dismiss();
+                }
+            }
+        });
+
+        ivBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adsPrefernce.showloading_fb()) {
+                    if (linkCount == 2) {
+                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse(adsPrefernce.gRewardedInter1_fb())));
+                    } else if (linkCount == 3) {
+                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse(adsPrefernce.gRewardedInter2_fb())));
+                    } else if (linkCount == 1) {
+                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse(adsPrefernce.gRewardedInter3_fb())));
+                    }
+                } else {
+                    startActivity(new Intent("android.intent.action.VIEW", Uri.parse(adsPrefernce.extrapara3())));
+                }
+
+            }
+        });
+
+        if (adsPrefernce.showAds_fb()) {
+            if (adsPrefernce.adCount_fb() != 0) {
+                if (popDialogCount % adsPrefernce.adCount_fb() == 0) {
+                    if (!context.isFinishing() && !context.isDestroyed() && popDialog != null) {
+                        popDialog.show();
+                    }
+                }
+            }
+            popDialogCount++;
+        }
+
+    }
+    public void showSplashAd(Activity context,Callable<Void> callable){
+        if (adsPrefernce.appRunCount() == 1) {
+            showSplashAdFirst(context, new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                  callable.call();
+                    return null;
+                }
+            });
+        } else {
+            showSplashAdSecond(context, new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    callable.call();
+                    return null;
+                }
+            });
+        }
     }
 }

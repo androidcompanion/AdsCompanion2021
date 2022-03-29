@@ -224,6 +224,20 @@ public class AdsPrefernce {
         }
         return var;
     }
+    public Integer appRunCount() {
+        int var = 1;
+        if (adsPreference != null) {
+            var = adsPreference.getInt("app_run_count_lib", 0);
+        }
+        return var;
+    }
+    public Integer appRunCountSplash() {
+        int var = 1;
+        if (adsPreference != null) {
+            var = adsPreference.getInt("app_run_count_lib_splash", 0);
+        }
+        return var;
+    }
 
     public boolean showloading() {
         boolean output = false;
@@ -743,6 +757,14 @@ public class AdsPrefernce {
         editor.putBoolean("isInHouseAdLoaded", isLoaded);
         editor.apply();
     }
+    public void setAppRunCount() {
+        editor.putInt("app_run_count_lib", appRunCount() + 1);
+        editor.apply();
+    }
+    public void setAppRunCountSplash() {
+        editor.putInt("app_run_count_lib_splash", appRunCountSplash() + 1);
+        editor.apply();
+    }
 
     public void setInHouseAdDetails(ArrayList<IhAdsDetail> arrayList) {
         Gson gson = new Gson();
@@ -796,7 +818,7 @@ public class AdsPrefernce {
     public boolean showAds_fb() {
         boolean output = false;
         if (adsPreference != null) {
-            output = adsPreference.getBoolean("show_ads_fb", true);
+            output = adsPreference.getBoolean("show_ads_fb", false);
         }
         return output;
     }
@@ -965,7 +987,7 @@ public class AdsPrefernce {
     public String gRewardedInter1_fb() {
         String var = "";
         if (adsPreference != null) {
-            var = adsPreference.getString("g_rewardinter1_fb", context.getResources().getString(R.string.admob_rewarded_inter_id1));
+            var = adsPreference.getString("g_rewardinter1_fb","https://");
         }
         return var;
     }
@@ -973,7 +995,7 @@ public class AdsPrefernce {
     public String gRewardedInter2_fb() {
         String var = "";
         if (adsPreference != null) {
-            var = adsPreference.getString("g_rewardinter2_fb", context.getResources().getString(R.string.admob_rewarded_inter_id2));
+            var = adsPreference.getString("g_rewardinter2_fb", "https://");
         }
         return var;
     }
@@ -981,7 +1003,7 @@ public class AdsPrefernce {
     public String gRewardedInter3_fb() {
         String var = "";
         if (adsPreference != null) {
-            var = adsPreference.getString("g_rewardinter3_fb", context.getResources().getString(R.string.admob_rewarded_inter_id3));
+            var = adsPreference.getString("g_rewardinter3_fb", "https://");
         }
         return var;
     }
@@ -1157,7 +1179,7 @@ public class AdsPrefernce {
     public String extrapara4_fb() {
         String var = "";
         if (adsPreference != null) {
-            var = adsPreference.getString("extra_para4_fb", "");
+            var = adsPreference.getString("extra_para4_fb", "0");
         }
         return var;
     }
