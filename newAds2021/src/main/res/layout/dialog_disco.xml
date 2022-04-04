@@ -14,8 +14,8 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:adjustViewBounds="true"
                 android:id="@+id/ivBanner"
-                android:scaleType="centerCrop"
                 android:src="@drawable/large_banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

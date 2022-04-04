@@ -24,7 +24,7 @@ public class AdsPrefernce {
 
     }
 
-    public void setAdsDefaults(Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
+    public void setAdsDefaults(String app_key, Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
 
                                String g_banner1, String g_banner2, String g_banner3,
                                String g_inter1, String g_inter2, String g_inter3,
@@ -54,6 +54,7 @@ public class AdsPrefernce {
     ) {
         if (adsPreference != null) {
             editor = adsPreference.edit();
+            editor.putString("app_key", app_key);
             editor.putBoolean("show_ads", show_ads);
             editor.putInt("ads_count", ads_count);
             editor.putBoolean("show_loading", show_loading);
@@ -129,7 +130,7 @@ public class AdsPrefernce {
             editor.apply();
         }
     }
-    public void setAdsDefaultsFB(Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
+    public void setAdsDefaultsFB(String app_key,Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
 
                                String g_banner1, String g_banner2, String g_banner3,
                                String g_inter1, String g_inter2, String g_inter3,
@@ -149,6 +150,7 @@ public class AdsPrefernce {
     ) {
         if (adsPreference != null) {
             editor = adsPreference.edit();
+            editor.putString("app_key_fb", app_key);
             editor.putBoolean("show_ads_fb", show_ads);
             editor.putInt("ads_count_fb", ads_count);
             editor.putBoolean("show_loading_fb", show_loading);
@@ -268,6 +270,20 @@ public class AdsPrefernce {
         String var = "";
         if (adsPreference != null) {
             var = adsPreference.getString("g_banner1", context.getResources().getString(R.string.admob_banner_id1));
+        }
+        return var;
+    }
+    public String appKey() {
+        String var = "";
+        if (adsPreference != null) {
+            var = adsPreference.getString("app_key", "0");
+        }
+        return var;
+    }
+    public String appKey_fb() {
+        String var = "";
+        if (adsPreference != null) {
+            var = adsPreference.getString("app_key_fb", "0");
         }
         return var;
     }

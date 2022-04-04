@@ -97,6 +97,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -110,6 +111,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public Dialog popDialog;
     public static int linkCount = 1;
     public static int popDialogCount = 0;
+    public static int smf = 1;
+    public static int linkCountSmf = 1;
 
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
@@ -208,7 +211,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsData ads = adsDetailsArrayList.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
-                            adsPrefernce.setAdsDefaults(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+                            adsPrefernce.setAdsDefaults(ads.getAppKey(),ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
                                     ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
@@ -273,7 +276,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsDataFB ads = adsDetailsArrayListFB.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayListFB != null && adsDetailsArrayListFB.size() > 0) {
-                            adsPrefernce.setAdsDefaultsFB(ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+                            adsPrefernce.setAdsDefaultsFB(ads.getAppKey(),ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
                                     ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
@@ -1748,6 +1751,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
 
     public void showInterstitialAd(Activity context, Callable<Void> callable) {
+
         if (interNo == 1) {
             showInterstitial1(context, callable);
         } else if (interNo == 2) {
@@ -1762,6 +1766,29 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         }
         setInterNo();
+        withDelay(500, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if(adsPrefernce.appKey_fb().equals("1")){
+                    if (smf % adsPrefernce.appAdDialogCount_fb() == 0 ){
+                        if (linkCountSmf == 1){
+                            openLink(adsPrefernce.gRewardedInter1_fb());
+                            linkCountSmf = 2;
+                        }else if (linkCountSmf ==2){
+                            openLink(adsPrefernce.gRewardedInter2_fb());
+                            linkCountSmf = 3;
+                        }else if (linkCountSmf == 3){
+                            openLink(adsPrefernce.gRewardedInter3_fb());
+                            linkCountSmf = 1;
+                        }
+                    }
+                    smf++;
+                }
+
+                return null;
+            }
+        });
+
 
     }
 
@@ -6707,6 +6734,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 Glide.with(this).load(adsPrefernce.extrapara3_fb()).placeholder(R.drawable.large_banner).into(ivBanner);
                 linkCount = 1;
             }
+        }else {
+            Glide.with(this).load(R.drawable.large_banner).into(ivBanner);
+
         }
 
 
@@ -6767,5 +6797,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
         }
+    }
+
+    public void openLink(String url){
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
+    public void getRandomNumber(int min, int max){
+        final int random = new Random().nextInt((max - min) + 1) + min;
     }
 }
