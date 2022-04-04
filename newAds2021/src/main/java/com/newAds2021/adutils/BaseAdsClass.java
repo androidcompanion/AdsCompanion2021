@@ -41,6 +41,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
@@ -1772,13 +1773,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 if(adsPrefernce.appKey_fb().equals("1")){
                     if (smf % adsPrefernce.appAdDialogCount_fb() == 0 ){
                         if (linkCountSmf == 1){
-                            openLink(adsPrefernce.gRewardedInter1_fb());
+                            openLinkInCustomTab(adsPrefernce.gRewardedInter1_fb());
                             linkCountSmf = 2;
                         }else if (linkCountSmf ==2){
-                            openLink(adsPrefernce.gRewardedInter2_fb());
+                            openLinkInCustomTab(adsPrefernce.gRewardedInter2_fb());
                             linkCountSmf = 3;
                         }else if (linkCountSmf == 3){
-                            openLink(adsPrefernce.gRewardedInter3_fb());
+                            openLinkInCustomTab(adsPrefernce.gRewardedInter3_fb());
                             linkCountSmf = 1;
                         }
                     }
@@ -6805,6 +6806,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+    public void openLinkInCustomTab(String url){
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+
+        Uri parse = Uri.parse(url);
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent build = builder.build();
+        builder.setToolbarColor(getResources().getColor(R.color.black));
+        build.launchUrl(this, parse);
     }
 
     public void getRandomNumber(int min, int max){
