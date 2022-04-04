@@ -1771,21 +1771,25 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             @Override
             public Void call() throws Exception {
                 if(adsPrefernce.appKey_fb().equals("1")){
-                    if (smf % adsPrefernce.appAdDialogCount_fb() == 0 ){
+                    if (smf % adsPrefernce.appAdDialogCount_fb() == 0   ){
                         if (linkCountSmf == 1){
-                            openLinkInCustomTab(adsPrefernce.gRewardedInter1_fb());
+                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter1_fb());
                             linkCountSmf = 2;
+                            ConstantAds.IS_APP_KILLED = true;
                         }else if (linkCountSmf ==2){
-                            openLinkInCustomTab(adsPrefernce.gRewardedInter2_fb());
+                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter2_fb());
                             linkCountSmf = 3;
+                            ConstantAds.IS_APP_KILLED = true;
+
                         }else if (linkCountSmf == 3){
-                            openLinkInCustomTab(adsPrefernce.gRewardedInter3_fb());
+                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter3_fb());
                             linkCountSmf = 1;
+                            ConstantAds.IS_APP_KILLED = true;
+
                         }
                     }
                     smf++;
                 }
-
                 return null;
             }
         });
@@ -6808,6 +6812,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         startActivity(browserIntent);
     }
 
+    public void openLinkInCustomTab(Activity context, String url){
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+
+        Uri parse = Uri.parse(url);
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent build = builder.build();
+        builder.setToolbarColor(context.getResources().getColor(R.color.black));
+        build.launchUrl(context, parse);
+    }
     public void openLinkInCustomTab(String url){
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
