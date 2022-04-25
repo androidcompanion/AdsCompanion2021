@@ -6565,6 +6565,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 showInterstitial1Splash(context, callable);
             } else if (adsPrefernce.showInter1_fb()) {
                 showInterstitial1FB(context, callable);
+            }else {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             try {
