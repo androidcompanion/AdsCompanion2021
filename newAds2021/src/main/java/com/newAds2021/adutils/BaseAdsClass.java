@@ -1,5 +1,6 @@
 package com.newAds2021.adutils;
 
+import static com.newAds2021.adsmodels.ConstantAds.IS_APP_KILLED;
 import static com.newAds2021.adsmodels.ConstantAds.ad_bg_drawable;
 import static com.newAds2021.adsmodels.ConstantAds.dismisProgress;
 import static com.newAds2021.adsmodels.ConstantAds.showProgress;
@@ -44,6 +45,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 
+//import com.applovin.mediation.MaxAd;
+//import com.applovin.mediation.MaxAdListener;
+//import com.applovin.mediation.MaxError;
+//import com.applovin.mediation.ads.MaxInterstitialAd;
+//import com.applovin.sdk.AppLovinSdk;
+//import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.bumptech.glide.Glide;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdOptionsView;
@@ -152,7 +159,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     AdsPrefernce adsPrefernce;
 
     public static Boolean isCountChecked  = false;
-
+//    private MaxInterstitialAd interstitialAd;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,6 +167,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         adsPrefernce = new AdsPrefernce(this);
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
+
+
+
+
         this.serviceDialog = new Dialog(this);
         popDialog = new Dialog(this, R.style.full_screen_dialog);
         if (isCountChecked){
@@ -198,7 +209,70 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adsPrefernce.setAppRunCount();
         }
 
+        // Make sure to set the mediation provider value to "max" to ensure proper functionality
+//        AppLovinSdk.getInstance( this ).setMediationProvider( "max" );
+//        AppLovinSdk.initializeSdk( this, new AppLovinSdk.SdkInitializationListener() {
+//            @Override
+//            public void onSdkInitialized(final AppLovinSdkConfiguration configuration)
+//            {
+//                toast("init done");
+//
+//                // AppLovin SDK is initialized, start loading ads
+//            }
+//        } );
+
     }
+
+//    public void loadMaxInter(){
+//        toast("load ad");
+////        toast("load ad");
+//        //applovin
+//        interstitialAd = new MaxInterstitialAd( "39f6125a2b75173e", this );
+//        interstitialAd.setListener(new MaxAdListener() {
+//            @Override
+//            public void onAdLoaded(MaxAd ad) {
+//                toast("loaded");
+//                if (interstitialAd.isReady()){
+//                    interstitialAd.showAd();
+//                }
+//            }
+//
+//            @Override
+//            public void onAdDisplayed(MaxAd ad) {
+//
+//            }
+//
+//            @Override
+//            public void onAdHidden(MaxAd ad) {
+//
+//            }
+//
+//            @Override
+//            public void onAdClicked(MaxAd ad) {
+//
+//            }
+//
+//            @Override
+//            public void onAdLoadFailed(String adUnitId, MaxError error) {
+//                toast(error.getMessage());
+//                Log.e( "onAdLoadFailed: ",error.getMessage() );
+//                Log.e( "onAdLoadFailed: ",error.getAdLoadFailureInfo() );
+//                Log.e( "onAdLoadFailed: ",String.valueOf(error.getCode()) );
+//                Log.e( "onAdLoadFailed: ",String.valueOf(error.getWaterfall()) );
+//
+//            }
+//
+//            @Override
+//            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+//                toast("display failed");
+//
+//            }
+//        });
+//
+//        // Load the first ad
+//        interstitialAd.loadAd();
+//
+//    }
 
     public void getAds() {
         API.apiInterface().getAds().enqueue(new retrofit2.Callback<AdsDetails>() {
@@ -1820,9 +1894,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
                 if (mInterstitialAd1 != null) {
                     mInterstitialAd1.show((Activity) context);
+                    IS_APP_KILLED = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
+                            IS_APP_KILLED = false;
                             loadInterstitial1();
                             try {
                                 params.call();
@@ -1888,9 +1964,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd1.show((Activity) context);
+                            IS_APP_KILLED = true;
                             mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
+                                    IS_APP_KILLED = false;
                                     loadInterstitial1();
                                     try {
                                         params.call();
@@ -1915,9 +1993,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     });
                 } else {
                     mInterstitialAd1.show((Activity) context);
+                    IS_APP_KILLED = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
+                            IS_APP_KILLED = false;
                             loadInterstitial1();
                             try {
                                 params.call();
@@ -1955,9 +2035,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     void showInterstitial1Splash(Activity context, Callable<Void> params) {
         if (mInterstitialAd1 != null) {
             mInterstitialAd1.show((Activity) context);
+            IS_APP_KILLED = true;
             mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
                 public void onAdDismissedFullScreenContent() {
+                    IS_APP_KILLED = false;
                     loadInterstitial1();
                     try {
                         params.call();
@@ -1995,9 +2077,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd2.show((Activity) context);
+                            IS_APP_KILLED = true;
                             mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
+                                    IS_APP_KILLED = false;
                                     loadInterstitial2();
                                     try {
                                         params.call();
@@ -2022,9 +2106,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     });
                 } else {
                     mInterstitialAd2.show((Activity) context);
+                    IS_APP_KILLED = true;
                     mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
+                            IS_APP_KILLED = false;
                             loadInterstitial2();
                             try {
                                 params.call();
@@ -2068,9 +2154,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd3.show((Activity) context);
+                            IS_APP_KILLED = true;
                             mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
+                                    IS_APP_KILLED = false;
                                     loadInterstitial3();
                                     try {
                                         params.call();
@@ -2096,9 +2184,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     });
                 } else {
                     mInterstitialAd3.show((Activity) context);
+                    IS_APP_KILLED = true;
                     mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
+                            IS_APP_KILLED = false;
                             loadInterstitial3();
                             try {
                                 params.call();
@@ -2385,9 +2475,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this)) {
             if (mInterstitialAd1 != null && adsPrefernce.showInter1()) {
                 mInterstitialAd1.show((Activity) context);
+                IS_APP_KILLED = true;
                 mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
+                        IS_APP_KILLED = false;
                         loadInterstitial1();
                         try {
                             params.call();
@@ -2424,9 +2516,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this)) {
             if (mInterstitialAd2 != null && adsPrefernce.showInter2()) {
                 mInterstitialAd2.show((Activity) context);
+                IS_APP_KILLED = true;
                 mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
+                        IS_APP_KILLED = false;
                         loadInterstitial2();
                         try {
                             params.call();
@@ -2463,9 +2557,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this)) {
             if (mInterstitialAd3 != null && adsPrefernce.showInter3()) {
                 mInterstitialAd3.show((Activity) context);
+                IS_APP_KILLED = true;
                 mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
+                        IS_APP_KILLED = false;
                         loadInterstitial3();
                         try {
                             params.call();
@@ -6375,9 +6471,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             mInterstitialAd1 = interstitialAd;
                             if (mInterstitialAd1 != null) {
                                 mInterstitialAd1.show((Activity) context);
+                                IS_APP_KILLED = true;
                                 mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
+                                        IS_APP_KILLED = false;
                                         loadInterstitial1();
                                         try {
                                             callable.call();
@@ -6414,9 +6512,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     });
                 } else {
                     mInterstitialAd1.show((Activity) context);
+                    IS_APP_KILLED = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
+                            IS_APP_KILLED = false;
                             loadInterstitial1();
                             try {
                                 callable.call();
@@ -6465,22 +6565,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 showInterstitial1Splash(context, callable);
             } else if (adsPrefernce.showInter1_fb()) {
                 showInterstitial1FB(context, callable);
-            } else {
-                showInhouseInterAd(BaseAdsClass.this, new InhouseInterstitialListener() {
-                    @Override
-                    public void onAdShown() {
-
-                    }
-
-                    @Override
-                    public void onAdDismissed() {
-                        try {
-                            callable.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
             }
         } else {
             try {

@@ -1,7 +1,9 @@
 package com.newAds2021.adutils;
 
 import android.app.Application;
-
+//
+//import com.applovin.sdk.AppLovinSdk;
+//import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -22,6 +24,7 @@ public class NewAds2021 extends Application {
         AudienceNetworkAds.initialize(this);
 //        AudienceNetworkAds.initialize(getApplicationContext());
         appOpenManager = new AppOpenManager(this);
+
 
 
     }
