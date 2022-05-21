@@ -13,13 +13,14 @@ public class ConstantAds {
     public static Boolean isLightTheme = true;
 
     public static boolean IS_APP_KILLED = false;
+    public static boolean IS_INTER_SHOWING = false;
     public static int ad_bg_drawable = 0;
     public static int native_ad_bg = 0;
     public static ProgressDialog pDialogDelay = null;
     public static int adCountDefault = 1;
     public static int app_ad_dialog_default = 0;
     public static int AD_DELAY = 1500;
-    public static boolean PRELOAD_INTERSTITIAL = false;
+    public static boolean PRELOAD_INTERSTITIAL = true;
     public static boolean PRELOAD_REWARD = false;
     public static boolean PRELOAD_APPOPEN = false;
     public static String AD_MESSAGE = "Showing Ad...";

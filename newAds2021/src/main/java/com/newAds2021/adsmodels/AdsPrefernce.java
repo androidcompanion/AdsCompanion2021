@@ -203,6 +203,22 @@ public class AdsPrefernce {
     }
 
 
+    public boolean isAdDownloaded() {
+        boolean output = false;
+        if (adsPreference != null) {
+            output = adsPreference.getBoolean("is_ad_downloaded", false);
+        }
+        return output;
+    }
+
+    public void setIsAdDownloaded(Boolean showAds) {
+        if (adsPreference != null) {
+            editor = adsPreference.edit();
+            editor.putBoolean("is_ad_downloaded", showAds);
+            editor.apply();
+        }
+    }
+
     public boolean showAds() {
         boolean output = false;
         if (adsPreference != null) {
@@ -774,11 +790,11 @@ public class AdsPrefernce {
         editor.apply();
     }
     public void setAppRunCount() {
-        editor.putInt("app_run_count_lib", appRunCount() + 1);
+        editor.putInt("app_run_count_lib", (appRunCount() + 1));
         editor.apply();
     }
     public void setAppRunCountSplash() {
-        editor.putInt("app_run_count_lib_splash", appRunCountSplash() + 1);
+        editor.putInt("app_run_count_lib_splash", (appRunCountSplash() + 1));
         editor.apply();
     }
 

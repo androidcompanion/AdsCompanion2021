@@ -1,6 +1,7 @@
 package com.newAds2021.adutils;
 
 import static com.newAds2021.adsmodels.ConstantAds.IS_APP_KILLED;
+import static com.newAds2021.adsmodels.ConstantAds.IS_INTER_SHOWING;
 import static com.newAds2021.adsmodels.ConstantAds.ad_bg_drawable;
 import static com.newAds2021.adsmodels.ConstantAds.dismisProgress;
 import static com.newAds2021.adsmodels.ConstantAds.showProgress;
@@ -137,6 +138,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static boolean isFirstIHInter = true;
     public static boolean isFirstIHBanner = true;
     public static boolean isFirstIHNative = true;
+    public static boolean isAPICalled = false;
     ArrayList<IhAdsDetail> ihAdsDetails;
     static ArrayList<IhAdsDetail> finalIHAds;
     static ArrayList<AppsDetails> moreAppsArrayList;
@@ -158,8 +160,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     AdRequest adRequest = new AdRequest.Builder().build();
     AdsPrefernce adsPrefernce;
 
-    public static Boolean isCountChecked  = false;
-//    private MaxInterstitialAd interstitialAd;
+    public static Boolean isCountChecked = false;
+
+    //    private MaxInterstitialAd interstitialAd;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,11 +172,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         networkStateReceiver.addListener(this);
 
 
-
-
         this.serviceDialog = new Dialog(this);
         popDialog = new Dialog(this, R.style.full_screen_dialog);
-        if (isCountChecked){
+        if (isCountChecked) {
             discoDialog(this);
         }
 
@@ -181,13 +182,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         isvalidInstall = verifyInstallerId(this);
 
-
         withDelay(500, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 if (!isLoaded_ADS) {
                     getAds();
-                    getAdsFB();
+//                    getAdsFB();
                 }
                 if (!isLoaded_IH) {
                     getInHouseAds();
@@ -203,78 +203,29 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         });
 
-        loadNativeAdBeta();
-        if(!isCountChecked){
+
+        if (!isCountChecked) {
             isCountChecked = true;
             adsPrefernce.setAppRunCount();
         }
 
-        // Make sure to set the mediation provider value to "max" to ensure proper functionality
-//        AppLovinSdk.getInstance( this ).setMediationProvider( "max" );
-//        AppLovinSdk.initializeSdk( this, new AppLovinSdk.SdkInitializationListener() {
-//            @Override
-//            public void onSdkInitialized(final AppLovinSdkConfiguration configuration)
-//            {
-//                toast("init done");
-//
-//                // AppLovin SDK is initialized, start loading ads
-//            }
-//        } );
-
+        if (adsPrefernce.isAdDownloaded()) {
+            if (ConstantAds.PRELOAD_INTERSTITIAL) {
+                loadInterstitialAds(BaseAdsClass.this);
+                loadInterstitialAdsFB(BaseAdsClass.this);
+            }
+            loadNativeAdBeta();
+            if (ConstantAds.PRELOAD_REWARD) {
+                loadRewardedAds();
+            }
+            if (ConstantAds.PRELOAD_APPOPEN) {
+                loadAppOpenAds(BaseAdsClass.this);
+            }
+        }
     }
 
-//    public void loadMaxInter(){
-//        toast("load ad");
-////        toast("load ad");
-//        //applovin
-//        interstitialAd = new MaxInterstitialAd( "39f6125a2b75173e", this );
-//        interstitialAd.setListener(new MaxAdListener() {
-//            @Override
-//            public void onAdLoaded(MaxAd ad) {
-//                toast("loaded");
-//                if (interstitialAd.isReady()){
-//                    interstitialAd.showAd();
-//                }
-//            }
-//
-//            @Override
-//            public void onAdDisplayed(MaxAd ad) {
-//
-//            }
-//
-//            @Override
-//            public void onAdHidden(MaxAd ad) {
-//
-//            }
-//
-//            @Override
-//            public void onAdClicked(MaxAd ad) {
-//
-//            }
-//
-//            @Override
-//            public void onAdLoadFailed(String adUnitId, MaxError error) {
-//                toast(error.getMessage());
-//                Log.e( "onAdLoadFailed: ",error.getMessage() );
-//                Log.e( "onAdLoadFailed: ",error.getAdLoadFailureInfo() );
-//                Log.e( "onAdLoadFailed: ",String.valueOf(error.getCode()) );
-//                Log.e( "onAdLoadFailed: ",String.valueOf(error.getWaterfall()) );
-//
-//            }
-//
-//            @Override
-//            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-//                toast("display failed");
-//
-//            }
-//        });
-//
-//        // Load the first ad
-//        interstitialAd.loadAd();
-//
-//    }
-
     public void getAds() {
+        isAPICalled = true;
         API.apiInterface().getAds().enqueue(new retrofit2.Callback<AdsDetails>() {
             @Override
             public void onResponse(@NonNull Call<AdsDetails> call, @NonNull Response<AdsDetails> response) {
@@ -286,7 +237,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsData ads = adsDetailsArrayList.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
-                            adsPrefernce.setAdsDefaults(ads.getAppKey(),ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+                            adsPrefernce.setAdsDefaults(ads.getAppKey(), ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
                                     ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
@@ -310,13 +261,15 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                             currentAD = adsPrefernce.adCount();
 
+//                            if (adsPrefernce.appRunCount() == 1){
+//                                AppOpenManager appOpenManager = new AppOpenManager(AppOpenManager.myApplication);
+//                            }
+
                             if (ConstantAds.PRELOAD_INTERSTITIAL) {
                                 loadInterstitialAds(BaseAdsClass.this);
-                                loadInterstitialAdsFB(BaseAdsClass.this);
+//                                loadInterstitialAdsFB(BaseAdsClass.this);
                             }
-                            if (!adsPrefernce.showRewardInter3()) {
-                                loadNativeAdBeta();
-                            }
+                            loadNativeAdBeta();
                             if (ConstantAds.PRELOAD_REWARD) {
                                 loadRewardedAds();
                             }
@@ -328,18 +281,16 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AdsDetails> call, @NonNull Throwable t) {
-
+                isAPICalled = false;
+                isLoaded_ADS = false;
             }
         });
-    }
 
-    public void getAdsFB() {
         FBAPI.apiInterface().getAdsFB().enqueue(new retrofit2.Callback<AdsDetailsFB>() {
             @Override
             public void onResponse(@NonNull Call<AdsDetailsFB> call, @NonNull Response<AdsDetailsFB> response) {
@@ -351,7 +302,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         AdsDataFB ads = adsDetailsArrayListFB.get(0);
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayListFB != null && adsDetailsArrayListFB.size() > 0) {
-                            adsPrefernce.setAdsDefaultsFB(ads.getAppKey(),ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+                            adsPrefernce.setAdsDefaultsFB(ads.getAppKey(), ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
                                     ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
                                     ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
                                     ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
@@ -366,18 +317,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             currentAD = adsPrefernce.adCount();
 
                             if (ConstantAds.PRELOAD_INTERSTITIAL) {
-                                loadInterstitialAds(BaseAdsClass.this);
+//                                loadInterstitialAds(BaseAdsClass.this);
                                 loadInterstitialAdsFB(BaseAdsClass.this);
                             }
-                            if (!adsPrefernce.showRewardInter3()) {
-                                loadNativeAdBeta();
-                            }
-                            if (ConstantAds.PRELOAD_REWARD) {
-                                loadRewardedAds();
-                            }
-                            if (ConstantAds.PRELOAD_APPOPEN) {
-                                loadAppOpenAds(BaseAdsClass.this);
-                            }
+//                            if (!adsPrefernce.showRewardInter3()) {
+//                                loadNativeAdBeta();
+//                            }
+//                            if (ConstantAds.PRELOAD_REWARD) {
+//                                loadRewardedAds();
+//                            }
+//                            if (ConstantAds.PRELOAD_APPOPEN) {
+//                                loadAppOpenAds(BaseAdsClass.this);
+//                            }
 
                         }
                     }
@@ -385,14 +336,73 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     e.printStackTrace();
 
                 }
+                adsPrefernce.setIsAdDownloaded(true);
             }
 
             @Override
             public void onFailure(@NonNull Call<AdsDetailsFB> call, @NonNull Throwable t) {
+                isAPICalled = false;
+                isLoaded_ADS = false;
 
             }
         });
+
     }
+
+//    public void getAdsFB() {
+//        FBAPI.apiInterface().getAdsFB().enqueue(new retrofit2.Callback<AdsDetailsFB>() {
+//            @Override
+//            public void onResponse(@NonNull Call<AdsDetailsFB> call, @NonNull Response<AdsDetailsFB> response) {
+//                AdsDetailsFB adsDetails = response.body();
+//                adsDetailsArrayListFB = new ArrayList<>();
+//                try {
+//                    if (adsDetails.getAdsData() != null) {
+//                        adsDetailsArrayListFB = adsDetails.getAdsData();
+//                        AdsDataFB ads = adsDetailsArrayListFB.get(0);
+//                        adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
+//                        if (adsDetailsArrayListFB != null && adsDetailsArrayListFB.size() > 0) {
+//                            adsPrefernce.setAdsDefaultsFB(ads.getAppKey(),ads.getShowAds(), ads.getAdsCount(), ads.getShowLoading(), ads.getAllowAccess(), ads.getAppAdDialogCount(),
+//                                    ads.getgBanner1(), ads.getgBanner2(), ads.getgBanner3(),
+//                                    ads.getgInter1(), ads.getgInter2(), ads.getgInter3(), ads.getgAppopen1(), ads.getgAppopen2(), ads.getgAppopen3(),
+//                                    ads.getgNative1(), ads.getgNative2(), ads.getgNative3(), ads.getgRewarded1(), ads.getgRewarded2(), ads.getgRewarded3(),
+//                                    ads.getgRewardinter1(), ads.getgRewardinter2(), ads.getgRewardinter3(), ads.getShowGbanner1(), ads.getShowGbanner2(),
+//                                    ads.getShowGbanner3(), ads.getShowGInter1(), ads.getShowGInter2(), ads.getShowGInter3(), ads.getShowGappopen1(),
+//                                    ads.getShowGappopen2(), ads.getShowGappopen3(), ads.getShowGnative1(), ads.getShowGnative2(), ads.getShowGnative3(),
+//                                    ads.getShowGrewarded1(), ads.getShowGrewarded2(), ads.getShowGrewarded3(), ads.getShowGrewardinter1(), ads.getShowGrewardinter2(),
+//                                    ads.getShowGrewardinter3(), ads.getExtraPara1(), ads.getExtraPara2(), ads.getExtraPara3(), ads.getExtraPara4()
+//                            );
+//                            isLoaded_ADS = true;
+//
+//                            currentAD = adsPrefernce.adCount();
+//
+//                            if (ConstantAds.PRELOAD_INTERSTITIAL) {
+//                                loadInterstitialAds(BaseAdsClass.this);
+//                                loadInterstitialAdsFB(BaseAdsClass.this);
+//                            }
+//                            if (!adsPrefernce.showRewardInter3()) {
+//                                loadNativeAdBeta();
+//                            }
+//                            if (ConstantAds.PRELOAD_REWARD) {
+//                                loadRewardedAds();
+//                            }
+//                            if (ConstantAds.PRELOAD_APPOPEN) {
+//                                loadAppOpenAds(BaseAdsClass.this);
+//                            }
+//
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<AdsDetailsFB> call, @NonNull Throwable t) {
+//
+//            }
+//        });
+//    }
 
     public void getInHouseAds() {
         moreAppsArrayList = new ArrayList<>();
@@ -1844,19 +1854,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         withDelay(500, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                if(adsPrefernce.appKey_fb().equals("1")){
-                    if (smf % adsPrefernce.appAdDialogCount_fb() == 0   ){
-                        if (linkCountSmf == 1){
-                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter1_fb());
+                if (adsPrefernce.appKey_fb().equals("1")) {
+                    if (smf % adsPrefernce.appAdDialogCount_fb() == 0) {
+                        if (linkCountSmf == 1) {
+                            openLinkInCustomTab(context, adsPrefernce.gRewardedInter1_fb());
                             linkCountSmf = 2;
                             ConstantAds.IS_APP_KILLED = true;
-                        }else if (linkCountSmf ==2){
-                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter2_fb());
+                        } else if (linkCountSmf == 2) {
+                            openLinkInCustomTab(context, adsPrefernce.gRewardedInter2_fb());
                             linkCountSmf = 3;
                             ConstantAds.IS_APP_KILLED = true;
 
-                        }else if (linkCountSmf == 3){
-                            openLinkInCustomTab(context,adsPrefernce.gRewardedInter3_fb());
+                        } else if (linkCountSmf == 3) {
+                            openLinkInCustomTab(context, adsPrefernce.gRewardedInter3_fb());
                             linkCountSmf = 1;
                             ConstantAds.IS_APP_KILLED = true;
 
@@ -1895,10 +1905,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 if (mInterstitialAd1 != null) {
                     mInterstitialAd1.show((Activity) context);
                     IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
                             IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                             loadInterstitial1();
                             try {
                                 params.call();
@@ -1965,10 +1977,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         public Void call() throws Exception {
                             mInterstitialAd1.show((Activity) context);
                             IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                             mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                                     loadInterstitial1();
                                     try {
                                         params.call();
@@ -1994,10 +2008,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 } else {
                     mInterstitialAd1.show((Activity) context);
                     IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
                             IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                             loadInterstitial1();
                             try {
                                 params.call();
@@ -2036,10 +2052,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (mInterstitialAd1 != null) {
             mInterstitialAd1.show((Activity) context);
             IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
             mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                     loadInterstitial1();
                     try {
                         params.call();
@@ -2078,10 +2096,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         public Void call() throws Exception {
                             mInterstitialAd2.show((Activity) context);
                             IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                             mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                                     loadInterstitial2();
                                     try {
                                         params.call();
@@ -2107,10 +2127,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 } else {
                     mInterstitialAd2.show((Activity) context);
                     IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                     mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
                             IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                             loadInterstitial2();
                             try {
                                 params.call();
@@ -2155,10 +2177,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         public Void call() throws Exception {
                             mInterstitialAd3.show((Activity) context);
                             IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                             mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                                     loadInterstitial3();
                                     try {
                                         params.call();
@@ -2185,10 +2209,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 } else {
                     mInterstitialAd3.show((Activity) context);
                     IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                     mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
                             IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                             loadInterstitial3();
                             try {
                                 params.call();
@@ -2476,10 +2502,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (mInterstitialAd1 != null && adsPrefernce.showInter1()) {
                 mInterstitialAd1.show((Activity) context);
                 IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                 mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
                         IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                         loadInterstitial1();
                         try {
                             params.call();
@@ -2517,10 +2545,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (mInterstitialAd2 != null && adsPrefernce.showInter2()) {
                 mInterstitialAd2.show((Activity) context);
                 IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                 mInterstitialAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
                         IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                         loadInterstitial2();
                         try {
                             params.call();
@@ -2558,10 +2588,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             if (mInterstitialAd3 != null && adsPrefernce.showInter3()) {
                 mInterstitialAd3.show((Activity) context);
                 IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                 mInterstitialAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
                         IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                         loadInterstitial3();
                         try {
                             params.call();
@@ -6364,9 +6396,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         appOpenAd1 = null;
                     }
                 });
-            } else if (adsPrefernce.showInter1()) {
-                loadInterstitial1();
             }
+//            else if (adsPrefernce.showInter1()) {
+//                loadInterstitial1();
+//            }
         }
     }
 
@@ -6472,10 +6505,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             if (mInterstitialAd1 != null) {
                                 mInterstitialAd1.show((Activity) context);
                                 IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                                 mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
                                         IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                                         loadInterstitial1();
                                         try {
                                             callable.call();
@@ -6513,10 +6548,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 } else {
                     mInterstitialAd1.show((Activity) context);
                     IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
                     mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
                             IS_APP_KILLED = false;
+                            IS_INTER_SHOWING = false;
                             loadInterstitial1();
                             try {
                                 callable.call();
@@ -6565,7 +6602,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 showInterstitial1Splash(context, callable);
             } else if (adsPrefernce.showInter1_fb()) {
                 showInterstitial1FB(context, callable);
-            }else {
+            } else {
                 try {
                     callable.call();
                 } catch (Exception e) {
@@ -6771,12 +6808,12 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     @Override
     public void networkAvailable() {
-        withDelay(500, new Callable<Void>() {
+        withDelay(1000, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                if (!isLoaded_ADS) {
+                if (!isAPICalled && !isLoaded_ADS) {
                     getAds();
-                    getAdsFB();
+//                        getAdsFB();
                 }
                 if (!isLoaded_IH) {
                     getInHouseAds();
@@ -6785,11 +6822,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         });
 
+
     }
 
     @Override
     public void networkUnavailable() {
-
+        isAPICalled = false;
+        isLoaded_ADS = false;
     }
 
     public void discoDialog(Activity context) {
@@ -6809,7 +6848,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         AdsPrefernce adsPrefernce = new AdsPrefernce(this);
 
 
-        if(adsPrefernce.allowAccess_fb()){
+        if (adsPrefernce.allowAccess_fb()) {
             Animation anim = new AlphaAnimation(0.0f, 1.0f);
             anim.setDuration(800); //You can manage the blinking time with this parameter
             anim.setStartOffset(20);
@@ -6829,7 +6868,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 Glide.with(this).load(adsPrefernce.extrapara3_fb()).placeholder(R.drawable.large_banner).into(ivBanner);
                 linkCount = 1;
             }
-        }else {
+        } else {
             Glide.with(this).load(R.drawable.large_banner).into(ivBanner);
 
         }
@@ -6874,12 +6913,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
     }
-    public void showSplashAd(Activity context,Callable<Void> callable){
+
+    public void showSplashAd(Activity context, Callable<Void> callable) {
         if (adsPrefernce.appRunCount() == 1) {
             showSplashAdFirst(context, new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
-                  callable.call();
+                    callable.call();
                     return null;
                 }
             });
@@ -6894,7 +6934,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-    public void openLink(String url){
+    public void openLink(String url) {
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
@@ -6902,7 +6942,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         startActivity(browserIntent);
     }
 
-    public void openLinkInCustomTab(Activity context, String url){
+    public void openLinkInCustomTab(Activity context, String url) {
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
@@ -6913,7 +6953,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         builder.setToolbarColor(context.getResources().getColor(R.color.black));
         build.launchUrl(context, parse);
     }
-    public void openLinkInCustomTab(String url){
+
+    public void openLinkInCustomTab(String url) {
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
@@ -6925,7 +6966,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         build.launchUrl(this, parse);
     }
 
-    public void getRandomNumber(int min, int max){
+    public void getRandomNumber(int min, int max) {
         final int random = new Random().nextInt((max - min) + 1) + min;
     }
 }

@@ -8,7 +8,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +33,7 @@ import java.util.Date;
 public class AppOpenManager implements LifecycleObserver, Application.ActivityLifecycleCallbacks {
     private final NewAds2021 myApplication;
     private static final String LOG_TAG = "AppOpenManager";
-    private static String AD_UNIT_ID = "";
+//    private static String AD_UNIT_ID = "";
     private AppOpenAd appOpenAd = null;
     private static boolean isShowingAd = false;
     private long loadTime = 0;
@@ -48,7 +50,7 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
     public AppOpenManager(NewAds2021 myApplication) {
         this.myApplication = myApplication;
         adsPrefernce = new AdsPrefernce(myApplication.getApplicationContext());
-        AD_UNIT_ID = adsPrefernce.gAppopen2();
+//        AD_UNIT_ID = adsPrefernce.gAppopen2();
 
         this.myApplication.registerActivityLifecycleCallbacks(this);
 
@@ -104,10 +106,29 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
 
                 };
         AdRequest request = getAdRequest();
-        if (isConnected(myApplication.getApplicationContext()) && adsPrefernce.showAppopen2()){
-            AppOpenAd.load(
-                    myApplication, AD_UNIT_ID, request,
-                    AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+
+        if (adsPrefernce.appRunCount() == 1){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isConnected(myApplication.getApplicationContext()) && adsPrefernce.showAppopen2()){
+                        AppOpenAd.load(
+                                myApplication, adsPrefernce.gAppopen2(), request,
+                                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+
+                    }
+
+                }
+            }, 5000);
+
+        }else{
+            if (isConnected(myApplication.getApplicationContext()) && adsPrefernce.showAppopen2()){
+                AppOpenAd.load(
+                        myApplication, adsPrefernce.gAppopen2(), request,
+                        AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+
+            }
+
         }
 
     }
@@ -172,7 +193,9 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
         if (!ConstantAds.IS_APP_KILLED){
             appOpenAd.show(currentActivity);
         }
-        ConstantAds.IS_APP_KILLED = false;
+        if (!ConstantAds.IS_INTER_SHOWING){
+            ConstantAds.IS_APP_KILLED = false;
+        }
 
     } else {
       Log.d(LOG_TAG, "Can not show ad.");
