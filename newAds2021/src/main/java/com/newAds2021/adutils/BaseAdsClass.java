@@ -125,6 +125,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     private NetworkStateReceiver networkStateReceiver;
     public static boolean isvalidInstall = false;
+    public static boolean IS_NETWORK_GONE = false;
 
     public static NativeAd nativeAd1Beta = null;
     public static NativeAd nativeAd2Beta = null;
@@ -138,7 +139,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static boolean isFirstIHInter = true;
     public static boolean isFirstIHBanner = true;
     public static boolean isFirstIHNative = true;
-    public static boolean isAPICalled = false;
     ArrayList<IhAdsDetail> ihAdsDetails;
     static ArrayList<IhAdsDetail> finalIHAds;
     static ArrayList<AppsDetails> moreAppsArrayList;
@@ -225,7 +225,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void getAds() {
-        isAPICalled = true;
         API.apiInterface().getAds().enqueue(new retrofit2.Callback<AdsDetails>() {
             @Override
             public void onResponse(@NonNull Call<AdsDetails> call, @NonNull Response<AdsDetails> response) {
@@ -286,8 +285,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
             @Override
             public void onFailure(@NonNull Call<AdsDetails> call, @NonNull Throwable t) {
-                isAPICalled = false;
-                isLoaded_ADS = false;
+              isLoaded_ADS = false;
             }
         });
 
@@ -341,7 +339,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
             @Override
             public void onFailure(@NonNull Call<AdsDetailsFB> call, @NonNull Throwable t) {
-                isAPICalled = false;
                 isLoaded_ADS = false;
 
             }
@@ -1310,7 +1307,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void loadInterstitial1() {
+        toast("loadInter");
         if (isConnected(this) && adsPrefernce.showInter1() && mInterstitialAd1 == null) {
+            toast("loadInter_IF");
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -6808,27 +6807,15 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     @Override
     public void networkAvailable() {
-        withDelay(1000, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                if (!isAPICalled && !isLoaded_ADS) {
-                    getAds();
-//                        getAdsFB();
-                }
-                if (!isLoaded_IH) {
-                    getInHouseAds();
-                }
-                return null;
-            }
-        });
-
-
+        if (IS_NETWORK_GONE) {
+            getAds();
+            getInHouseAds();
+        }
     }
 
     @Override
     public void networkUnavailable() {
-        isAPICalled = false;
-        isLoaded_ADS = false;
+        IS_NETWORK_GONE = true;
     }
 
     public void discoDialog(Activity context) {
