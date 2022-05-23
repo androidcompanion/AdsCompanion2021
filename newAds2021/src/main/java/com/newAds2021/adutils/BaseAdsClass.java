@@ -1307,9 +1307,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void loadInterstitial1() {
-        toast("loadInter");
         if (isConnected(this) && adsPrefernce.showInter1() && mInterstitialAd1 == null) {
-            toast("loadInter_IF");
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
