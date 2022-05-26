@@ -61,6 +61,9 @@ import com.facebook.ads.NativeAdLayout;
 import com.facebook.ads.NativeAdListener;
 import com.facebook.ads.NativeBannerAd;
 import com.facebook.ads.NativeBannerAdView;
+import com.facebook.ads.RewardedAdListener;
+import com.facebook.ads.RewardedVideoAd;
+import com.facebook.ads.RewardedVideoAdListener;
 import com.facebook.ads.internal.api.InitApi;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -1602,6 +1605,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
+    public static RewardedVideoAd fbRewardedAd1 = null;
+    public static RewardedVideoAd fbRewardedAd2 = null;
+    public static RewardedVideoAd fbRewardedAd3 = null;
     public static RewardedAd gRewardedAd1 = null;
     public static RewardedAd gRewardedAd2 = null;
     public static RewardedAd gRewardedAd3 = null;
@@ -1609,13 +1615,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public static boolean isUserRewarded2 = false;
     public static boolean isUserRewarded3 = false;
 
-    public void showRewardedAd(OnRewardAdClosedListener onRewardAdClosedListener) {
+    public void showRewardedAd(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
         if (rewardNo == 1) {
-            showRewardAd1(onRewardAdClosedListener);
+            showRewardAd1( activity,onRewardAdClosedListener);
         } else if (rewardNo == 2) {
-            showRewardAd2(onRewardAdClosedListener);
+            showRewardAd2( activity,onRewardAdClosedListener);
         } else if (rewardNo == 3) {
-            showRewardAd3(onRewardAdClosedListener);
+            showRewardAd3(activity,onRewardAdClosedListener);
         } else {
             onRewardAdClosedListener.onRewardAdNotShown();
         }
@@ -1682,7 +1688,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void showRewardAd1(OnRewardAdClosedListener onRewardAdClosedListener) {
+    public void showRewardAd1(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
         if (isConnected(this) && adsPrefernce.showRewarded1() && gRewardedAd1 != null) {
             gRewardedAd1.show(this, new OnUserEarnedRewardListener() {
                 @Override
@@ -1718,12 +1724,187 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
 
-        } else {
+        }
+        else if (isConnected(this) && adsPrefernce.showRewarded1_fb()){
+            showRewardAd1Fb(activity, onRewardAdClosedListener);
+        }
+        else {
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
 
-    public void showRewardAd2(OnRewardAdClosedListener onRewardAdClosedListener) {
+
+    public void showRewardAd1Fb(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
+            showProgress(activity, "Loading Video Ad...");
+            fbRewardedAd1 = new RewardedVideoAd(this, adsPrefernce.gRewarded1_fb());
+            RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoCompleted() {
+                    isUserRewarded1 = true;
+                }
+
+                @Override
+                public void onRewardedVideoClosed() {
+                    if (isUserRewarded1) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    isUserRewarded1 = false;
+                    IS_APP_KILLED = false;
+                    IS_INTER_SHOWING = false;
+                    loadRewardAd1();
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    dismisProgress(activity);
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    isUserRewarded1 = false;
+                    loadRewardAd1();
+
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    dismisProgress(activity);
+                    IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
+                    fbRewardedAd1.show();
+
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            fbRewardedAd1.loadAd(
+                    fbRewardedAd1.buildLoadAdConfig()
+                            .withAdListener(rewardedVideoAdListener)
+                            .build());
+
+    }
+    public void showRewardAd2Fb(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
+            showProgress(activity, "Loading Video Ad...");
+            fbRewardedAd2 = new RewardedVideoAd(this, adsPrefernce.gRewarded2_fb());
+            RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoCompleted() {
+                    isUserRewarded2 = true;
+                }
+
+                @Override
+                public void onRewardedVideoClosed() {
+                    if (isUserRewarded2) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    isUserRewarded2 = false;
+                    IS_APP_KILLED = false;
+                    IS_INTER_SHOWING = false;
+                    loadRewardAd2();
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    dismisProgress(activity);
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    isUserRewarded2 = false;
+                    loadRewardAd2();
+
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    dismisProgress(activity);
+                    IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
+                    fbRewardedAd2.show();
+
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            fbRewardedAd2.loadAd(
+                    fbRewardedAd2.buildLoadAdConfig()
+                            .withAdListener(rewardedVideoAdListener)
+                            .build());
+
+    }
+    public void showRewardAd3Fb(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
+            showProgress(activity, "Loading Video Ad...");
+            fbRewardedAd3 = new RewardedVideoAd(this, adsPrefernce.gRewarded3_fb());
+            RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoCompleted() {
+                    isUserRewarded3 = true;
+                }
+
+                @Override
+                public void onRewardedVideoClosed() {
+                    if (isUserRewarded3) {
+                        onRewardAdClosedListener.onRewardSuccess();
+                    } else {
+                        onRewardAdClosedListener.onRewardFailed();
+                    }
+                    isUserRewarded3 = false;
+                    IS_APP_KILLED = false;
+                    IS_INTER_SHOWING = false;
+                    loadRewardAd3();
+                }
+
+                @Override
+                public void onError(Ad ad, com.facebook.ads.AdError adError) {
+                    dismisProgress(activity);
+                    onRewardAdClosedListener.onRewardAdNotShown();
+                    isUserRewarded3 = false;
+                    loadRewardAd3();
+
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    dismisProgress(activity);
+                    IS_APP_KILLED = true;
+                    IS_INTER_SHOWING = true;
+                    fbRewardedAd3.show();
+
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            };
+            fbRewardedAd3.loadAd(
+                    fbRewardedAd3.buildLoadAdConfig()
+                            .withAdListener(rewardedVideoAdListener)
+                            .build());
+
+    }
+
+
+    public void showRewardAd2(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
         if (isConnected(this) && adsPrefernce.showRewarded2() && gRewardedAd2 != null) {
             gRewardedAd2.show(this, new OnUserEarnedRewardListener() {
                 @Override
@@ -1759,12 +1940,16 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
 
-        } else {
+        }
+        else if (isConnected(this) && adsPrefernce.showRewarded2_fb()){
+            showRewardAd2Fb(activity, onRewardAdClosedListener);
+        }
+        else {
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
 
-    public void showRewardAd3(OnRewardAdClosedListener onRewardAdClosedListener) {
+    public void showRewardAd3(Activity activity,OnRewardAdClosedListener onRewardAdClosedListener) {
         if (isConnected(this) && adsPrefernce.showRewarded3() && gRewardedAd3 != null) {
             gRewardedAd3.show(this, new OnUserEarnedRewardListener() {
                 @Override
@@ -1800,7 +1985,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
 
-        } else {
+        }
+        else if (isConnected(this) && adsPrefernce.showRewarded3_fb()){
+            showRewardAd3Fb(activity, onRewardAdClosedListener);
+        }
+        else {
             onRewardAdClosedListener.onRewardAdNotShown();
         }
     }
