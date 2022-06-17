@@ -25,6 +25,7 @@ public class AdsPrefernce {
     }
 
     public void setAdsDefaults(String app_key, Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
+                               String g_app_id,
 
                                String g_banner1, String g_banner2, String g_banner3,
                                String g_inter1, String g_inter2, String g_inter3,
@@ -61,6 +62,7 @@ public class AdsPrefernce {
             editor.putBoolean("allow_access", allow_access);
             editor.putInt("app_ad_dialog", app_ad_dialog);
 
+            editor.putString("g_app_id", g_app_id);
             editor.putString("g_banner1", g_banner1);
             editor.putString("g_banner2", g_banner2);
             editor.putString("g_banner3", g_banner3);
@@ -132,6 +134,8 @@ public class AdsPrefernce {
     }
     public void setAdsDefaultsFB(String app_key,Boolean show_ads, Integer ads_count, Boolean show_loading, Boolean allow_access, Integer app_ad_dialog,
 
+
+                               String g_app_id_fb,
                                String g_banner1, String g_banner2, String g_banner3,
                                String g_inter1, String g_inter2, String g_inter3,
                                String g_appopen1, String g_appopen2, String g_appopen3,
@@ -157,6 +161,7 @@ public class AdsPrefernce {
             editor.putBoolean("allow_access_fb", allow_access);
             editor.putInt("app_ad_dialog_fb", app_ad_dialog);
 
+            editor.putString("g_app_id_fb", g_app_id_fb);
             editor.putString("g_banner1_fb", g_banner1);
             editor.putString("g_banner2_fb", g_banner2);
             editor.putString("g_banner3_fb", g_banner3);
@@ -282,6 +287,13 @@ public class AdsPrefernce {
     }
 
 
+    public String gAppId() {
+        String var = "";
+        if (adsPreference != null) {
+            var = adsPreference.getString("g_app_id", context.getResources().getString(R.string.admob_app_id));
+        }
+        return var;
+    }
     public String gBanner1() {
         String var = "";
         if (adsPreference != null) {
@@ -894,6 +906,15 @@ public class AdsPrefernce {
         }
         return var;
     }
+
+    public String gAppIdFb() {
+        String var = "";
+        if (adsPreference != null) {
+            var = adsPreference.getString("g_app_id_fb", "0");
+        }
+        return var;
+    }
+
 
 
     public String gBanner1_fb() {
