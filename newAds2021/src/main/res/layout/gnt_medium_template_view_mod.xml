@@ -90,7 +90,6 @@
                                 android:layout_marginTop="@dimen/gnt_no_margin"
                                 android:layout_marginEnd="@dimen/gnt_no_margin"
                                 android:layout_marginBottom="@dimen/gnt_no_margin"
-                                android:background="@color/gnt_white"
                                 android:lines="1"
                                 android:textColor="@color/gnt_gray"
                                 android:textSize="@dimen/gnt_text_size_large"
@@ -186,19 +185,18 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:layout_centerVertical="true"
                     android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/gnt_no_size"
                     android:layout_marginEnd="@dimen/gnt_no_size"
                     android:layout_marginBottom="@dimen/gnt_no_size"
                     android:layout_toStartOf="@id/cta"
                     android:paddingStart="@dimen/gnt_default_margin"
                     android:paddingEnd="@dimen/gnt_default_margin"
-                    android:paddingBottom="2dp"
-                    android:textColor="@color/gnt_black" />
+                    android:paddingBottom="2dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/cta"
