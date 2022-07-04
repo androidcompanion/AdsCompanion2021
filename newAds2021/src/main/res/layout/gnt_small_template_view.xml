@@ -69,7 +69,6 @@
                             android:layout_marginEnd="@dimen/gnt_no_margin"
                             android:layout_marginBottom="@dimen/gnt_no_margin"
                             android:lines="1"
-                            android:textColor="@color/gnt_gray"
                             android:textSize="@dimen/gnt_text_size_large"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
