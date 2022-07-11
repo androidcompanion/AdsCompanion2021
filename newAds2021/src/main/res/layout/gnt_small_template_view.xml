@@ -39,16 +39,15 @@
                     android:layout_marginTop="@dimen/gnt_no_margin"
                     android:layout_marginEnd="@dimen/gnt_no_margin"
                     android:layout_marginBottom="@dimen/gnt_no_margin"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"/>
 
                 <LinearLayout
-                    android:id="@+id/content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginStart="@dimen/gnt_default_margin"
+                    android:layout_marginEnd="@dimen/gnt_default_margin"                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/gnt_default_margin"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="@dimen/gnt_default_margin"
-                    android:layout_marginBottom="0dp"
                     android:layout_toEndOf="@id/icon"
                     android:orientation="vertical">
 
@@ -69,6 +68,7 @@
                             android:layout_marginEnd="@dimen/gnt_no_margin"
                             android:layout_marginBottom="@dimen/gnt_no_margin"
                             android:lines="1"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/gnt_text_size_large"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,10 +78,10 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_weight="@dimen/gnt_text_row_weight"
                         android:id="@+id/row_two"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/gnt_no_size"
-                        android:layout_weight="@dimen/gnt_text_row_weight"
                         android:orientation="horizontal">
 
                         <TextView
@@ -113,7 +113,7 @@
                             android:lines="1"
                             android:numStars="5"
                             android:stepSize="0.1"
-                            android:textColor="@color/gnt_gray"
+                            android:textColor="@android:color/secondary_text_dark"
                             android:textSize="@dimen/gnt_text_size_small"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -130,10 +130,9 @@
                             android:layout_marginTop="@dimen/gnt_no_margin"
                             android:layout_marginEnd="@dimen/gnt_no_margin"
                             android:layout_marginBottom="@dimen/gnt_no_margin"
-                            android:background="@color/gnt_white"
+                            android:textColor="@android:color/darker_gray"
                             android:gravity="top"
                             android:lines="1"
-                            android:textColor="@color/gnt_gray"
                             android:textSize="@dimen/gnt_text_size_small"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +147,7 @@
                         android:layout_height="28dp"
                         android:background="@drawable/gnt_button_bg"
                         android:lines="1"
-                        android:textColor="@color/gnt_white" />
+                        android:textColor="@color/gnt_white"/>
 
                 </LinearLayout>
 
