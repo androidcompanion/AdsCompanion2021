@@ -193,6 +193,7 @@
                     android:layout_marginEnd="@dimen/gnt_no_size"
                     android:layout_marginBottom="@dimen/gnt_no_size"
                     android:layout_toStartOf="@id/cta"
+                    android:maxLines="2"
                     android:paddingStart="@dimen/gnt_default_margin"
                     android:paddingEnd="@dimen/gnt_default_margin"
                     android:paddingBottom="2dp"

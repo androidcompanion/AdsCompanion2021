@@ -184,6 +184,7 @@
                 android:layout_marginTop="@dimen/gnt_no_size"
                 android:layout_marginEnd="@dimen/gnt_no_size"
                 android:layout_marginBottom="@dimen/gnt_no_size"
+                android:maxLines="2"
                 android:paddingLeft="@dimen/gnt_default_margin"
                 android:paddingBottom="@dimen/gnt_default_margin"
                 android:textColor="@android:color/darker_gray"

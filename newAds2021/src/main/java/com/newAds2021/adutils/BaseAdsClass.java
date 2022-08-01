@@ -1125,10 +1125,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         lay_message.setVisibility(View.GONE);
                         lay_ads.setVisibility(View.VISIBLE);
                         tv_dialog_title.setText(adsPrefernce.adDialogTitle());
+                        tv_app_cancel.setText(adsPrefernce.adButtonText());
 
                         if (adsPrefernce.adShowCancel()) {
                             tv_app_cancel.setVisibility(View.VISIBLE);
-                            tv_app_cancel.setText(adsPrefernce.adButtonText());
                         } else {
                             tv_app_cancel.setVisibility(View.GONE);
                         }
@@ -1627,13 +1627,42 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+//    void setNativeNo() {
+//        if (nativeNo == 3) {
+//            nativeNo = 1;
+//        } else {
+//            nativeNo++;
+//        }
+//    }
+
     void setNativeNo() {
-        if (nativeNo == 3) {
-            nativeNo = 1;
-        } else {
-            nativeNo++;
+        if (nativeNo == 1) {
+            if (adsPrefernce.showNative2() || adsPrefernce.showNative2_fb() || adsPrefernce.showAppopen2_fb()){
+                nativeNo = 2;
+            }else if (adsPrefernce.showNative3() || adsPrefernce.showNative3_fb() || adsPrefernce.showAppopen2_fb()){
+                nativeNo = 3;
+            }else {
+                nativeNo = 1;
+            }
+        } else if (nativeNo == 2) {
+            if (adsPrefernce.showNative3() || adsPrefernce.showNative3_fb() || adsPrefernce.showAppopen3_fb()){
+                nativeNo = 3;
+            }else if (adsPrefernce.showNative1() || adsPrefernce.showNative1_fb() || adsPrefernce.showAppopen2_fb()){
+                nativeNo = 1;
+            }else {
+                nativeNo = 2;
+            }
+        } else if (nativeNo == 3) {
+            if (adsPrefernce.showNative1() || adsPrefernce.showNative1_fb() || adsPrefernce.showAppopen1_fb()){
+                nativeNo = 1;
+            }else if (adsPrefernce.showNative2() || adsPrefernce.showNative2_fb() || adsPrefernce.showAppopen2_fb()){
+                nativeNo = 2;
+            }else {
+                nativeNo = 3;
+            }
         }
     }
+
 
     void setRewardNo() {
         if (rewardNo == 3) {
@@ -7479,7 +7508,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         } else {
             nativeView.setVisibility(View.GONE);
         }
-
     }
 
     void showNativeAd1(View nativeView) {
